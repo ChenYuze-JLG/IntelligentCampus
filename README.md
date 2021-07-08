@@ -60,13 +60,13 @@
 
 |  字段   | 解释  |
 |  :---:  | :---:  |
-| tcsnamelist  | 教学班中学生名单 |
 | acsnamelist  | 行政班中学生名单 |
-| inoutrecord  | 学生寝室出入记录 |
 | adminclass  | 行政班级 |
 | classroomrecord  | 教室申用记录 |
-| transrecord  | 交易记录 |
 | counsellor  | 辅导员 |
 | dmtadmin | 舍区管理员 |
-| teachclass | 教学班 |
 | eduadmin | 教务管理员 |
+| inoutrecord  | 学生寝室出入记录 |
+| tcsnamelist  | 教学班中学生名单 |
+| teachclass | 教学班 |
+| transrecord  | 交易记录 |
