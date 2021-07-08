@@ -66,7 +66,9 @@
 | counsellor  | 辅导员 |
 | dmtadmin | 舍区管理员 |
 | eduadmin | 教务管理员 |
+| enrolyear | 入学年份 |
 | inoutrecord  | 学生寝室出入记录 |
 | tcsnamelist  | 教学班中学生名单 |
 | teachclass | 教学班 |
 | transrecord  | 交易记录 |
+| lostandfound | 失物招领 |

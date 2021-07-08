@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80018
 File Encoding         : 65001
 
-Date: 2021-07-08 14:10:39
+Date: 2021-07-08 16:10:06
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -62,7 +62,7 @@ CREATE TABLE `activity` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(128) NOT NULL,
   `activityID` varchar(128) NOT NULL,
-  `organizer` varchar(128) NOT NULL,
+  `organizer` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `description` text NOT NULL,
   `pushlishTime` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `resgisStartTime` datetime DEFAULT NULL,
@@ -70,9 +70,9 @@ CREATE TABLE `activity` (
   `activStartTime` datetime NOT NULL,
   `activEndTime` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_organizer` (`organizer`),
   KEY `activityID` (`activityID`),
-  CONSTRAINT `fk_organizer` FOREIGN KEY (`organizer`) REFERENCES `user` (`username`)
+  KEY `fk_organizer` (`organizer`),
+  CONSTRAINT `fk_organizer` FOREIGN KEY (`organizer`) REFERENCES `user` (`username`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -85,13 +85,13 @@ CREATE TABLE `activity` (
 DROP TABLE IF EXISTS `activityrecord`;
 CREATE TABLE `activityrecord` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `activityID` varchar(128) NOT NULL,
+  `activityID` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `resigTime` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `user` varchar(128) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_actiID` (`activityID`),
   KEY `fk_acti_user` (`user`),
-  CONSTRAINT `fk_actiID` FOREIGN KEY (`activityID`) REFERENCES `activity` (`activityID`),
+  KEY `fk_actiID` (`activityID`),
+  CONSTRAINT `fk_actiID` FOREIGN KEY (`activityID`) REFERENCES `activity` (`activityID`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `fk_acti_user` FOREIGN KEY (`user`) REFERENCES `user` (`username`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -108,6 +108,7 @@ CREATE TABLE `adminclass` (
   `adminClassid` varchar(128) NOT NULL,
   `majorid` varchar(128) NOT NULL,
   `classnumber` int(11) NOT NULL,
+  `grade` enum('大一','大二','大三','大四','毕业') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `majorid` (`majorid`),
   KEY `adminClassid` (`adminClassid`),
@@ -186,6 +187,7 @@ CREATE TABLE `classrommrecord` (
   `date` date NOT NULL,
   `section` enum('第一节','第二节','第三节','第四节','第五节','第六节','第七节','第八节','第九节','第十节','第十一节','第十二节') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `user` varchar(128) NOT NULL,
+  `check` enum('审核失败','审核成功','待审核') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user` (`user`),
   KEY `classroomID` (`classroomID`),
@@ -318,11 +320,11 @@ CREATE TABLE `dormitory` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `dormitoryID` varchar(128) NOT NULL,
   `name` varchar(128) NOT NULL,
-  `adminID` varchar(128) NOT NULL,
+  `adminID` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `dormitoryID` (`dormitoryID`) USING BTREE,
   UNIQUE KEY `fk_admin` (`adminID`) USING BTREE,
-  CONSTRAINT `dormitory_ibfk_1` FOREIGN KEY (`adminID`) REFERENCES `dmtadmin` (`DMTAdminID`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `dormitory_ibfk_1` FOREIGN KEY (`adminID`) REFERENCES `dmtadmin` (`DMTAdminID`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -413,13 +415,13 @@ CREATE TABLE `lostandfound` (
   `item` text NOT NULL,
   `description` longtext,
   `img` varchar(128) DEFAULT NULL,
-  `publisher` varchar(128) NOT NULL,
+  `publisher` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `publishTime` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `type` enum('成功','失败') NOT NULL COMMENT '是否成功找到',
   `pubishType` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '发布类型：找失主、找物品',
   PRIMARY KEY (`id`),
   KEY `fk_user` (`publisher`),
-  CONSTRAINT `fk_user` FOREIGN KEY (`publisher`) REFERENCES `user` (`username`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `fk_user` FOREIGN KEY (`publisher`) REFERENCES `user` (`username`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -452,12 +454,12 @@ DROP TABLE IF EXISTS `news`;
 CREATE TABLE `news` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `url` varchar(128) NOT NULL,
-  `publisher` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `publisher` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `publishTime` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `views` int(10) unsigned zerofill DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_news_user` (`publisher`),
-  CONSTRAINT `fk_news_user` FOREIGN KEY (`publisher`) REFERENCES `user` (`username`)
+  CONSTRAINT `fk_news_user` FOREIGN KEY (`publisher`) REFERENCES `user` (`username`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -504,13 +506,11 @@ CREATE TABLE `student` (
   `name` varchar(128) NOT NULL,
   `gender` enum('男','女') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `age` int(11) NOT NULL,
-  `roomID` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `enrolyear` year(4) DEFAULT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ui_ID` (`studentID`) USING BTREE,
-  KEY `fk_stu_room` (`roomID`),
   KEY `studentID` (`studentID`),
-  CONSTRAINT `fk_stu_id` FOREIGN KEY (`studentID`) REFERENCES `user` (`username`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_stu_room` FOREIGN KEY (`roomID`) REFERENCES `dmtroom` (`DMTRoomID`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `fk_stu_id` FOREIGN KEY (`studentID`) REFERENCES `user` (`username`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
@@ -610,8 +610,11 @@ CREATE TABLE `user` (
   `password` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `nickname` varchar(128) DEFAULT NULL,
   `role` enum('辅导员','教师','学生','教务管理员','舍区管理员') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '学生',
+  `roomID` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   PRIMARY KEY (`ID`),
-  UNIQUE KEY `userkey` (`username`)
+  UNIQUE KEY `userkey` (`username`),
+  KEY `user_ibfk_1` (`roomID`),
+  CONSTRAINT `user_ibfk_1` FOREIGN KEY (`roomID`) REFERENCES `dmtroom` (`DMTRoomID`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
