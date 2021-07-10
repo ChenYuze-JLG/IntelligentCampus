@@ -3314,7 +3314,7 @@ a cite {
 
 .layui-table,
 .layui-table-view {
-    margin: 10px 0
+    margin: 0 0
 }
 
 .layui-flow-more {
@@ -3353,7 +3353,7 @@ a cite {
 .layui-table {
     width: 100%;
     background-color: #fff;
-    color: #666
+    color: #666;
 }
 
 .layui-table tr {
@@ -4822,7 +4822,8 @@ body .layui-table-tips .layui-layer-content {
     position: relative;
     width: 100%;
     height: 100%;
-    overflow: hidden
+    overflow: hidden;
+    margin: 0 100px;
 }
 
 .layui-carousel>[carousel-item]:before {
@@ -4863,7 +4864,9 @@ body .layui-table-tips .layui-layer-content {
     display: none\9;
     opacity: 0;
     position: absolute;
-    left: 10px;
+    margin-left: 100px;
+    margin-right: -100px;
+    left: 20px;
     top: 50%;
     margin-top: -18px;
     width: 36px;
@@ -4912,6 +4915,7 @@ body .layui-table-tips .layui-layer-content {
 
 .layui-carousel-ind {
     position: relative;
+    margin: 0 100px;
     top: -35px;
     width: 100%;
     line-height: 0 !important;
@@ -4920,7 +4924,7 @@ body .layui-table-tips .layui-layer-content {
 }
 
 .layui-carousel[lay-indicator=outside] {
-    margin-bottom: 30px
+    margin-bottom: 30px;
 }
 
 .layui-carousel[lay-indicator=outside] .layui-carousel-ind {
