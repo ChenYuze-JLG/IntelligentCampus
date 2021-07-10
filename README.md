@@ -1,6 +1,10 @@
 # Intelligence-campus
 重庆大学暑期实训项目
 
+##todo
+* activity表需要图片的url这个属性(imgUrl)
+* news表需要标题这个属性(title)
+
 ## 环境配置：   
 
 * MySQL: 8.0.x
