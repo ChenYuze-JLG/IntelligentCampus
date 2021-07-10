@@ -4,11 +4,13 @@ import com.sevengroup.campus.bean.UserBean;
 import com.sevengroup.campus.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
+@CrossOrigin("http://localhost:8080")
 public class helloController {
     //将Service注入Web层
     @Autowired

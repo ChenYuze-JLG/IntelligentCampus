@@ -4,12 +4,10 @@ import com.sevengroup.campus.bean.UserBean;
 import com.sevengroup.campus.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
+@CrossOrigin("http://localhost:8080")
 @RequestMapping("/mod3")
 public class mod3Controller {
     //将Service注入Web层
