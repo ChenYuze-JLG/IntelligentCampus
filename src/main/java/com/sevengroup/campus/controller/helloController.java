@@ -36,5 +36,13 @@ public class helloController {
         System.out.println("OK");
         return "login";
     }
+    @RequestMapping("/car")
+    public String showCar() {
+        return "mod3/car";
+    }
+    @RequestMapping("/test")
+    public String test() {
+        return "mod3/index3";
+    }
 
 }
