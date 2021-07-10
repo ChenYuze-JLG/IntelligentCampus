@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@Controller
 @RequestMapping("/mod3")
 public class mod3Controller {
     //将Service注入Web层
@@ -20,16 +20,13 @@ public class mod3Controller {
     public String showCar() {
         return "mod3/car";
     }
+    @RequestMapping("/nav")
+    public String showNav() {
+        return "mod3/Nav3";
+    }
     @RequestMapping("/test")
     public String test() {
         return "mod3/index3";
-    }
-    @RequestMapping("/testAjax")
-    public UserBean testAjax() {
-        UserBean userBean = new UserBean();
-        userBean.setPassword("password");
-        userBean.setName("name");
-        return userBean;
     }
 
 
