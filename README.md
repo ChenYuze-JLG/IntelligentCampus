@@ -108,3 +108,32 @@
    <dd><a href="javascript: $('#feed').load(localhost+'/car.html')" style="padding: 0 0px"><i class="fa fa-list fa-lg"></i> <span >校车信息</span></a></dd>
 
 在标签中插入javascript语句使其动态加载正文网页
+
+#### 功能需求
+1.获取所有图书
+type: "GET",//方法类型
+dataType: "json",//预期服务器返回的数据类型
+url: "mod3/bookList",//url
+
+2.根据名字检索图书,返回列表
+type: "GET",//方法类型
+dataType: "json",//预期服务器返回的数据类型
+url: "mod3/selectBookByName",//url
+data:  {name:name},
+
+3.借阅图书
+type: "post",//方法类型
+dataType: "json",//预期服务器返回的数据类型
+url: "mod3/bookBorrowByID",//url
+data: {bookID : bookID},
+
+4.获取自己已借的图书列表
+type: "GET",//方法类型
+dataType: "json",//预期服务器返回的数据类型
+url: "mod3/selfBookList",//url
+
+5.归还图书
+type: "post",//方法类型
+dataType: "json",//预期服务器返回的数据类型
+url: "mod3/bookReturnByID",//url
+data: {bookID : bookID},

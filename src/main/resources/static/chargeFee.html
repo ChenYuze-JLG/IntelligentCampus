@@ -1,4 +1,4 @@
-<form id="form1" class="layui-form" action="##" onsubmit="return false"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+<form id="chargeForm" class="layui-form" action="##" onsubmit="return false"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
   <div class="layui-form-item">
     <label class="layui-form-label">金额</label>
     <div class="layui-input-block">
@@ -37,16 +37,16 @@
   <!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
 </form>
 <script>
-  layer.msg("form");
+  layer.msg("chargeForm");
 
-  function login() {
-    alert($('#form1').serialize());
+  function chargeForm() {
+    alert($('#chargeForm').serialize());
     $.ajax({
       //几个参数需要注意一下
       type: "POST",//方法类型
       dataType: "json",//预期服务器返回的数据类型
       url: "mod3/testAjax",//url
-      data: $('#form1').serialize(),
+      data: $('#chargeForm').serialize(),
       success: function (result) {
         console.log(result);//打印服务端返回的数据(调试用)
         if (result.resultCode == 200) {
@@ -68,8 +68,8 @@
       console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
       console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
       console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
-      layer.msg("login...");
-      login();
+      layer.msg("chargeForm...");
+      chargeForm();
       return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
     });
 

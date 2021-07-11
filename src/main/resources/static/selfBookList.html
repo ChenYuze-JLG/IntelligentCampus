@@ -1,4 +1,4 @@
-<a href="javascript:get();" style="padding: 0 0px"><i class="fa fa-refresh fa-lg"></i> <span >刷新</span></a>
+<a href="javascript:selfBookList();" style="padding: 0 0px"><i class="fa fa-refresh fa-lg"></i> <span >刷新</span></a>
 <table class="layui-table" id="bookTable">
     <colgroup>
       <col width="150">
@@ -25,23 +25,22 @@
     </tbody>
   </table>
 <script>
-    function get() {
+    function selfBookList() {
         $.ajax({
             //几个参数需要注意一下
             type: "GET",//方法类型
             dataType: "json",//预期服务器返回的数据类型
-            url: "mod3/testAjaxList",//url
-            data: $('#form1').serialize(),
+            url: "mod3/selfBookList",//url
+            // data: $('#form1').serialize(),
             success: function (datas) {
                 // var datas = JSON.parse(datas); //jsonData是该下路下的所有区间（json格式）
-                alert(datas)
                 console.log(datas);//打印服务端返回的数据(调试用)
-                var tbhtml = "123";
                 console.log(datas.length);//打印服务端返回的数据(调试用)
 
                 for(var i = 0;i<datas.length;i++){
                     alert(datas[i].name);
-                    tbhtml+="<tr><td>"+datas[i].name+"</td><td>"+datas[i].password+"</td><td>"+"none"+"</td></tr>";
+                    tbhtml += "<tr><td>" + datas[i].bookID + "</td><td>" + datas[i].password +
+                        "</td><td>" +"<a herf='javascript:bookReturnByID(" + datas[i].bookID + ")'>归还</a>"+"</td></tr>";
                 }
 
                 $('#bookTableBody').html(tbhtml);
@@ -52,5 +51,25 @@
 
         });
     };
-    get();
+    function bookReturnByID(bookID) {
+        $.ajax({
+            //几个参数需要注意一下
+            type: "post",//方法类型
+            dataType: "json",//预期服务器返回的数据类型
+            url: "mod3/bookReturnByID",//url
+            data: {bookID : bookID},
+            success: function (datas) {
+                // var datas = JSON.parse(datas); //jsonData是该下路下的所有区间（json格式）
+                console.log(datas);//打印服务端返回的数据(调试用)
+                layer.msg("post succeed");
+                layer.msg(datas);
+
+            },
+            error: function () {
+                alert("异常！");
+            }
+
+        });
+    };
+    selfBookList();
 </script>
