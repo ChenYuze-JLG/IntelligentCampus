@@ -6,7 +6,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class MyMvcConfig implements WebMvcConfigurer {
-    @Override
+//    @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")  //设置所有的请求可以进行跨域
                 .allowedOrigins("http://localhost:8080")  //允许跨域的ip

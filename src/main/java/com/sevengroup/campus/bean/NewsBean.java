@@ -1,10 +1,8 @@
 package com.sevengroup.campus.bean;
 
-import lombok.Data;
 
 import java.util.Date;
 
-@Data
 public class NewsBean {
     private int ID;
     private String url;
@@ -12,4 +10,8 @@ public class NewsBean {
     private Date publishTime;
     private int views;
     private String title;
+
+    public String getTitle() {
+        return null;
+    }
 }

@@ -3,9 +3,11 @@
 <mapper namespace="com.sevengroup.campus.mapper.BookMapper">
 
     <select id="getBookInfo" parameterType="String" resultType="com.sevengroup.campus.bean.BookBean">
-        SELECT bo.bookid,bo.name,bo.author,bo.publishTime,bo.type,
-               br.borrowTime,br.returnTime,br.renewCount,br.borrowUser
-        from borrowrecord br innerjoin join books bo
+        SELECT bo.bookid,bo.name as bookName,bo.author as bookAuthor,
+               bo.publishTime as bookYear,bo.type as bookType,
+               br.borrowTime,br.returnTime,br.renewCount,
+               br.borrowUser as borrowUserID
+        from borrowrecord br inner join books bo
         on  br.bookid = bo.bookid
     </select>
 

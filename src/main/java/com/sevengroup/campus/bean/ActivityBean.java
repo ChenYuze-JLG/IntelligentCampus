@@ -1,12 +1,9 @@
 package com.sevengroup.campus.bean;
 
-import jdk.jfr.DataAmount;
-import lombok.Data;
 
 import java.sql.Timestamp;
 import java.util.Date;
 
-@Data
 public class ActivityBean {
     private int ID;
     private String activityID;
@@ -19,4 +16,8 @@ public class ActivityBean {
     private Date activityStart;
     private Date activityEnd;
     private String imgUrl;
+
+    public String getImgUrl() {
+        return "";
+    }
 }

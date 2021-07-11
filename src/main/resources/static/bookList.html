@@ -39,28 +39,88 @@
 
     </tbody>
   </table>
+
+
+    <div id="bookTableBody2">
+    </div>
+
+<script src="/static/build/layui.js"></script>
+</body>
+</html>
 <script>
+    var gcount;
+    var gdatas;
+
+    function mprint(start,end){
+        var tbhtml = "";
+        for(var i = start;i<end;i++){
+                tbhtml += "<tr><td>" + gdatas[i].bookID + "</td><td>" + gdatas[i].bookName + "</td><td>" + gdatas[i].bookAuthor +
+                    "</td><td>" + gdatas[i].bookYear + "</td><td>" + gdatas[i].bookType +
+                    "</td><td>" +"<a herf='javascript:bookBorrowByID(" + gdatas[i].bookID + ")'>借阅</a>"+"</td></tr>";
+            }
+        $('#bookTableBody').html(tbhtml);
+
+    }
+
     function get() {
         $.ajax({
             //几个参数需要注意一下
             type: "GET",//方法类型
             dataType: "json",//预期服务器返回的数据类型
-            url: "mod3/bookList",//url
+            url: "http://localhost:8080/mod3/bookInfo",//url
             // data: $('#form1').serialize(),
             success: function (datas) {
                 // var datas = JSON.parse(datas); //jsonData是该下路下的所有区间（json格式）
-                layer.msg(datas)
+                // layer.msg(datas)
                 console.log(datas);//打印服务端返回的数据(调试用)
-                var tbhtml = "123";
-                console.log(datas.length);//打印服务端返回的数据(调试用)
+                // var tbhtml = "";
+                // console.log(datas.length);//打印服务端返回的数据(调试用)
 
-                for(var i = 0;i<datas.length;i++){
-                    layer.msg(datas[i].name);
-                    tbhtml += "<tr><td>" + datas[i].bookID + "</td><td>" + datas[i].password +
-                        "</td><td>" +"<a herf='javascript:bookBorrowByID(" + datas[i].bookID + ")'>借阅</a>"+"</td></tr>";
-                }
+                // for(var i = 0;i<datas.length;i++){
+                //     layer.msg(datas[i].name);
+                //     tbhtml += "<tr><td>" + datas[i].bookID + "</td><td>" + datas[i].bookName + "</td><td>" + datas[i].bookAuthor +
+                //         "</td><td>" + datas[i].bookYear + "</td><td>" + datas[i].bookType +
+                //         "</td><td>" +"<a herf='javascript:bookBorrowByID(" + datas[i].bookID + ")'>借阅</a>"+"</td></tr>";
+                // }
 
-                $('#bookTableBody').html(tbhtml);
+                // $('#bookTableBody').html(tbhtml);
+
+                gcount = datas.length;
+                gdatas = datas;
+                console.log('datas.length');//打印服务端返回的数据(调试用)
+                layui.use('laypage', function(){
+                    var laypage = layui.laypage;
+
+                    //执行一个laypage实例
+                    laypage.render({
+                        elem: 'bookTableBody2' //注意，这里的 test1 是 ID，不用加 # 号
+                        ,count: gcount //数据总数，从服务端得到
+                        ,limit: 1
+                        ,jump: function(obj, first){
+                            //obj包含了当前分页的所有参数，比如：
+                            // console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
+                            // console.log(obj.limit); //得到每页显示的条数
+
+                            //首次不执行
+                            // if(!first){
+                                //do something
+                                console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
+                                console.log(obj.limit); //得到每页显示的条数
+                                var start = (obj.curr - 1) * obj.limit;
+                                var end;
+                                if(start + obj.limit > gcount ){
+                                    end = gcount;
+                                }
+                                else{
+                                    end = start + obj.limit;
+                                }
+                                mprint(start,end);
+                            }
+                        // }
+                    });
+
+                });
+
             },
             error: function () {
                 layer.msg("异常！");
@@ -138,6 +198,8 @@
             return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
         });
 
+
     });
     get();
+
 </script>

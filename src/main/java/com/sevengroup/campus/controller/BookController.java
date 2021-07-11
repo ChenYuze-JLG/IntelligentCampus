@@ -1,12 +1,14 @@
 package com.sevengroup.campus.controller;
 
+import com.sevengroup.campus.bean.BookBean;
 import com.sevengroup.campus.service.BookService;
 import netscape.javascript.JSObject;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 /**
  * @Title: BooksController
@@ -28,10 +30,10 @@ public class BookController {
     /**
      * 处理获取借阅图书信息请求
      */
-    public String dealRequestBookInfo() {
-        bookService.getBookInfo(currentUser);
-        JSONObject json = new JSONObject();
-        return "json";
+    public List<BookBean> dealRequestBookInfo() {
+//        bookService.getBookInfo(currentUser);
+//        JSONObject json = new JSONObject();
+        return   bookService.getBookInfo(currentUser);
     }
 
 }
