@@ -1,10 +1,15 @@
 # Intelligence-campus
 重庆大学暑期实训项目
 
-## todo
+## 数据库更改todo（下划线为已做更改）
 * activity表需要图片的url这个属性(imgUrl)
 * news表需要标题这个属性(title)
-* books添加是否在馆信息(state)
+* ~~books表：添加是否在馆信息(state)~~
+* ~~borrowrecord表：borrowTime更改为timestamp类型~~
+* borrowrecord表：修改renewCount为0-3范围
+* ~~borrowrecord表：将returnTime < borrowTime 的returnTime更改为NULL~~
+* ~~books表：增加book数量~~
+ 
 
 ## 环境配置：   
 
