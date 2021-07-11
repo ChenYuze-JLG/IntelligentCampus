@@ -1,8 +1,6 @@
 <a href="javascript:selfBookList();" style="padding: 0 0px"><i class="fa fa-refresh fa-lg"></i> <span >刷新</span></a>
 <table class="layui-table" id="bookTable">
     <colgroup>
-      <col width="150">
-      <col width="200">
       <col>
     </colgroup>
     <thead>
@@ -38,7 +36,7 @@
                 console.log(datas.length);//打印服务端返回的数据(调试用)
 
                 for(var i = 0;i<datas.length;i++){
-                    alert(datas[i].name);
+                    layer.msg(datas[i].name);
                     tbhtml += "<tr><td>" + datas[i].bookID + "</td><td>" + datas[i].password +
                         "</td><td>" +"<a herf='javascript:bookReturnByID(" + datas[i].bookID + ")'>归还</a>"+"</td></tr>";
                 }
@@ -46,7 +44,7 @@
                 $('#bookTableBody').html(tbhtml);
             },
             error: function () {
-                alert("异常！");
+                layer.msg("异常！");
             }
 
         });
@@ -66,7 +64,7 @@
 
             },
             error: function () {
-                alert("异常！");
+                layer.msg("异常！");
             }
 
         });
