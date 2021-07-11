@@ -1,6 +1,16 @@
 # Intelligence-campus
 重庆大学暑期实训项目
 
+## 数据库更改todo（下划线为已做更改）
+* activity表需要图片的url这个属性(imgUrl)
+* news表需要标题这个属性(title)
+* ~~books表：添加是否在馆信息(state)~~
+* ~~borrowrecord表：borrowTime更改为timestamp类型~~
+* borrowrecord表：修改renewCount为0-3范围
+* ~~borrowrecord表：将returnTime < borrowTime 的returnTime更改为NULL~~
+* ~~books表：增加book数量~~
+ 
+
 ## 环境配置：   
 
 * MySQL: 8.0.x
@@ -58,24 +68,58 @@
 
 ### 数据库字段说明
 
-|  字段   | 解释  |
-|  :---:  | :---:  |
-| acsnamelist  | 行政班中学生名单 |
-| adminclass  | 行政班级 |
-| classroomrecord  | 教室申用记录 |
-| counsellor  | 辅导员 |
-| dmtadmin | 舍区管理员 |
-| eduadmin | 教务管理员 |
-| enrolyear | 入学年份 |
-| inoutrecord  | 学生寝室出入记录 |
-| tcsnamelist  | 教学班中学生名单 |
-| teachclass | 教学班 |
-| transrecord  | 交易记录 |
-| lostandfound | 失物招领 |
+| 数据表 |  字段   | 解释  |
+|  :---:  |  :---:  | :---:  |
+| acsnamelist  | |行政班中学生名单 |
+
+| 数据表 |  字段   | 解释  |
+|  :---:  |  :---:  | :---:  |
+| adminclass | | 行政班级 |
+
+| 数据表 |  字段   | 解释  |
+|  :---:  |  :---:  | :---:  |
+| classroomrecord | | 教室申用记录 |
+
+| 数据表 |  字段   | 解释  |
+|  :---:  |  :---:  | :---:  |
+| counsellor  | | 辅导员 |
+
+| 数据表 | 字段 | 解释  |
+|  :---:  |  :---:  | :---:  |
+| dmtadmin |  | 舍区管理员 |
+
+| 数据表 |  字段   | 解释  |
+|  :---:  |  :---:  | :---:  |
+| eduadmin |  | 教务管理员 |
+
+| 数据表 |  字段   | 解释  |
+|  :---:  |  :---:  | :---:  |
+| student | enrolyear | 入学年份 |
+
+| 数据表 |  字段   | 解释  |
+|  :---:  |  :---:  | :---:  |
+| inoutrecord  | | 学生寝室出入记录 |
+
+| 数据表 |  字段   | 解释  |
+|  :---:  |  :---:  | :---:  |
+| tcsnamelist  | | 教学班中学生名单 |
+
+| 数据表 |  字段   | 解释  |
+|  :---:  |  :---:  | :---:  |
+| teachclass | | 教学班 |
+
+| 数据表 |  字段   | 解释  |
+|  :---:  |  :---:  | :---:  |
+| transrecord  | | 交易记录 |
+
+| 数据表 |  字段   | 解释  |
+|  :---:  |  :---:  | :---:  |
+| lostandfound | | 失物招领 |
 
 
+## 分工
 
-## 模块1 by 毛红灯、何翔 
+### 模块1 by 毛红灯、何翔 
 
 1. 登陆
 2. 资讯发布与显示
@@ -84,7 +128,7 @@
 
    
 
-## 模块2 by 陈宇泽、闫雨勤
+### 模块2 by 陈宇泽、闫雨勤
 
 1. 成绩管理
 2. 课表查询
@@ -95,7 +139,7 @@
 
 
 
-## 模块3 by 覃宇攀、凌瑞
+### 模块3 by 覃宇攀、凌瑞
 
 1. 校车信息
 2. 校园地图

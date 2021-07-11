@@ -1,4 +1,4 @@
-package com.sevengroup.campus.serviceImpl;
+package com.sevengroup.campus.service.serviceImpl;
 
 import com.sevengroup.campus.bean.UserBean;
 import com.sevengroup.campus.mapper.UserMapper;
