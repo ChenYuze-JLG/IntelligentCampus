@@ -15,7 +15,7 @@
 
 * MySQL: 8.0.x
 * Idea: 2021.1.x
-* JDK: 1.8.x
+* JDK: 11.x.x
 * Maven: 3.6.3 (idea 自带)
 
 ## 功能需求：
