@@ -16,10 +16,12 @@ public class helloController {
     @Autowired
     UserService userService;
 
-    @RequestMapping("/login")
+    @RequestMapping("/index")
     public String show() {
-        return "login";
+        return "teachAffair";
     }
+
+
 
     @RequestMapping(value = "/loginIn", method = RequestMethod.POST)
     public String login(String name, String password){

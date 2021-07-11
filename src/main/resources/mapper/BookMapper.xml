@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sevengroup.campus.mapper.BookMapper">
+
+    <select id="getBookInfo" parameterType="String" resultType="com.sevengroup.campus.bean.BookBean">
+        SELECT bo.bookid,bo.name,bo.author,bo.publishTime,bo.type,
+               br.borrowTime,br.returnTime,br.renewCount,br.borrowUser
+        from borrowrecord br innerjoin join books bo
+        on  br.bookid = bo.bookid
+    </select>
+
+</mapper>
