@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Passing Paraments</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="../static/layui/css/layui.css" media="all">
 </head>
 <body>
 
 <iframe name="toppage" width=100% height=100%
         marginwidth=0 marginheight=0 frameborder="no" border="0"
+        style="margin-bottom: -60px"
         src="../static/head.html" >
 </iframe>
 
@@ -24,55 +25,47 @@
 <table class="layui-table" style="width: 500px; float: left; margin-left: 150px">
     <thead>
     <tr>
-        <th>要闻</th>
+        <th>要闻 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            <a target="_blank" href="/activity" style="color: #eb7350">
+                +more news
+            </a>
+        </th>
     </tr>
     </thead>
-    <tbody>
+    <tbody th:each="_new:${news}">
     <tr>
-        <td><a target="_blank" href="https://news.sina.com.cn/c/xl/2021-07-10/doc-ikqciyzk4607774.shtml" class="linkNewsTopBold"
-               style="color: blue; text-decoration:underline">深改委重磅会议 习近平为这些事指明方向</a></td>
-    </tr>
-    <tr>
-        <td><a target="_blank" href="https://news.sina.com.cn/w/2021-07-10/doc-ikqcfnca5984207.shtml" class="linkNewsTopBold"
-               style="color: blue; text-decoration:underline">海地总统被刺三大谜团 台湾也这样卷进来了</a></td>
-    </tr>
-    <tr>
-        <td><a target="_blank" href=" https://news.sina.com.cn/w/2021-07-10/doc-ikqciyzk4577172.shtml" class="linkNewsTopBold"
-               style="color: blue; text-decoration:underline">美媒：总统遇刺后 海地请求美国派兵维稳</a></td>
-    </tr>
-    <tr>
-        <td><a target="_blank" href="https://news.sina.com.cn/zx/2021-07-10/doc-ikqcfnca6012433.shtml" class="linkNewsTopBold"
-               style="color: blue; text-decoration:underline">市场监管总局依法禁止虎牙与斗鱼合并</a></td>
-    </tr>
-    <tr>
-        <td><a target="_blank" href=" https://news.sina.com.cn/o/2021-07-09/doc-ikqciyzk4528900.shtml" class="linkNewsTopBold"
-               style="color: blue; text-decoration:underline">下半年社保迎来4大新变化 利好你我</a></td>
-    </tr>
-    <tr>
-        <td><a target="_blank" href=" https://news.sina.com.cn/c/2021-07-10/doc-ikqciyzk4558096.shtml" class="linkNewsTopBold"
-               style="color: blue; text-decoration:underline">这家公司宣布破产 社区团购开启淘汰赛？</a></td>
+        <td><a target="_blank" th:href="${_new.getUrl()}"  th:text="${_new.getTitle()}" class="linkNewsTopBold"
+               style="color: blue; text-decoration:underline">
+        </a></td>
     </tr>
     </tbody>
 </table>
 
+<header style="float: right; margin-top: 20px; margin-right: 120px">
+    <h3>
+        <a target="_blank" href="/activity" style="color: #eb7350">
+            +查看更多活动
+        </a>
+    </h3>
+</header>
+
 <div class="layui-bg-gray" style="padding: 60px; margin-left: 40px; margin-right: 50px">
     <div class="layui-row layui-col-space15">
-        <div class="layui-col-md6">
+
+        <div class="layui-col-md6" th:each="activity:${activities}">
             <div class="layui-panel">
                 <a href="https://www.baidu.com" target="_blank">
-                    <img src="../static/activity1.jpg" height="200px" width="300px">
+                    <img th:src="${activity.getImgUrl()}" height="200px" width="300px">
+                    <span style="font-size: x-small; color: blue; " th:text="${activity.getDescription()}"></span>
                 </a>
-                来郊游吧。
             </div>
         </div>
-        <div class="layui-col-md6">
-            <div class="layui-panel">
-                <a href="https://www.baidu.com" target="_blank">
-                    <img src="../static/activity2.jpg" height="200px" width="300px">
-                </a>
-                欢迎加入我们的社团！
-            </div>
-        </div>
+
     </div>
 </div>
 
