@@ -5,10 +5,7 @@ import com.sevengroup.campus.bean.UserBean;
 import com.sevengroup.campus.service.BookService;
 import com.sevengroup.campus.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +48,17 @@ public class mod3RestController {
         UserBean userBean = new UserBean();
         userBean.setPassword("password");
         userBean.setName("name");
+        list.add(userBean);
+        return list;
+    }
+
+    @RequestMapping("/selectBookByName")
+    public ArrayList<UserBean> testAjaxParam(@RequestParam(name = "name") String name) {
+
+        ArrayList<UserBean> list = new ArrayList<UserBean>();
+        UserBean userBean = new UserBean();
+        userBean.setPassword("password");
+        userBean.setName(name);
         list.add(userBean);
         return list;
     }

@@ -60,7 +60,7 @@
       //几个参数需要注意一下
       type: "get",//方法类型
       dataType: "json",//预期服务器返回的数据类型
-      url: "mod3/selectCard",//url
+      url: "http://localhost:8080/mod3/selectCard",//url
       success: function (datas) {
         console.log(datas);//打印服务端返回的数据(调试用)
         console.log(datas.length);//打印服务端返回的数据(调试用)
@@ -78,7 +78,7 @@
       //几个参数需要注意一下
       type: "POST",//方法类型
       dataType: "json",//预期服务器返回的数据类型
-      url: "mod3/charge",//url
+      url: "http://localhost:8080/mod3/charge",//url
       data: {chargeNum: inputNum},
       success: function (datas) {
         console.log(datas);//打印服务端返回的数据(调试用)
