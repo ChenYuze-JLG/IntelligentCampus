@@ -21,7 +21,9 @@ public class BookBean {
 
     private String bookAuthor; // 书作者
 
-    private String bookYear;  // 出版年份
+    private String bookDate;  // 出版日期
+
+    private String bookState = "false"; // 图示是否在馆
 
     private String bookType;  // 图书类型
 
@@ -29,8 +31,8 @@ public class BookBean {
 
     private String returnTime;  // 还书时间
 
-    private String renewCount;  // 续借次数
+    private String borrowCount;  // 续借次数
 
-    private String borrowUserID; // 借阅人
+    private String borrowUser;  // 借阅人
 
 }

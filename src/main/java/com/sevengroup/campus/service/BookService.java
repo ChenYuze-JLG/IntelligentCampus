@@ -14,5 +14,13 @@ import java.util.List;
 
 public interface BookService {
 
-    List<BookBean> getBookInfo(String username);
+    List<BookBean> getBorrowInfo(String username);
+
+    List<BookBean> getFindBookList(String name);
+
+    BookBean getBookByID(String id);
+
+    BookBean getAvailableBookByID(String id);
+
+    int addBorrowRecord(BookBean bookBean);
 }
