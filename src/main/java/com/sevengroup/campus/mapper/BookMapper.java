@@ -29,4 +29,7 @@ public interface BookMapper {
 
     int borrowBook(BookBean bookBean);
 
+    int borrowAgain(BookBean bookBean);
+
+    BookBean findBorrowedBookInfoByID(String bookID, String userID);
 }

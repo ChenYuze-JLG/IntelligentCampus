@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sevengroup.campus.mapper.MoneyMapper">
+
+    <resultMap id="resultMap" type="com.sevengroup.campus.bean.MoneyBean">
+        <!-- property 为实体， column 为数据库 -->
+        <result property="transactionMoney" column="money"/>
+        <result property="transactionType" column="type"/>
+        <result property="payTime" column="paytime"/>
+        <result property="userID" column="username"/>
+        <result property="userID" column="cardID"/>
+        <result property="cardBalance" column="balance"/>
+    </resultMap>
+
+<!--    <select id="getBorrowInfo" parameterType="String" resultMap="resultMap">-->
+<!--        SELECT *-->
+<!--        from borrowrecord br-->
+<!--                 inner join books bo-->
+<!--                            on br.bookid = bo.bookid-->
+<!--        WHERE br.borrowUser = #{username}-->
+<!--          and br.returnTime is null-->
+<!--    </select>-->
+
+
+    <select id="findBalanceByID" parameterType="String" resultType="double">
+        SELECT balance
+        from card
+        WHERE card.cardID like #{userID}
+    </select>
+
+<!--    <select id="findBookByID" parameterType="String" resultMap="resultMap">-->
+<!--        SELECT *-->
+<!--        from books-->
+<!--        WHERE bookid = #{id}-->
+<!--    </select>-->
+
+<!--    <select id="findAvailableBookByID" parameterType="String" resultMap="resultMap">-->
+<!--        SELECT *-->
+<!--        from books-->
+<!--        WHERE bookid = #{id}-->
+<!--          and state = 'true'-->
+<!--    </select>-->
+
+<!--    <select id="findBorrowedBookInfoByID" parameterType="String" resultMap="resultMap">-->
+<!--        SELECT *-->
+<!--        from books-->
+<!--                 INNER JOIN-->
+<!--             borrowrecord br-->
+<!--             on books.bookID = br.bookID-->
+<!--        where br.bookID = #{bookID}-->
+<!--          and borrowUser = #{userID}-->
+<!--          and br.returnTime is null;-->
+<!--    </select>-->
+
+    <update id="addCreditRecord" parameterType="com.sevengroup.campus.bean.MoneyBean">
+        insert into transrecord(money, type, username)
+        values (#{transactionMoney}, #{transactionType}, #{userID});
+    </update>
+
+    <insert id="addCardCreditRecord" parameterType="com.sevengroup.campus.bean.MoneyBean">
+                insert into transrecord(money, type, username)
+        values (#{transactionMoney}, #{transactionType}, #{userID});
+
+
+        update card
+        set balance = #{transactionMoney}
+        where cardID = #{userID}
+
+    </insert>
+
+</mapper>

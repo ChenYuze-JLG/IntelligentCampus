@@ -23,15 +23,17 @@ public class BookBean {
 
     private String bookDate;  // 出版日期
 
-    private String bookState = "false"; // 图示是否在馆
+    private String bookState; // 图示是否在馆
 
     private String bookType;  // 图书类型
 
     private String borrowTime;  // 借阅时间
 
+    private String expirationTime; // 图书借阅到期时间
+
     private String returnTime;  // 还书时间
 
-    private String borrowCount;  // 续借次数
+    private int borrowCount;  // 续借次数
 
     private String borrowUser;  // 借阅人
 

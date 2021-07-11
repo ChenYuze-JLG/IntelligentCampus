@@ -82,18 +82,54 @@ public class BookController {
     }
 
 
-    @GetMapping("/borrow")
+    @GetMapping("/order")
     /**
-     * 转接及续借信息处理
+     * 预约借书请求处理
      */
-    public int dealRequestBorrowBook(HttpServletRequest request, HttpServletResponse response) {
+    public boolean dealRequestBorrowBook(HttpServletRequest request, HttpServletResponse response) {
 
-        String id = request.getParameter("id");
+        String bookID = request.getParameter("bookID");
+        String userID = request.getParameter("userID");
 
-        BookBean bookBean = bookService.getAvailableBookByID(id);
+        BookBean bookBean = bookService.getAvailableBookByID(bookID);
 
-        bookBean.setBorrowUser("20194829");
+        bookBean.setBorrowUser(userID);
 
-        return bookService.addBorrowRecord(bookBean);
+        boolean addColomn = bookService.addBorrowRecord(bookBean);
+
+        return addColomn;
     }
+
+    @GetMapping("/borrowAgain")
+    /**
+     * 续借请求处理
+     */
+    public boolean dealRequestBorrowAgain(HttpServletRequest request, HttpServletResponse response) {
+
+        String bookID = request.getParameter("bookID");
+        String userID = request.getParameter("userID");
+
+        BookBean bookBean = bookService.getBorrowedBookByID(bookID, userID);
+
+        System.out.println(bookBean);
+
+        boolean addColomn = bookService.addBorrowAgainRecord(bookBean);
+
+        return addColomn;
+    }
+
+    @GetMapping("/lend")
+    /**
+     * 转借请求处理
+     */
+    public int dealRequestLendBook(HttpServletRequest request, HttpServletResponse response) {
+
+        String bookID = request.getParameter("bookID");
+        String userID = request.getParameter("userID");
+        String toUserID = request.getParameter("toUserID");
+
+
+        return 0;
+    }
+
 }
