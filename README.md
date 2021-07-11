@@ -103,3 +103,8 @@
 4. 缴费管理
 5. 归寝管理
 
+### 模块说明
+1. index3.html
+   <dd><a href="javascript: $('#feed').load(localhost+'/car.html')" style="padding: 0 0px"><i class="fa fa-list fa-lg"></i> <span >校车信息</span></a></dd>
+
+在标签中插入javascript语句使其动态加载正文网页
