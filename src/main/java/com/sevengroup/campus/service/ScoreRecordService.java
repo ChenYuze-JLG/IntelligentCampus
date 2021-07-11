@@ -2,6 +2,8 @@ package com.sevengroup.campus.service;
 
 import com.sevengroup.campus.bean.ScoreRecordBean;
 
+import java.util.List;
+
 public interface ScoreRecordService {
-    ScoreRecordBean getStudentAll(String studentID);
+    List<ScoreRecordBean> getStudentAll(String studentID);
 }

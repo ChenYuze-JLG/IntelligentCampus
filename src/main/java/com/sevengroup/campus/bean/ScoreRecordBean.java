@@ -62,4 +62,5 @@ public class ScoreRecordBean {
     public void setTeacherID(String teacherID) {
         this.teacherID = teacherID;
     }
+
 }
