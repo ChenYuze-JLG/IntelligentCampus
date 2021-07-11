@@ -14,9 +14,9 @@ public class helloController {
     @Autowired
     UserService userService;
 
-    @RequestMapping("/login")
+    @RequestMapping("/index")
     public String show() {
-        return "login";
+        return "teachAffair";
     }
 
 
