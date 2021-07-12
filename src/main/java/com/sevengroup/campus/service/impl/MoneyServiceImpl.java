@@ -3,8 +3,10 @@ package com.sevengroup.campus.service.impl;
 import com.sevengroup.campus.bean.MoneyBean;
 import com.sevengroup.campus.mapper.MoneyMapper;
 import com.sevengroup.campus.service.MoneyService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,12 +18,14 @@ import java.util.List;
  */
 
 @Service
+@Slf4j
 public class MoneyServiceImpl implements MoneyService {
 
     @Autowired
     MoneyMapper moneyMapper;
 
     @Override
+    @Transactional
     public MoneyBean addCredit(String userID, double money) {
         MoneyBean moneyBean = new MoneyBean();
         moneyBean.setTransactionMoney(money);
@@ -31,8 +35,14 @@ public class MoneyServiceImpl implements MoneyService {
         double balance = moneyMapper.findBalanceByID(userID);
         moneyBean.setCardBalance(balance);
 
-        if (moneyMapper.addCardCreditRecord(moneyBean) != 0) {
-            moneyBean.setCardBalance(balance + money);
+        try {
+            if (moneyMapper.addCardCreditRecord(moneyBean) != 0) {
+                moneyBean.setCardBalance(balance + money);
+            }
+        }
+        catch (Exception e){
+            log.error("【error】:", e);
+            return new MoneyBean();
         }
 
         return moneyBean;
@@ -49,12 +59,16 @@ public class MoneyServiceImpl implements MoneyService {
     }
 
     @Override
+    @Transactional
     public boolean payFromCard(String userID, String payType, double money) {
 
         if (moneyMapper.findBalanceByID(userID) >= money) {
-
-//            System.out.println(moneyMapper.payFromCard(userID, payType, money));
-            return moneyMapper.payFromCard(userID, payType, money) != 0;
+            try {
+                return moneyMapper.payFromCard(userID, payType, money) != 0;
+            } catch (Exception e) {
+                log.error("【error】:", e);
+                return false;
+            }
         } else {
             return false;
         }
