@@ -36,7 +36,7 @@
 
 
         update card
-        set balance = #{transactionMoney}
+        set balance = #{transactionMoney}+#{cardBalance}
         where cardID = #{userID}
 
     </insert>

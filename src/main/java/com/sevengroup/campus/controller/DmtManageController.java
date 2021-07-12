@@ -23,14 +23,14 @@ public class DmtManageController {
     @Autowired
     DmtManageService dmtManageService;
 
-//    private String currentUser = "20156393"; // 学生
-    private String currentUser = "20218862"; // 舍区管理员
+    private String currentUser = "20156393"; // 学生
+//    private String currentUser = "20218862"; // 舍区管理员
 
 
     @GetMapping("/getRecord")
     public List<DmtManageBean> getInOutRecords() {
         // 8269
-
+        //9845
         return dmtManageService.getInOutRecords(currentUser);
     }
 

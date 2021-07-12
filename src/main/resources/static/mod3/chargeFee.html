@@ -3,6 +3,10 @@
 </fieldset>
 <form id="chargeForm" class="layui-form" action="##" onsubmit="return false"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
   <div class="layui-form-item">
+    <label class="layui-form-label">用户名</label>
+    <div class="layui-form-mid layui-word-aux" id="username">username</div>
+  </div>
+  <div class="layui-form-item">
     <label class="layui-form-label">余额(元)</label>
     <div class="layui-form-mid layui-word-aux" id="balanceBody">balanceBody</div>
   </div>
@@ -21,7 +25,7 @@
   <div class="layui-form-item">
     <label class="layui-form-label">充值金额</label>
     <div class="layui-input-block">
-      <input id="inputBar" type="text" name="inputNum" placeholder="100"
+      <input id="inputBar" type="text" name="money" placeholder="100"
              value = "100" autocomplete="off" class="layui-input">
     </div>
   </div>
@@ -58,12 +62,13 @@
       //几个参数需要注意一下
       type: "get",//方法类型
       dataType: "json",//预期服务器返回的数据类型
-      url: "http://localhost:8080/mod3/selectCard",//url
+      url: "http://localhost:8080/money/getBalance",//url
       success: function (datas) {
         console.log(datas);//打印服务端返回的数据(调试用)
         console.log(datas.length);//打印服务端返回的数据(调试用)
-        $('#cardIDBody').html(datas.cardID);
-        $('#balanceBody').html(datas.balance);
+        $('#cardIDBody').html(datas.userID);
+        $('#balanceBody').html(datas.cardBalance);
+        $('#username').html(datas.username);
       },
       error: function () {
         layer.msg("异常！");
@@ -74,17 +79,20 @@
   function chargeForm() {
     $.ajax({
       //几个参数需要注意一下
-      type: "POST",//方法类型
+      type: "GET",//方法类型
       dataType: "json",//预期服务器返回的数据类型
-      url: "http://localhost:8080/mod3/charge",//url
+      url: "http://localhost:8080/money/addCredit",//url
       data: $('#chargeForm').serialize(),
       success: function (datas) {
         console.log(datas);//打印服务端返回的数据(调试用)
-          if(datas == true) {
-            layer.msg("SUCCESS");
-          }
-          else {
-            layer.msg("FAILED");
+        var temp = $('#balanceBody').html();
+        if (temp == datas.cardBalance)
+        {
+          layer.msg("FAILED");
+        }
+        else {
+          $('#balanceBody').html(datas.cardBalance);
+          layer.msg("SUCCESS");
           }
 
       },

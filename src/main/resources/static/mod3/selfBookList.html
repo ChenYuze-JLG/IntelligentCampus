@@ -10,12 +10,17 @@
     </colgroup>
     <thead>
     <tr>
-      <th>图书编号</th>
-      <th>图书名称</th>
-      <th>图书作者</th>
-      <th>借阅时间</th>
+        <th>图书编号</th>
+        <th>图书名称</th>
+        <th>出版日期</th>
+        <th>状态</th>
+        <th>图书作者</th>
+        <th>类型</th>
         <th>借阅次数</th>
-      <th>归还时间</th>
+        <th>借阅时间</th>
+        <th>借阅人</th>
+        <th>超期时间</th>
+        <th>归还时间</th>
         <th>续借</th>
         <th>转借</th>
 
@@ -56,8 +61,17 @@
     function mprint(start,end){
         var tbhtml = "";
         for(var i = start;i<end;i++){
-            tbhtml += "<tr><td>" + gdatas[i].bookID + "</td><td>" + gdatas[i].bookName + "</td><td>" + gdatas[i].bookAuthor +
-                "</td><td>" + gdatas[i].borrowTime + "</td><td>" + gdatas[i].renewCount + "</td><td>" + gdatas[i].returnTime +
+            tbhtml += "<tr><td>" + gdatas[i].bookID +
+                "</td><td>" + gdatas[i].bookName +
+                "</td><td>" +  gdatas[i].bookDate +
+                "</td><td>" +gdatas[i].bookState +
+                "</td><td>" + gdatas[i].bookAuthor +
+                "</td><td>" + gdatas[i].bookType +
+                "</td><td>" + gdatas[i].borrowCount +
+                "</td><td>" + gdatas[i].borrowTime +
+                "</td><td>" + gdatas[i].borrowUser +
+                "</td><td>" + gdatas[i].expirationTime +
+                "</td><td>" + gdatas[i].returnTime +
                 "</td><td style='padding: 0'>"
                 +"<a href='javascript:funcByBookID(" + gdatas[i].bookID +")' "+
                 'style="background-color:#009688;' +

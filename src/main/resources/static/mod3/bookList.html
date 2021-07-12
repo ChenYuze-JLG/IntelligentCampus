@@ -28,13 +28,30 @@
     <colgroup>
         <col>
     </colgroup>
+<!--    bookAuthor: "老李"-->
+<!--    bookDate: "2021-07-11"-->
+<!--    bookID: "1"-->
+<!--    bookName: "事实上"-->
+<!--    bookState: null-->
+<!--    bookType: "1"-->
+<!--    borrowCount: 0-->
+<!--    borrowTime: null-->
+<!--    borrowUser: null-->
+<!--    expirationTime: null-->
+<!--    returnTime: null-->
     <thead>
     <tr>
         <th>图书编号</th>
         <th>图书名称</th>
-        <th>图书作者</th>
         <th>出版日期</th>
+        <th>状态</th>
+        <th>图书作者</th>
         <th>类型</th>
+        <th>借阅次数</th>
+        <th>借阅时间</th>
+        <th>借阅人</th>
+        <th>超期时间</th>
+        <th>归还时间</th>
         <th>预约</th>
 
     </tr>
@@ -79,8 +96,17 @@
     function mprint(start, end) {
         var tbhtml = "";
         for (var i = start; i < end; i++) {
-            tbhtml += "<tr><td>" + gdatas[i].bookID + "</td><td>" + gdatas[i].bookName + "</td><td>" + gdatas[i].bookAuthor +
-                "</td><td>" + gdatas[i].bookYear + "</td><td>" + gdatas[i].bookType +
+            tbhtml += "<tr><td>" + gdatas[i].bookID +
+                "</td><td>" + gdatas[i].bookName +
+                "</td><td>" +  gdatas[i].bookDate +
+                "</td><td>" +gdatas[i].bookState +
+                "</td><td>" + gdatas[i].bookAuthor +
+                "</td><td>" + gdatas[i].bookType +
+                "</td><td>" + gdatas[i].borrowCount +
+                "</td><td>" + gdatas[i].borrowTime +
+                "</td><td>" + gdatas[i].borrowUser +
+                "</td><td>" + gdatas[i].expirationTime +
+                "</td><td>" + gdatas[i].returnTime +
                 "</td><td style='padding: 0'>"
                 + "<a href='javascript:bookBorrowByID(" + gdatas[i].bookID + ")' " +
                 'style="background-color:#009688;' +
