@@ -1,3 +1,8 @@
+
+<fieldset class="layui-elem-field layui-field-title site-title">
+    <legend><a name="fixbar">已借图书</a></legend>
+</fieldset>
+
 <a href="javascript:selfBookList();" style="padding: 0 0px"><i class="fa fa-refresh fa-lg"></i> <span >刷新</span></a>
 <table class="layui-table" id="bookTable">
     <colgroup>
@@ -58,7 +63,7 @@
                 '    line-height: 2;\n' +
                 '    color: white' +
                 '    display: block;\n' +
-                '    margin: 0;\n,)">归还</a>'+"</td></tr>";
+                '    margin: 0;\n,)">续借</a>'+"</td></tr>";
         }
         $('#bookTableBody').html(tbhtml);
 

@@ -1,9 +1,18 @@
-
-<form id="bookFilterForm" class="layui-form" action="##" onsubmit="return false"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+<fieldset class="layui-elem-field layui-field-title site-title">
+    <legend><a name="fixbar">图书列表</a></legend>
+</fieldset>
+<form id="bookFilterForm" class="layui-form" action="##" onsubmit="return false">
+    <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
     <div class="layui-form-item">
         <label class="layui-form-label">图书名称</label>
         <div class="layui-input-block">
             <input id="inputBar1" type="text" name="bookName" placeholder="" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">图书名称</label>
+        <div class="layui-input-block">
+            <input id="inputBar2" type="text" name="bookAuthor" placeholder="" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
@@ -13,36 +22,35 @@
         </div>
     </div>
 </form>
-<a href="javascript:get();" style="padding: 0 0px"><i class="fa fa-refresh fa-lg"></i> <span >刷新</span></a>
+<a href="javascript:get();" style="padding: 0 0px"><i class="fa fa-refresh fa-lg"></i> <span>刷新</span></a>
 
 <table class="layui-table" id="bookTable">
     <colgroup>
-      <col>
+        <col>
     </colgroup>
     <thead>
     <tr>
-      <th>图书编号</th>
+        <th>图书编号</th>
         <th>图书名称</th>
         <th>图书作者</th>
         <th>出版日期</th>
         <th>类型</th>
-        <th>借阅</th>
+        <th>预约借阅</th>
 
     </tr>
     </thead>
     <tbody id="bookTableBody">
-<!--    <tr>-->
-<!--      <td>1</td>-->
-<!--      <td>2016-11-29</td>-->
-<!--      <td>人生就像是一场修行</td>-->
-<!--    </tr>-->
+    <!--    <tr>-->
+    <!--      <td>1</td>-->
+    <!--      <td>2016-11-29</td>-->
+    <!--      <td>人生就像是一场修行</td>-->
+    <!--    </tr>-->
 
     </tbody>
-  </table>
+</table>
 
 
-    <div id="bookTableBody2">
-    </div>
+<div id="bookTableBody2"></div>
 
 <script src="/static/build/layui.js"></script>
 </body>
@@ -50,7 +58,8 @@
 <script>
     var gcount;
     var gdatas;
-    function pagerFunc(obj, first){
+
+    function pagerFunc(obj, first) {
         //obj包含了当前分页的所有参数，比如：
         //首次不执行
         // if(!first){
@@ -59,21 +68,21 @@
         console.log(obj.limit); //得到每页显示的条数
         var start = (obj.curr - 1) * obj.limit;
         var end;
-        if(start + obj.limit > gcount ){
+        if (start + obj.limit > gcount) {
             end = gcount;
-        }
-        else{
+        } else {
             end = start + obj.limit;
         }
-        mprint(start,end);
+        mprint(start, end);
     }
-    function mprint(start,end){
+
+    function mprint(start, end) {
         var tbhtml = "";
-        for(var i = start;i<end;i++){
+        for (var i = start; i < end; i++) {
             tbhtml += "<tr><td>" + gdatas[i].bookID + "</td><td>" + gdatas[i].bookName + "</td><td>" + gdatas[i].bookAuthor +
-                "</td><td>" + gdatas[i].bookYear + "</td><td>" + gdatas[i].bookType+
+                "</td><td>" + gdatas[i].bookYear + "</td><td>" + gdatas[i].bookType +
                 "</td><td style='padding: 0'>"
-                +"<a href='javascript:bookBorrowByID(" + gdatas[i].bookID +")' "+
+                + "<a href='javascript:bookBorrowByID(" + gdatas[i].bookID + ")' " +
                 'style="background-color:#009688;' +
                 '    height: 30px;\n' +
                 '    text-align: center;\n' +
@@ -81,7 +90,7 @@
                 '    line-height: 2;\n' +
                 '    color: white' +
                 '    display: block;\n' +
-                '    margin: 0;\n,)">借阅</a>'+"</td></tr>";
+                '    margin: 0;\n,)">预约借阅</a>' + "</td></tr>";
         }
         console.log(tbhtml);
         $('#bookTableBody').html(tbhtml);
@@ -112,14 +121,14 @@
                 gcount = datas.length;
                 gdatas = datas;
                 console.log('datas.length');//打印服务端返回的数据(调试用)
-                layui.use('laypage', function(){
+                layui.use('laypage', function () {
                     var laypage = layui.laypage;
                     //执行一个laypage实例
                     laypage.render({
                         elem: 'bookTableBody2' //注意，这里的 test1 是 ID，不用加 # 号
-                        ,count: gcount //数据总数，从服务端得到
-                        ,limit: 1
-                        ,jump:pagerFunc
+                        , count: gcount //数据总数，从服务端得到
+                        , limit: 1
+                        , jump: pagerFunc
                         // }
                     });
 
@@ -131,13 +140,14 @@
 
         });
     };
+
     function selectBookByName(name) {
         $.ajax({
             //几个参数需要注意一下
             type: "GET",//方法类型
             dataType: "json",//预期服务器返回的数据类型
             url: "http://localhost:8080/mod3/selectBookByName",//url
-            data:  {name:name},
+            data: {name: name},
             success: function (datas) {
                 // var datas = JSON.parse(datas); //jsonData是该下路下的所有区间（json格式）
                 console.log(datas);//打印服务端返回的数据(调试用)
@@ -146,14 +156,14 @@
                 gcount = datas.length;
                 gdatas = datas;
                 console.log('datas.length');//打印服务端返回的数据(调试用)
-                layui.use('laypage', function(){
+                layui.use('laypage', function () {
                     var laypage = layui.laypage;
                     //执行一个laypage实例
                     laypage.render({
                         elem: 'bookTableBody2' //注意，这里的 test1 是 ID，不用加 # 号
-                        ,count: gcount //数据总数，从服务端得到
-                        ,limit: 1
-                        ,jump:pagerFunc
+                        , count: gcount //数据总数，从服务端得到
+                        , limit: 1
+                        , jump: pagerFunc
                         // }
                     });
 
@@ -165,17 +175,18 @@
 
         });
     };
+
     function bookBorrowByID(bookID) {
         $.ajax({
             //几个参数需要注意一下
             type: "post",//方法类型
             dataType: "json",//预期服务器返回的数据类型
             url: "mod3/bookBorrowByID",//url
-            data: {bookID : bookID},
+            data: {bookID: bookID},
             success: function (datas) {
                 // var datas = JSON.parse(datas); //jsonData是该下路下的所有区间（json格式）
                 console.log(datas);//打印服务端返回的数据(调试用)
-               layer.msg("post succeed");
+                layer.msg("post succeed");
                 layer.msg(datas);
 
             },
@@ -185,23 +196,22 @@
 
         });
     };
-    layui.use('form', function(){
+    layui.use('form', function () {
         var form = layui.form;
         //各种基于事件的操作，下面会有进一步介绍
         //过滤器test
-        form.on('submit(select)', function(data){
+        form.on('submit(select)', function (data) {
 
             console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
             console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
             console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
             console.log(data.field.bookName);
             layer.msg("select...");
-            if(data.field.bookName != "") {
+            if (data.field.bookName != "") {
                 console.log("select");
                 layer.msg("select...");
                 selectBookByName(data.field.bookName);
-            }
-            else{
+            } else {
                 console.log("get");
                 layer.msg("get...");
                 get();

@@ -1,18 +1,19 @@
 <fieldset class="layui-elem-field layui-field-title site-title">
-    <legend><a name="fixbar">出入记录</a></legend>
+    <legend><a name="fixbar">消费记录</a></legend>
 </fieldset>
 <a href="javascript:get();" style="padding: 0 0px"><i class="fa fa-refresh fa-lg"></i> <span>刷新</span></a>
 <table class="layui-table" id="bookTable">
+    <title>title</title>
     <colgroup>
         <col>
     </colgroup>
     <thead>
     <tr>
-        <th>用户名</th>
-        <th>出入时间</th>
+        <th>类型</th>
+        <th>金额</th>
     </tr>
     </thead>
-    <tbody id="inOutTableBody">
+    <tbody id="payRecordTableBody">
     <!--    <tr>-->
     <!--      <td>1</td>-->
     <!--      <td>2016-11-29</td>-->
@@ -46,9 +47,8 @@
     function mprint(start, end) {
         var tbhtml = "";
         for (var i = start; i < end; i++) {
-            tbhtml += "<tr><td>" + gdatas[i].bookID + "</td><td>" + gdatas[i].bookName + "</td><td>" + gdatas[i].bookAuthor +
-                "</td><td>" + gdatas[i].bookYear + "</td><td>" + gdatas[i].bookType +
-                "</td><td style='padding: 0'>" + "</td></tr>";
+            tbhtml += "<tr><td>" + gdatas[i].cardID + "</td><td>" + gdatas[i].balance +
+                "</td><td>" + gdatas[i].type + "</td></tr>";
         }
         console.log(tbhtml);
         $('#bookTableBody').html(tbhtml);
@@ -60,7 +60,7 @@
             //几个参数需要注意一下
             type: "GET",//方法类型
             dataType: "json",//预期服务器返回的数据类型
-            url: "http://localhost:8080/mod3/inOutRecord",//url
+            url: "http://localhost:8080/mod3/payRecord",//url
             // data: $('#form1').serialize(),
             success: function (datas) {
                 gcount = datas.length;
