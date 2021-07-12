@@ -5,6 +5,7 @@
 * activity表需要图片的url这个属性(imgUrl)
 * activity表需要活动类型这个属性(type)
 * news表需要标题这个属性(title)
+* examschedule表：删除endTime，增加examTime(考试时长)
 * ~~books表：添加是否在馆信息(state)~~
 * ~~borrowrecord表：borrowTime更改为timestamp类型~~
 * borrowrecord表：修改renewCount为0-3范围
