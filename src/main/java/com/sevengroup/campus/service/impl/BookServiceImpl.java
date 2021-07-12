@@ -3,6 +3,7 @@ package com.sevengroup.campus.service.impl;
 import com.sevengroup.campus.bean.BookBean;
 import com.sevengroup.campus.mapper.BookMapper;
 import com.sevengroup.campus.service.BookService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +20,7 @@ import java.util.List;
  */
 
 @Service
-@Transactional
+@Slf4j
 public class BookServiceImpl implements BookService {
     @Autowired
     BookMapper bookMapper;
@@ -52,12 +53,14 @@ public class BookServiceImpl implements BookService {
         try {
             res = bookMapper.borrowBook(bookBean);
         } catch (Exception e) {
-            System.out.println("【error】:" + e);
+            log.error("【error】:" + e);
+            return false;
         }
         return res != 0;
     }
 
     @Override
+    @Transactional
     public boolean addBorrowAgainRecord(BookBean bookBean) {
         int res = 0;
         final int MAX_COUNT = 3;
@@ -73,10 +76,12 @@ public class BookServiceImpl implements BookService {
                 System.out.println(bookBean.getReturnTime());
                 res = bookMapper.borrowAgain(bookBean);
             } else {
+
                 System.out.println("图书超期或超过续借次数限制");
             }
         } catch (Exception e) {
-            System.out.println("【error】:" + e);
+            log.error("【error】:" + e);
+            return false;
         }
         return res != 0;
     }
