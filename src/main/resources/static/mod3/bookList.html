@@ -50,14 +50,40 @@
 <script>
     var gcount;
     var gdatas;
-
+    function pagerFunc(obj, first){
+        //obj包含了当前分页的所有参数，比如：
+        //首次不执行
+        // if(!first){
+        //do something
+        console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
+        console.log(obj.limit); //得到每页显示的条数
+        var start = (obj.curr - 1) * obj.limit;
+        var end;
+        if(start + obj.limit > gcount ){
+            end = gcount;
+        }
+        else{
+            end = start + obj.limit;
+        }
+        mprint(start,end);
+    }
     function mprint(start,end){
         var tbhtml = "";
         for(var i = start;i<end;i++){
-                tbhtml += "<tr><td>" + gdatas[i].bookID + "</td><td>" + gdatas[i].bookName + "</td><td>" + gdatas[i].bookAuthor +
-                    "</td><td>" + gdatas[i].bookYear + "</td><td>" + gdatas[i].bookType +
-                    "</td><td>" +"<a herf='javascript:bookBorrowByID(" + gdatas[i].bookID + ")'>借阅</a>"+"</td></tr>";
-            }
+            tbhtml += "<tr><td>" + gdatas[i].bookID + "</td><td>" + gdatas[i].bookName + "</td><td>" + gdatas[i].bookAuthor +
+                "</td><td>" + gdatas[i].bookYear + "</td><td>" + gdatas[i].bookType+
+                "</td><td style='padding: 0'>"
+                +"<a href='javascript:bookBorrowByID(" + gdatas[i].bookID +")' "+
+                'style="background-color:#009688;' +
+                '    height: 30px;\n' +
+                '    text-align: center;\n' +
+                '      display: block;\n' +
+                '    line-height: 2;\n' +
+                '    color: white' +
+                '    display: block;\n' +
+                '    margin: 0;\n,)">借阅</a>'+"</td></tr>";
+        }
+        console.log(tbhtml);
         $('#bookTableBody').html(tbhtml);
 
     }
@@ -75,14 +101,12 @@
                 console.log(datas);//打印服务端返回的数据(调试用)
                 // var tbhtml = "";
                 // console.log(datas.length);//打印服务端返回的数据(调试用)
-
                 // for(var i = 0;i<datas.length;i++){
                 //     layer.msg(datas[i].name);
                 //     tbhtml += "<tr><td>" + datas[i].bookID + "</td><td>" + datas[i].bookName + "</td><td>" + datas[i].bookAuthor +
                 //         "</td><td>" + datas[i].bookYear + "</td><td>" + datas[i].bookType +
                 //         "</td><td>" +"<a herf='javascript:bookBorrowByID(" + datas[i].bookID + ")'>借阅</a>"+"</td></tr>";
                 // }
-
                 // $('#bookTableBody').html(tbhtml);
 
                 gcount = datas.length;
@@ -90,37 +114,16 @@
                 console.log('datas.length');//打印服务端返回的数据(调试用)
                 layui.use('laypage', function(){
                     var laypage = layui.laypage;
-
                     //执行一个laypage实例
                     laypage.render({
                         elem: 'bookTableBody2' //注意，这里的 test1 是 ID，不用加 # 号
                         ,count: gcount //数据总数，从服务端得到
                         ,limit: 1
-                        ,jump: function(obj, first){
-                            //obj包含了当前分页的所有参数，比如：
-                            // console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
-                            // console.log(obj.limit); //得到每页显示的条数
-
-                            //首次不执行
-                            // if(!first){
-                                //do something
-                                console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
-                                console.log(obj.limit); //得到每页显示的条数
-                                var start = (obj.curr - 1) * obj.limit;
-                                var end;
-                                if(start + obj.limit > gcount ){
-                                    end = gcount;
-                                }
-                                else{
-                                    end = start + obj.limit;
-                                }
-                                mprint(start,end);
-                            }
+                        ,jump:pagerFunc
                         // }
                     });
 
                 });
-
             },
             error: function () {
                 layer.msg("异常！");
@@ -140,13 +143,21 @@
                 console.log(datas);//打印服务端返回的数据(调试用)
                 console.log(datas.length);//打印服务端返回的数据(调试用)
 
-                for(var i = 0;i<datas.length;i++){
-                    layer.msg(datas[i].name);
-                    tbhtml += "<tr><td>" + datas[i].bookID + "</td><td>" + datas[i].password +
-                        "</td><td>" +"<a herf='javascript:bookBorrowByID(" + datas[i].bookID + ")'>借阅</a>"+"</td></tr>";
-                }
+                gcount = datas.length;
+                gdatas = datas;
+                console.log('datas.length');//打印服务端返回的数据(调试用)
+                layui.use('laypage', function(){
+                    var laypage = layui.laypage;
+                    //执行一个laypage实例
+                    laypage.render({
+                        elem: 'bookTableBody2' //注意，这里的 test1 是 ID，不用加 # 号
+                        ,count: gcount //数据总数，从服务端得到
+                        ,limit: 1
+                        ,jump:pagerFunc
+                        // }
+                    });
 
-                $('#bookTableBody').html(tbhtml);
+                });
             },
             error: function () {
                 layer.msg("异常！");

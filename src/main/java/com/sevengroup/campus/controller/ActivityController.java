@@ -41,7 +41,7 @@ public class ActivityController {
 
         String[] temp = file.getOriginalFilename().split("\\.");
         String imgType = temp[temp.length - 1];
-        imgPath = "src\\main\\resources\\static\\activity";
+        imgPath = "src\\main\\resources\\static\\activity\\";
         for(int i = 0; i < temp.length - 1; ++i)
             imgPath = imgPath + temp[i];
 
@@ -66,7 +66,7 @@ public class ActivityController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new HashMap<>();
+        return new HashMap<String, Object>();
     }
 
     @RequestMapping(value = "/saveActivity", method = RequestMethod.POST)
