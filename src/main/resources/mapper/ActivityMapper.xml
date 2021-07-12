@@ -5,5 +5,16 @@
     <select id="listActivities" resultType="com.sevengroup.campus.bean.ActivityBean">
         SELECT * FROM activity where imgUrl is not null;
     </select>
+<!--
+void saveActivity(String name, String activityID,
+String organizer, String description, Timestamp timeRs,
+Timestamp timeRe, Timestamp timeAs, Timestamp timeAe, String imgPath);
+   -->
+    <insert id="saveActivity">
+        INSERT INTO activity(name, activityID, organizer, description, resgisStartTime,
+                             resgisEndTime, activStartTime, activEndTime, imgurl) values
+                            (#{name}, #{activityID}, #{organizer}, #{description},
+                             #{timeRs}, #{timeRe}, #{timeAs}, #{timeAe}, #{imgPath});
+    </insert>
 
 </mapper>
