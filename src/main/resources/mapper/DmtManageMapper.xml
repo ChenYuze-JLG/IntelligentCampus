@@ -13,7 +13,7 @@
         <result property="DMTID" column="DMTID"/>
     </resultMap>
 
-    <select id="getInOutRecords" parameterType="String" resultMap="resultMap">
+    <select id="getInOutRecordsAll" parameterType="String" resultMap="resultMap">
         SELECT *
         from (dmtroom room
             inner join user
@@ -23,56 +23,30 @@
           and user.role = '学生';
     </select>
 
+    <select id="getUserRole" parameterType="String" resultType="String">
 
-    <select id="findBookByName" parameterType="String" resultMap="resultMap">
-        SELECT *
-        from books
-        WHERE name like #{name}
-           or author like #{name}
+        select role
+        from user
+        where username = #{userID};
+
     </select>
 
-    <select id="findBookByID" parameterType="String" resultMap="resultMap">
+    <select id="getInOutRecordsSelf" parameterType="String" resultMap="resultMap">
+
         SELECT *
-        from books
-        WHERE bookid = #{id}
+        from inoutrecord
+        WHERE username = #{userID};
+
     </select>
 
-    <select id="findAvailableBookByID" parameterType="String" resultMap="resultMap">
-        SELECT *
-        from books
-        WHERE bookid = #{id}
-          and state = 'true'
+    <select id="getDmtID" parameterType="String" resultType="String" >
+
+        select DMTID
+        from (dmtroom
+            inner join dormitory d on dmtroom.DMTID = d.dormitoryID)
+                 inner join user on dmtroom.DMTRoomID = user.roomID
+        where user.username = #{userID};
+
     </select>
-
-    <select id="findBorrowedBookInfoByID" parameterType="String" resultMap="resultMap">
-        SELECT *
-        from books
-                 INNER JOIN
-             borrowrecord br
-             on books.bookID = br.bookID
-        where br.bookID = #{bookID}
-          and borrowUser = #{userID}
-          and br.returnTime is null;
-    </select>
-
-    <update id="borrowBook" parameterType="com.sevengroup.campus.bean.DmtManageBean">
-        insert into borrowrecord(bookid, renewCount, borrowUser)
-        values (#{bookID}, #{borrowCount}, #{borrowUser});
-
-        update books
-        set state = 'false'
-        where bookid = #{bookID};
-    </update>
-
-    <update id="borrowAgain" parameterType="com.sevengroup.campus.bean.DmtManageBean">
-        update borrowrecord
-        set returnTime = #{returnTime}
-        where bookID = #{bookID}
-          and borrowUser = #{borrowUser}
-          and returnTime is null;
-
-        insert into borrowrecord(bookid, renewCount, borrowUser, expirationTime)
-        values (#{bookID}, #{borrowCount}, #{borrowUser}, date_add(#{returnTime}, interval 1 MONTH));
-    </update>
 
 </mapper>
