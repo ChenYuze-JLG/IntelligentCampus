@@ -6,6 +6,13 @@ spring:
     username: root  #用户名
     password: lingrui02@  #密码
     driver-class-name: com.mysql.jdbc.Driver  #数据库链接驱动
+  mvc:
+    static-path-pattern: /static/**
+  thymeleaf:
+    cache: false
+    prefix: file:src/main/resources/templates/
+    static-locations: file:src/main/resources/static/
+
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml  #配置映射文件

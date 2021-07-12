@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.util.List;
 import java.util.Map;
 
+
 @Controller
 public class IndexController {
     //将Service注入Web层
