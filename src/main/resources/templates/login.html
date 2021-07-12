@@ -1,19 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" http-equiv="content-type" content="multipart/form-data">
   <title>login</title>
+  <style>
+    #table_wrap > table {
+      font-size: 16px;
+      text-align: center;
+      margin: 0 auto;
+      border-collapse: separate;
+      border-spacing: 0;
+      border: 2px #000;
+    }
+    table{
+      border-style: solid;
+      border-radius: 10px; /* 圆角边框  */
+      border-color: #d9d9d9;
+      box-shadow: 3px -1px 10px #b3b3b3; /* 阴影  */
+    }
+    table thead tr,table tbody tr {
+      height: 20px;
+      line-height: 20px;
+    }
+    table tr th:first-child,table tr td:first-child {/*设置table左边边框*/
+      border-left: 2px solid #eaeaea;
+    }
+    table tr th:last-child,table tr td:last-child {/*设置table右边边框*/
+      border-right: 2px solid #eaeaea;
+    }
+    table tr td:first-child,
+    table tr td:nth-child(2),
+    table tr td:nth-child(3),
+    table tr td:last-child{/*设置table表格每列底部边框*/
+      border-bottom: 2px solid #eaeaea;
+    }
+    table tr th {
+      background: #eaeaea;
+    }
+    table tr:first-child th:first-child {
+      border-top-left-radius: 12px;
+    }
+    table tr:first-child th:last-child {
+      border-top-right-radius: 12px;
+    }
+    table tr:last-child td:first-child {
+      border-bottom-left-radius: 12px;
+    }
+    table tr:last-child td:last-child {
+      border-bottom-right-radius: 12px;
+    }
+  </style>
 </head>
-<body>
-<iframe name="toppage" width=100% height=100%
-        marginwidth=0 marginheight=0 frameborder="no" border="0"
-        src="../static/head.html" >
-</iframe>
-<form role="form" action = "/loginIn" method="post">
-  账号：<input type="text" id="name" name = "name"> <br>
-  密码：<input type="password" id = "password" name = "password"> <br>
-  <input type="submit" id = "login" value = "login">
+<body background="../static/school.png"style=" background-repeat:no-repeat ;background-size:100% 100%;background-attachment: fixed;">
+<div>
+  <h1>高校智慧校园门户网站</h1>
+</div>
+<form role="form" action = "/loginIn" method="post" style="text-align: center"  >
+  <center>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <table cellspacing="0" cellpadding="6" border_radius="4px"  style="text-align: center;background-color: #e2e2e2" >
+      <tr>
+        <th align="center" bgcolor="#6495ed" height="30">
+          <span>用户登录</span>
+        </th>
+      </tr>
+      <tr>
+        <td align="center" nowrap>
+          <input type="text" id="name" name = "name" placeholder="请输入账号">
+        </td>
+      </tr>
+      <!-- <tr>
+         <td align="center" nowrap>
+           <input type="text" id="name1" name="nickname" placeholder="昵称">
+         </td>
+       </tr>-->
+      <tr>
+        <td align="center" noWrap>
+          <input type="password" id = "password" name = "password" placeholder="请输入密码">
+        </td>
+      </tr>
+      <tr>
+        <td align="center" nowrap="">
+          <input style="background-color: #ffaa00" type="submit" id = "login"  value = "登录" >
+          <input style="background-color: #ffaa00" type="reset" id="layuicss-layer" value="重置">
+        </td>
+      </tr>
+    </table>
+  </center>
+
 </form>
 
 </body>
+
 </html>
