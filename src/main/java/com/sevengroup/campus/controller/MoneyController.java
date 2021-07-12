@@ -4,6 +4,7 @@ import com.sevengroup.campus.service.MoneyService;
 import com.sevengroup.campus.service.impl.MoneyServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,14 +26,11 @@ public class MoneyController {
 
     @GetMapping("/addCredit")
     // 充值
-    public boolean dealRequestAddCredit(HttpServletRequest request, HttpServletResponse response) {
-        String transactionType = request.getParameter("type");
-        String userID = request.getParameter("id");
-        double money = Double.parseDouble(request.getParameter("money"));
+    public boolean dealRequestAddCredit(@RequestParam(value = "type") String transactionType,
+                                        @RequestParam(value = "id") String userID,
+                                        @RequestParam(value = "money") Double money) {
 
-        boolean num = moneyService.addCredit(transactionType, userID, money);
-
-        return num;
+        return moneyService.addCredit(transactionType, userID, money);
     }
 
 

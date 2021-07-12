@@ -4,17 +4,13 @@
 
     <resultMap id="resultMap" type="com.sevengroup.campus.bean.DmtManageBean">
         <!-- property 为实体， column 为数据库 -->
-        <result property="bookID" column="bookid"/>
-        <result property="bookName" column="name"/>
-        <result property="bookAuthor" column="author"/>
-        <result property="bookDate" column="publishTime"/>
-        <result property="bookState" column="state"/>
-        <result property="bookType" column="type"/>
-        <result property="borrowTime" column="borrowTime"/>
-        <result property="expirationTime" column="expirationTime"/>
-        <result property="returnTime" column="returnTime"/>
-        <result property="borrowCount" column="renewCount"/>
-        <result property="borrowUser" column="borrowUser"/>
+        <result property="username" column="nickname"/>
+        <result property="userID" column="username"/>
+        <result property="inTime" column="inOutTime"/>
+        <result property="outTime" column="inOutTime"/>
+        <result property="DMTRoom" column="roomID"/>
+        <result property="DMTName" column="nickname"/>
+        <result property="DMTID" column="DMTID"/>
     </resultMap>
 
     <select id="getInOutRecords" parameterType="String" resultMap="resultMap">
@@ -23,7 +19,8 @@
             inner join user
             on room.DMTRoomID = user.roomID)
                  inner join inoutrecord on user.username = inoutrecord.username
-        WHERE
+        WHERE room.DMTID = #{dormitoryID}
+          and user.role = '学生';
     </select>
 
 

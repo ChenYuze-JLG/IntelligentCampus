@@ -5,6 +5,7 @@ import com.sevengroup.campus.service.DmtManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,9 +28,8 @@ public class DmtManageController {
 
 
     @GetMapping("/getRecord")
-    public List<DmtManageBean> getInOutRecords(HttpServletRequest request, HttpServletResponse response) {
-
-        String dormitoryID = request.getParameter("dormitoryID");
+    public List<DmtManageBean> getInOutRecords(@RequestParam(value = "dormitory") String dormitoryID) {
+        // 8269
 
         return dmtManageService.getInOutRecords(dormitoryID);
     }

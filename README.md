@@ -6,6 +6,7 @@
 * news表需要标题这个属性(title)
 * inoutrecord表：将inOutTime拆分为inTime与outTime
 * dmtroom表：增加gasBalance、waterBalance、electricBalance属性
+* activityrecord表：增加审核状态【待审核、审核通过、未审核】
 * ~~user表：添加初始化roomID~~
 * ~~transrecord表：修改money类型为decimal,将支出修改为负值~~
 * ~~borrowrecord表：修改renewCount为0-3范围~~
