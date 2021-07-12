@@ -22,7 +22,16 @@ public class DmtManageServiceImpl implements DmtManageService {
     DmtManageMapper dmtManageMapper;
 
     @Override
-    public List<DmtManageBean> getInOutRecords(String dormitoryID) {
-        return dmtManageMapper.getInOutRecords(dormitoryID);
+    public List<DmtManageBean> getInOutRecords(String userID) {
+        String userRole = dmtManageMapper.getUserRole(userID);
+        String dormitoryID = dmtManageMapper.getDmtID(userID);
+
+        if (userRole.equals("舍区管理员")) {
+            return dmtManageMapper.getInOutRecordsAll(dormitoryID);
+        }
+        else {
+            return  dmtManageMapper.getInOutRecordsSelf(userID);
+        }
+
     }
 }
