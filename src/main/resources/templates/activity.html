@@ -33,7 +33,7 @@
 
     <div class="layui-col-md6" th:each="activity:${activities}">
       <div class="layui-panel">
-        <a href="https://www.baidu.com" target="_blank">
+        <a href="/activityInfo" target="_blank">
           <img th:src="${activity.getImgUrl()}" height="200px" width="300px">
           <span style="font-size: x-small; color: blue; " th:text="${activity.getDescription()}"></span>
         </a>
