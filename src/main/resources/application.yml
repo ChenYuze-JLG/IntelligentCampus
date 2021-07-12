@@ -1,11 +1,10 @@
 spring:
   datasource:
     name: campus  #数据库名
-    url: jdbc:mysql://127.0.0.1:3306/campus?useSSL=false&serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8
-
+    url: jdbc:mysql://localhost:3306/campus?allowMultiQueries=true #url
     username: root  #用户名
-    password: lingrui02@  #密码
-    driver-class-name: com.mysql.jdbc.Driver  #数据库链接驱动
+    password: root  #密码
+    driver-class-name: com.mysql.cj.jdbc.Driver  #数据库链接驱动
   mvc:
     static-path-pattern: /static/**
   thymeleaf:

@@ -1,35 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.sevengroup.campus.mapper.BookMapper">
+<mapper namespace="com.sevengroup.campus.mapper.DmtManageMapper">
 
-    <resultMap id="resultMap" type="com.sevengroup.campus.bean.BookBean">
+    <resultMap id="resultMap" type="com.sevengroup.campus.bean.DmtManageBean">
         <!-- property 为实体， column 为数据库 -->
-        <result property="bookID" column="bookid"/>
-        <result property="bookName" column="name"/>
-        <result property="bookAuthor" column="author"/>
-        <result property="bookDate" column="publishTime"/>
-        <result property="bookState" column="state"/>
-        <result property="bookType" column="type"/>
-        <result property="borrowTime" column="borrowTime"/>
-        <result property="expirationTime" column="expirationTime"/>
-        <result property="returnTime" column="returnTime"/>
-        <result property="borrowCount" column="renewCount"/>
-        <result property="borrowUser" column="borrowUser"/>
+        <result property="username" column="nickname"/>
+        <result property="userID" column="username"/>
+        <result property="inTime" column="inOutTime"/>
+        <result property="outTime" column="inOutTime"/>
+        <result property="DMTRoom" column="roomID"/>
+        <result property="DMTName" column="nickname"/>
+        <result property="DMTID" column="DMTID"/>
     </resultMap>
 
-    <select id="getBorrowInfo" parameterType="String" resultMap="resultMap">
+    <select id="getInOutRecords" parameterType="String" resultMap="resultMap">
         SELECT *
-        from borrowrecord br
-                 inner join books bo
-                            on br.bookid = bo.bookid
-        WHERE br.borrowUser = #{username}
-          and br.returnTime is null
+        from (dmtroom room
+            inner join user
+            on room.DMTRoomID = user.roomID)
+                 inner join inoutrecord on user.username = inoutrecord.username
+        WHERE room.DMTID = #{dormitoryID}
+          and user.role = '学生';
     </select>
 
-    <select id="getAllBooksList" resultMap="resultMap">
-        SELECT *
-        from books
-    </select>
 
     <select id="findBookByName" parameterType="String" resultMap="resultMap">
         SELECT *
@@ -62,7 +55,7 @@
           and br.returnTime is null;
     </select>
 
-    <update id="borrowBook" parameterType="com.sevengroup.campus.bean.BookBean">
+    <update id="borrowBook" parameterType="com.sevengroup.campus.bean.DmtManageBean">
         insert into borrowrecord(bookid, renewCount, borrowUser)
         values (#{bookID}, #{borrowCount}, #{borrowUser});
 
@@ -71,7 +64,7 @@
         where bookid = #{bookID};
     </update>
 
-    <update id="borrowAgain" parameterType="com.sevengroup.campus.bean.BookBean">
+    <update id="borrowAgain" parameterType="com.sevengroup.campus.bean.DmtManageBean">
         update borrowrecord
         set returnTime = #{returnTime}
         where bookID = #{bookID}
