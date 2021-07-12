@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>index</title>
+
+<link rel="stylesheet" href="layui/css/layui.css">
+
+<style>
+body{padding-top:0px;padding-bottom: 0px;}
+</style>
+
+</head>
+<body>
+
+<ul class="layui-nav">
+  <li class="layui-nav-item"><a href="">首页</a></li>
+  <li class="layui-nav-item"><a href="">教务管理</a></li>
+  <li class="layui-nav-item"><a href="">舍区管理</a></li>
+  <li class="layui-nav-item"><a href="">校园服务</a></li>
+  <li class="layui-nav-item"><a href="">
+    <img src="yln.jpg" class="layui-nav-img"></a>
+    <dl class="layui-nav-child layui-nav-child-r">
+      <dd>
+        <a href="">管理员</a>
+      </dd>
+    </dl>
+  </li>
+</ul>
+
+<script src="layui/layui.js"></script>
+<script>
+layui.use(['element', 'form'], function(){
+  var element = layui.element;
+
+  element.on('nav(test)', function(elem){
+    console.log(elem)
+  });
+});
+</script>
+</body>
+</html>
