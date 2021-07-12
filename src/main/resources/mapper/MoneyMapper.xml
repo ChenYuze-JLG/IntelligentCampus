@@ -12,45 +12,17 @@
         <result property="cardBalance" column="balance"/>
     </resultMap>
 
-<!--    <select id="getBorrowInfo" parameterType="String" resultMap="resultMap">-->
-<!--        SELECT *-->
-<!--        from borrowrecord br-->
-<!--                 inner join books bo-->
-<!--                            on br.bookid = bo.bookid-->
-<!--        WHERE br.borrowUser = #{username}-->
-<!--          and br.returnTime is null-->
-<!--    </select>-->
-
-
     <select id="findBalanceByID" parameterType="String" resultType="double">
         SELECT balance
         from card
-        WHERE card.cardID like #{userID}
+        WHERE card.cardID = #{userID}
     </select>
 
-<!--    <select id="findBookByID" parameterType="String" resultMap="resultMap">-->
-<!--        SELECT *-->
-<!--        from books-->
-<!--        WHERE bookid = #{id}-->
-<!--    </select>-->
-
-<!--    <select id="findAvailableBookByID" parameterType="String" resultMap="resultMap">-->
-<!--        SELECT *-->
-<!--        from books-->
-<!--        WHERE bookid = #{id}-->
-<!--          and state = 'true'-->
-<!--    </select>-->
-
-<!--    <select id="findBorrowedBookInfoByID" parameterType="String" resultMap="resultMap">-->
-<!--        SELECT *-->
-<!--        from books-->
-<!--                 INNER JOIN-->
-<!--             borrowrecord br-->
-<!--             on books.bookID = br.bookID-->
-<!--        where br.bookID = #{bookID}-->
-<!--          and borrowUser = #{userID}-->
-<!--          and br.returnTime is null;-->
-<!--    </select>-->
+    <select id="getBalanceByID" parameterType="String" resultMap="resultMap">
+        SELECT *
+        from card
+        WHERE cardID = #{userID}
+    </select>
 
     <update id="addCreditRecord" parameterType="com.sevengroup.campus.bean.MoneyBean">
         insert into transrecord(money, type, username)
@@ -58,7 +30,8 @@
     </update>
 
     <insert id="addCardCreditRecord" parameterType="com.sevengroup.campus.bean.MoneyBean">
-                insert into transrecord(money, type, username)
+
+        insert into transrecord(money, type, username)
         values (#{transactionMoney}, #{transactionType}, #{userID});
 
 
@@ -67,5 +40,29 @@
         where cardID = #{userID}
 
     </insert>
+
+    <select id="getRecordByID" parameterType="String" resultMap="resultMap">
+
+        select *
+        from transrecord
+        where (type = '校园卡支出'
+            or type = '校园卡充值')
+          and username = #{userID}
+
+    </select>
+
+    <select id="payFromCard" resultType="int">
+
+        update card
+        set balance = balance - #{money}
+        where cardID = #{userID};
+
+        insert into transrecord (money, type, username)
+        values (0 - #{money}, '校园卡支出', #{userID});
+
+        insert into transrecord (money, type, username)
+        values (#{money}, #{payType}, #{userID});
+
+    </select>
 
 </mapper>

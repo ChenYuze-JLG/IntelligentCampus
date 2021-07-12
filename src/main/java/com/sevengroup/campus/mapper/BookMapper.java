@@ -32,4 +32,6 @@ public interface BookMapper {
     int borrowAgain(BookBean bookBean);
 
     BookBean findBorrowedBookInfoByID(String bookID, String userID);
+
+    List<BookBean> getAllBooksList();
 }

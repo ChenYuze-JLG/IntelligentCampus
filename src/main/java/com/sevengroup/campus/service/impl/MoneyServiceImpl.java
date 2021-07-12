@@ -6,6 +6,8 @@ import com.sevengroup.campus.service.MoneyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @Title: MoneyService
  * @Description:
@@ -20,22 +22,41 @@ public class MoneyServiceImpl implements MoneyService {
     MoneyMapper moneyMapper;
 
     @Override
-    public boolean addCredit(String transactionType, String userID, double money) {
+    public MoneyBean addCredit(String userID, double money) {
         MoneyBean moneyBean = new MoneyBean();
         moneyBean.setTransactionMoney(money);
         moneyBean.setUserID(userID);
-        moneyBean.setTransactionType(transactionType);
+        moneyBean.setTransactionType("校园卡充值");
 
         double balance = moneyMapper.findBalanceByID(userID);
         moneyBean.setCardBalance(balance);
 
-        System.out.println(balance);
-
-        if (transactionType.equals("校园卡充值")) {
-            return moneyMapper.addCardCreditRecord(moneyBean) != 0;
-        } else {
-            return moneyMapper.addCreditRecord(moneyBean) != 0;
+        if (moneyMapper.addCardCreditRecord(moneyBean) != 0) {
+            moneyBean.setCardBalance(balance + money);
         }
 
+        return moneyBean;
+    }
+
+    @Override
+    public MoneyBean getBalance(String userID) {
+        return moneyMapper.getBalanceByID(userID);
+    }
+
+    @Override
+    public List<MoneyBean> getRecord(String userID) {
+        return moneyMapper.getRecordByID(userID);
+    }
+
+    @Override
+    public boolean payFromCard(String userID, String payType, double money) {
+
+        if (moneyMapper.findBalanceByID(userID) >= money) {
+
+//            System.out.println(moneyMapper.payFromCard(userID, payType, money));
+            return moneyMapper.payFromCard(userID, payType, money) != 0;
+        } else {
+            return false;
+        }
     }
 }

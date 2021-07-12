@@ -26,7 +26,7 @@ public interface BookService {
      * @param name 输入作者或书名
      * @return 返回匹配的信息列表
      */
-    List<BookBean> getFindBookList(String name);
+    List<BookBean> findBookByName(String name);
 
     /**
      * 根据书本id获取书本信息
@@ -58,9 +58,15 @@ public interface BookService {
 
     /**
      *
-     * @param bookID
-     * @param userID
-     * @return
+     * @param bookID 图书id
+     * @param userID 用户id
+     * @return 返回借阅的图书信息
      */
     BookBean getBorrowedBookByID(String bookID, String userID);
+
+    /**
+     *
+     * @return 返回所有图书列表
+     */
+    List<BookBean> getAllBooks();
 }

@@ -1,5 +1,9 @@
 package com.sevengroup.campus.service;
 
+import com.sevengroup.campus.bean.MoneyBean;
+
+import java.util.List;
+
 /**
  * @Title: MoneyService
  * @Description:
@@ -9,10 +13,32 @@ package com.sevengroup.campus.service;
 public interface MoneyService {
     /**
      *
-     * @param transactionType 交易类型
      * @param userID 用户id
      * @param money 交易金额
-     * @return 返回是否成功添加
+     * @return 返回余额
      */
-    boolean addCredit(String transactionType, String userID, double money);
+    MoneyBean addCredit(String userID, double money);
+
+    /**
+     * 返回当前用户的账户余额
+     * @param userID 用户id
+     * @return 返回当前用户信息
+     */
+    MoneyBean getBalance(String userID);
+
+    /**
+     *
+     * @param userID 用户id
+     * @return 交易记录list
+     */
+    List<MoneyBean> getRecord(String userID);
+
+    /**
+     *
+     * @param userID 用户id
+     * @param payType 缴费类型
+     * @param money
+     * @return 返回成功与否
+     */
+    boolean payFromCard(String userID, String payType, double money);
 }

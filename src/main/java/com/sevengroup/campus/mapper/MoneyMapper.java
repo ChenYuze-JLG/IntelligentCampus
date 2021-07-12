@@ -2,7 +2,10 @@ package com.sevengroup.campus.mapper;
 
 import com.sevengroup.campus.bean.MoneyBean;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * @Title: MoneyMapper
@@ -20,4 +23,10 @@ public interface MoneyMapper {
 
 
     double findBalanceByID(String userID);
+
+    MoneyBean getBalanceByID(String userID);
+
+    List<MoneyBean> getRecordByID(String userID);
+
+    int payFromCard(@Param("userID") String userID,@Param("payType") String payType, @Param("money") double money);
 }

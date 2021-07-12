@@ -26,6 +26,10 @@
           and br.returnTime is null
     </select>
 
+    <select id="getAllBooksList" resultMap="resultMap">
+        SELECT *
+        from books
+    </select>
 
     <select id="findBookByName" parameterType="String" resultMap="resultMap">
         SELECT *

@@ -30,7 +30,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookBean> getFindBookList(String name) {
+    public List<BookBean> findBookByName(String name) {
         String input = "%" + name + "%";
         return bookMapper.findBookByName(input);
     }
@@ -84,5 +84,10 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookBean getBorrowedBookByID(String bookID, String userID) {
         return bookMapper.findBorrowedBookInfoByID(bookID, userID);
+    }
+
+    @Override
+    public List<BookBean> getAllBooks() {
+        return bookMapper.getAllBooksList();
     }
 }
