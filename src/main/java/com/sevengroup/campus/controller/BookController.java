@@ -1,6 +1,7 @@
 package com.sevengroup.campus.controller;
 
 import com.sevengroup.campus.bean.BookBean;
+import com.sevengroup.campus.controller.tool.Tool;
 import com.sevengroup.campus.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -24,6 +26,8 @@ public class BookController {
     private String currentUser = "20194829"; // 当前用户名
     private String name = "这样"; // 查找bookname
 
+    private Tool tool = new Tool();
+
     @Autowired
     BookService bookService;
 
@@ -32,9 +36,10 @@ public class BookController {
     /**
      * 处理获取借阅图书信息请求
      */
-    public List<BookBean> dealRequestBorrowInfo() {
+    public List<BookBean> dealRequestBorrowInfo(HttpServletRequest request) {
+        String userID = tool.getUserID(request);
 
-        return bookService.getBorrowInfo(currentUser);
+        return bookService.getBorrowInfo(userID);
     }
 
 
@@ -59,11 +64,12 @@ public class BookController {
     /**
      * 预约借书请求处理
      */
-    public boolean dealRequestBorrowBook(@RequestParam(value = "bookID") String bookID) {
+    public boolean dealRequestBorrowBook(@RequestParam(value = "bookID") String bookID, HttpServletRequest request) {
+        String userID = tool.getUserID(request);
 
         BookBean bookBean = bookService.getAvailableBookByID(bookID);
 
-        bookBean.setBorrowUser(currentUser);
+        bookBean.setBorrowUser(userID);
 
         return bookService.addBorrowRecord(bookBean);
     }
@@ -72,9 +78,11 @@ public class BookController {
     /**
      * 续借请求处理
      */
-    public boolean dealRequestBorrowAgain(@RequestParam(value = "bookID") String bookID) {
+    public boolean dealRequestBorrowAgain(@RequestParam(value = "bookID") String bookID, HttpServletRequest request) {
+        String userID = tool.getUserID(request);
 
-        BookBean bookBean = bookService.getBorrowedBookByID(bookID, currentUser);
+
+        BookBean bookBean = bookService.getBorrowedBookByID(bookID, userID);
 
         System.out.println(bookBean);
 
