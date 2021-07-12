@@ -35,7 +35,7 @@
         <th>图书作者</th>
         <th>出版日期</th>
         <th>类型</th>
-        <th>预约借阅</th>
+        <th>预约</th>
 
     </tr>
     </thead>
@@ -58,7 +58,7 @@
 <script>
     var gcount;
     var gdatas;
-
+    var glimit=5;
     function pagerFunc(obj, first) {
         //obj包含了当前分页的所有参数，比如：
         //首次不执行
@@ -90,7 +90,7 @@
                 '    line-height: 2;\n' +
                 '    color: white' +
                 '    display: block;\n' +
-                '    margin: 0;\n,)">预约借阅</a>' + "</td></tr>";
+                '    margin: 0;\n,)">预约</a>' + "</td></tr>";
         }
         console.log(tbhtml);
         $('#bookTableBody').html(tbhtml);
@@ -102,7 +102,7 @@
             //几个参数需要注意一下
             type: "GET",//方法类型
             dataType: "json",//预期服务器返回的数据类型
-            url: "http://localhost:8080/mod3/bookInfo",//url
+            url: "http://localhost:8080/library/all",//url
             // data: $('#form1').serialize(),
             success: function (datas) {
                 // var datas = JSON.parse(datas); //jsonData是该下路下的所有区间（json格式）
@@ -127,7 +127,7 @@
                     laypage.render({
                         elem: 'bookTableBody2' //注意，这里的 test1 是 ID，不用加 # 号
                         , count: gcount //数据总数，从服务端得到
-                        , limit: 1
+                        , limit: glimit
                         , jump: pagerFunc
                         // }
                     });
@@ -146,7 +146,7 @@
             //几个参数需要注意一下
             type: "GET",//方法类型
             dataType: "json",//预期服务器返回的数据类型
-            url: "http://localhost:8080/mod3/selectBookByName",//url
+            url: "http://localhost:8080/library/find",//url
             data: {name: name},
             success: function (datas) {
                 // var datas = JSON.parse(datas); //jsonData是该下路下的所有区间（json格式）
@@ -162,7 +162,7 @@
                     laypage.render({
                         elem: 'bookTableBody2' //注意，这里的 test1 是 ID，不用加 # 号
                         , count: gcount //数据总数，从服务端得到
-                        , limit: 1
+                        , limit: glimit
                         , jump: pagerFunc
                         // }
                     });
@@ -181,7 +181,7 @@
             //几个参数需要注意一下
             type: "post",//方法类型
             dataType: "json",//预期服务器返回的数据类型
-            url: "mod3/bookBorrowByID",//url
+            url: "http://localhost:8080/library/order",//url
             data: {bookID: bookID},
             success: function (datas) {
                 // var datas = JSON.parse(datas); //jsonData是该下路下的所有区间（json格式）

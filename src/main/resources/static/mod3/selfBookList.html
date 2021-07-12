@@ -11,10 +11,13 @@
     <thead>
     <tr>
       <th>图书编号</th>
+      <th>图书名称</th>
+      <th>图书作者</th>
       <th>借阅时间</th>
         <th>借阅次数</th>
       <th>归还时间</th>
-        <th>归还</th>
+        <th>续借</th>
+        <th>转借</th>
 
     </tr>
     </thead>
@@ -32,6 +35,7 @@
 <script>
     var gcount;
     var gdatas;
+    var glimit=10;
     function pagerFunc(obj, first){
         //obj包含了当前分页的所有参数，比如：
         //首次不执行
@@ -53,9 +57,9 @@
         var tbhtml = "";
         for(var i = start;i<end;i++){
             tbhtml += "<tr><td>" + gdatas[i].bookID + "</td><td>" + gdatas[i].bookName + "</td><td>" + gdatas[i].bookAuthor +
-                "</td><td>" + gdatas[i].bookYear + "</td><td>" + gdatas[i].bookType+
+                "</td><td>" + gdatas[i].borrowTime + "</td><td>" + gdatas[i].renewCount + "</td><td>" + gdatas[i].returnTime +
                 "</td><td style='padding: 0'>"
-                +"<a href='javascript:bookBorrowByID(" + gdatas[i].bookID +")' "+
+                +"<a href='javascript:funcByBookID(" + gdatas[i].bookID +")' "+
                 'style="background-color:#009688;' +
                 '    height: 30px;\n' +
                 '    text-align: center;\n' +
@@ -63,7 +67,18 @@
                 '    line-height: 2;\n' +
                 '    color: white' +
                 '    display: block;\n' +
-                '    margin: 0;\n,)">续借</a>'+"</td></tr>";
+                '    margin: 0;\n,)">续借</a>'+"</td>"+
+                "</td><td style='padding: 0'>"
+                +"<a href='javascript:funcByBookID(" + gdatas[i].bookID +")' "+
+                'style="background-color:#009688;' +
+                '    height: 30px;\n' +
+                '    text-align: center;\n' +
+                '      display: block;\n' +
+                '    line-height: 2;\n' +
+                '    color: white' +
+                '    display: block;\n' +
+                '    margin: 0;\n,)">转借</a>'+"</td>"+
+                "</tr>";
         }
         $('#bookTableBody').html(tbhtml);
 
@@ -73,7 +88,7 @@
             //几个参数需要注意一下
             type: "GET",//方法类型
             dataType: "json",//预期服务器返回的数据类型
-            url: "http://localhost:8080/mod3/selfBookList",//url
+            url: "http://localhost:8080/library/info",//url
             // data: $('#form1').serialize(),
             success: function (datas) {
                 // var datas = JSON.parse(datas); //jsonData是该下路下的所有区间（json格式）
@@ -89,7 +104,7 @@
                     laypage.render({
                         elem: 'bookTableBody2' //注意，这里的 test1 是 ID，不用加 # 号
                         ,count: gcount //数据总数，从服务端得到
-                        ,limit: 1
+                        ,limit: glimit
                         ,jump:pagerFunc
                         // }
                     });
@@ -102,12 +117,32 @@
 
         });
     };
-    function bookReturnByID(bookID) {
+    function borrowAgainByBookID(bookID) {
         $.ajax({
             //几个参数需要注意一下
             type: "post",//方法类型
             dataType: "json",//预期服务器返回的数据类型
-            url: "http://localhost:8080/mod3/bookReturnByID",//url
+            url: "http://localhost:8080/library/borrowAgain",//url
+            data: {bookID : bookID},
+            success: function (datas) {
+                // var datas = JSON.parse(datas); //jsonData是该下路下的所有区间（json格式）
+                console.log(datas);//打印服务端返回的数据(调试用)
+                layer.msg("post succeed");
+                layer.msg(datas);
+
+            },
+            error: function () {
+                layer.msg("异常！");
+            }
+
+        });
+    };
+    function lendByBookID(bookID) {
+        $.ajax({
+            //几个参数需要注意一下
+            type: "post",//方法类型
+            dataType: "json",//预期服务器返回的数据类型
+            url: "http://localhost:8080/library/lend",//url
             data: {bookID : bookID},
             success: function (datas) {
                 // var datas = JSON.parse(datas); //jsonData是该下路下的所有区间（json格式）
