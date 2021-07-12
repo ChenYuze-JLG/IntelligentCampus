@@ -20,6 +20,8 @@ public class DmtManageBean {
 
     private String DMTName; // 宿舍楼栋名称
 
+    private String DMTRoom; // 用户所在房间
+
     private String username; // 进出用户昵称
 
     private String userID; // 用户ID

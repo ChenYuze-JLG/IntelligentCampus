@@ -1,5 +1,6 @@
 package com.sevengroup.campus.controller;
 
+import com.sevengroup.campus.service.MoneyService;
 import com.sevengroup.campus.service.impl.MoneyServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 public class MoneyController {
 
     @Autowired
-    private MoneyServiceImpl moneyService;
+    private MoneyService moneyService;
 
 
     @GetMapping("/addCredit")

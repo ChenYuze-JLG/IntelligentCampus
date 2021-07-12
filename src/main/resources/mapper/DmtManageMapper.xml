@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sevengroup.campus.mapper.DmtManageMapper">
+
+    <resultMap id="resultMap" type="com.sevengroup.campus.bean.DmtManageBean">
+        <!-- property 为实体， column 为数据库 -->
+        <result property="bookID" column="bookid"/>
+        <result property="bookName" column="name"/>
+        <result property="bookAuthor" column="author"/>
+        <result property="bookDate" column="publishTime"/>
+        <result property="bookState" column="state"/>
+        <result property="bookType" column="type"/>
+        <result property="borrowTime" column="borrowTime"/>
+        <result property="expirationTime" column="expirationTime"/>
+        <result property="returnTime" column="returnTime"/>
+        <result property="borrowCount" column="renewCount"/>
+        <result property="borrowUser" column="borrowUser"/>
+    </resultMap>
+
+    <select id="getInOutRecords" parameterType="String" resultMap="resultMap">
+        SELECT *
+        from (dmtroom room
+            inner join user
+            on room.DMTRoomID = user.roomID)
+                 inner join inoutrecord on user.username = inoutrecord.username
+        WHERE
+    </select>
+
+
+    <select id="findBookByName" parameterType="String" resultMap="resultMap">
+        SELECT *
+        from books
+        WHERE name like #{name}
+           or author like #{name}
+    </select>
+
+    <select id="findBookByID" parameterType="String" resultMap="resultMap">
+        SELECT *
+        from books
+        WHERE bookid = #{id}
+    </select>
+
+    <select id="findAvailableBookByID" parameterType="String" resultMap="resultMap">
+        SELECT *
+        from books
+        WHERE bookid = #{id}
+          and state = 'true'
+    </select>
+
+    <select id="findBorrowedBookInfoByID" parameterType="String" resultMap="resultMap">
+        SELECT *
+        from books
+                 INNER JOIN
+             borrowrecord br
+             on books.bookID = br.bookID
+        where br.bookID = #{bookID}
+          and borrowUser = #{userID}
+          and br.returnTime is null;
+    </select>
+
+    <update id="borrowBook" parameterType="com.sevengroup.campus.bean.DmtManageBean">
+        insert into borrowrecord(bookid, renewCount, borrowUser)
+        values (#{bookID}, #{borrowCount}, #{borrowUser});
+
+        update books
+        set state = 'false'
+        where bookid = #{bookID};
+    </update>
+
+    <update id="borrowAgain" parameterType="com.sevengroup.campus.bean.DmtManageBean">
+        update borrowrecord
+        set returnTime = #{returnTime}
+        where bookID = #{bookID}
+          and borrowUser = #{borrowUser}
+          and returnTime is null;
+
+        insert into borrowrecord(bookid, renewCount, borrowUser, expirationTime)
+        values (#{bookID}, #{borrowCount}, #{borrowUser}, date_add(#{returnTime}, interval 1 MONTH));
+    </update>
+
+</mapper>
