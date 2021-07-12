@@ -4,15 +4,9 @@
 <form id="bookFilterForm" class="layui-form" action="##" onsubmit="return false">
     <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
     <div class="layui-form-item">
-        <label class="layui-form-label">图书名称</label>
+        <label class="layui-form-label">图书或作者名称</label>
         <div class="layui-input-block">
             <input id="inputBar1" type="text" name="bookName" placeholder="" autocomplete="off" class="layui-input">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">图书名称</label>
-        <div class="layui-input-block">
-            <input id="inputBar2" type="text" name="bookAuthor" placeholder="" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
@@ -114,7 +108,7 @@
                 '    text-align: center;\n' +
                 '      display: block;\n' +
                 '    line-height: 2;\n' +
-                '    color: white' +
+                '    color: white ;\n' +
                 '    display: block;\n' +
                 '    margin: 0;\n,)">预约</a>' + "</td></tr>";
         }
@@ -244,8 +238,6 @@
             }
             return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
         });
-
-
     });
     get();
 

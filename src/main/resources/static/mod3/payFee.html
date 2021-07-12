@@ -12,10 +12,10 @@
   <div class="layui-form-item">
     <label class="layui-form-label">缴费类型</label>
     <div class="layui-input-block">
-      <select name="type" lay-filter="payType">
-        <option value="0">水费</option>
-        <option value="1">电费</option>
-        <option value="2">气费</option>
+      <select name="payType" lay-filter="payType">
+        <option value="水费">水费</option>
+        <option value="电费">电费</option>
+        <option value="气费">气费</option>
       </select>
     </div>
   </div>
@@ -29,7 +29,7 @@
   <div class="layui-form-item">
     <label class="layui-form-label">充值金额</label>
     <div class="layui-input-block">
-      <input id="inputBar" type="text" name="inputNum" placeholder="100" autocomplete="off" class="layui-input">
+      <input id="inputBar" type="text" name="money" placeholder="100" autocomplete="off" class="layui-input">
     </div>
   </div>
   <div class="layui-form-item">
@@ -47,9 +47,9 @@
     // layer.msg($('#payForm').serialize());
     $.ajax({
       //几个参数需要注意一下
-      type: "POST",//方法类型
+      type: "GET",//方法类型
       dataType: "json",//预期服务器返回的数据类型
-      url: "http://localhost:8080/mod3/pay",//url
+      url: "http://localhost:8080/money/payFromCard",//url
       data: $('#payForm').serialize(),
       // data: {payNum : inputNum},
       success: function (datas) {
