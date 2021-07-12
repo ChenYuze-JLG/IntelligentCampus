@@ -3,6 +3,7 @@
 
 ## 数据库更改todo（下划线为已做更改）
 * activity表需要图片的url这个属性(imgUrl)
+* activity表需要活动类型这个属性(type)
 * news表需要标题这个属性(title)
 * ~~books表：添加是否在馆信息(state)~~
 * ~~borrowrecord表：borrowTime更改为timestamp类型~~
