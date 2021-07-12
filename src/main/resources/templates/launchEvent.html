@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>launch activities</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link rel="stylesheet" href="../static/layui/css/layui.css" media="all">
+</head>
+<body>
+
+<iframe name="toppage" width=100% height=100%
+        marginwidth=0 marginheight=0 frameborder="no" border="0"
+        style="margin-bottom: -60px"
+        src="../static/head.html" >
+</iframe>
+
+<!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+<form class="layui-form" action="/saveActivity" method="post">
+  <div class="layui-form-item">
+    <label class="layui-form-label">活动名</label>
+    <div class="layui-input-block">
+      <input type="text" name="name" placeholder="请输入活动名" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">活动类型</label>
+    <div class="layui-input-block">
+      <select name="interest" lay-filter="aihao">
+        <option value="音乐">音乐</option>
+        <option value="节日">节日</option>
+        <option value="体育">体育</option>
+        <option value="美食">美食</option>
+        <option value="美术">美术</option>
+        <option value="游戏">游戏</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">报名开始</label>
+    <div class="layui-input-block">
+      <input type="text" name="rs" placeholder="请选择报名开始时间" autocomplete="off" class="layui-input" id="date1">
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">报名结束</label>
+    <div class="layui-input-block">
+      <input type="text" name="re" placeholder="请选择报名结束时间" autocomplete="off" class="layui-input" id="date2">
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">活动开始</label>
+    <div class="layui-input-block">
+      <input type="text" name="as" placeholder="请选择活动开始时间" autocomplete="off" class="layui-input" id="date3">
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">活动结束</label>
+    <div class="layui-input-block">
+      <input type="text" name="ae" placeholder="请选择活动结束时间" autocomplete="off" class="layui-input" id="date4">
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">宣传图片</label>
+    <div class="layui-upload">
+
+      <button type="button" name="imgButton" class="layui-btn" id="uploadPic" style="float: left">
+        <i class="layui-icon">&#xe67c;</i>上传图片
+      </button>
+
+      <img class="layui-upload-img" id="img1" width="60px" name="img"
+           height="40px" alt="" style="float: left; margin-left: 20px">
+      <div style="width: 95px; float: left; margin-left: 20px; margin-top: 10px">
+        <div class="layui-progress layui-progress-big" lay-showpercent="yes" lay-filter="bar">
+          <div class="layui-progress-bar" lay-percent=""></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="layui-form-item layui-form-text">
+    <label class="layui-form-label">请填写描述</label>
+    <div class="layui-input-block">
+      <textarea placeholder="请输入内容" class="layui-textarea" name="text"></textarea>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+      <button class="layui-btn" lay-submit lay-filter="*">立即提交</button>
+      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+    </div>
+  </div>
+  <!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
+</form>
+<script src="../static/layui/layui.js"></script>
+<script>
+  layui.use('form', function(){
+    var form = layui.form;
+
+    //各种基于事件的操作，下面会有进一步介绍
+  });
+  layui.use('laydate', function(){
+    var laydate = layui.laydate;
+
+    //执行一个laydate实例
+    laydate.render({
+      elem: '#date1', //指定元素
+    });
+  });
+  layui.use('laydate', function(){
+    var laydate = layui.laydate;
+
+    //执行一个laydate实例
+    laydate.render({
+      elem: '#date2', //指定元素
+    });
+  });
+  layui.use('laydate', function(){
+    var laydate = layui.laydate;
+
+    //执行一个laydate实例
+    laydate.render({
+      elem: '#date3', //指定元素
+    });
+  });
+  layui.use('laydate', function(){
+    var laydate = layui.laydate;
+
+    //执行一个laydate实例
+    laydate.render({
+      elem: '#date4', //指定元素
+    });
+  });
+  layui.use(['upload', 'element', 'layer'], function(){
+    var $ = layui.jquery
+            ,upload = layui.upload
+            ,element = layui.element
+            ,layer = layui.layer;
+
+    //常规使用 - 普通图片上传
+    var uploadInst = upload.render({
+      elem: '#uploadPic'
+      ,url: '/activity' //改成您自己的上传接口
+      ,before: function(obj){
+        //预读本地文件示例，不支持ie8
+        obj.preview(function(index, file, result){
+          $('#img1').attr('src', result); //图片链接（base64）
+        });
+
+        element.progress('bar', '0%'); //进度条复位
+        layer.msg('上传中', {icon: 16, time: 0});
+      }
+      ,done: function(res){
+
+      }
+      ,error: function(){
+
+      }
+      //进度条
+      ,progress: function(n, elem, e){
+        element.progress('bar', n + '%'); //可配合 layui 进度条元素使用
+        if(n === 100){
+          layer.msg('上传完毕', {icon: 1});
+        }
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

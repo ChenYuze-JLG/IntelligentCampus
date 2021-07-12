@@ -1,0 +1,50 @@
+<a href="javascript:get();" style="padding: 0 0px"><i class="fa fa-refresh fa-lg"></i> <span >刷新</span></a>
+<table class="layui-table" id="bookTable">
+    <colgroup>
+      <col>
+    </colgroup>
+    <thead>
+    <tr>
+      <th>用户名</th>
+        <th>出入时间</th>
+    </tr>
+    </thead>
+    <tbody id="inOutTableBody">
+<!--    <tr>-->
+<!--      <td>1</td>-->
+<!--      <td>2016-11-29</td>-->
+<!--      <td>人生就像是一场修行</td>-->
+<!--    </tr>-->
+
+    </tbody>
+  </table>
+<script>
+    function get() {
+        $.ajax({
+            //几个参数需要注意一下
+            type: "GET",//方法类型
+            dataType: "json",//预期服务器返回的数据类型
+            url: "http://localhost:8080/mod3/inOutRecord",//url
+            data: $('#form1').serialize(),
+            success: function (datas) {
+                // var datas = JSON.parse(datas); //jsonData是该下路下的所有区间（json格式）
+                layer.msg(datas)
+                console.log(datas);//打印服务端返回的数据(调试用)
+                var tbhtml = "123";
+                console.log(datas.length);//打印服务端返回的数据(调试用)
+
+                for(var i = 0;i<datas.length;i++){
+                    layer.msg(datas[i].name);
+                    tbhtml+="<tr><td>"+datas[i].username+"</td><td>"+datas[i].inOutTime+"</td></tr>";
+                }
+
+                $('#inOutTableBody').html(tbhtml);
+            },
+            error: function () {
+                layer.msg("异常！");
+            }
+
+        });
+    };
+    get();
+</script>

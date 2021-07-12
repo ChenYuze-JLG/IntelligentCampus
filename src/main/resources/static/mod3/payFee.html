@@ -1,0 +1,68 @@
+
+<form id="payForm" class="layui-form" action="##" onsubmit="return false"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+  <div class="layui-form-item">
+    <label class="layui-form-label">套餐</label>
+    <div class="layui-input-block">
+      <select name="food" lay-filter="taoChan">
+        <option value="0">40元无限流量</option>
+        <option value="1">10元10GB</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">自动续费</label>
+    <div class="layui-input-block">
+      <input type="checkbox" lay-skin="switch" name="autoContinuePay" >
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+      <button class="layui-btn" lay-submit lay-filter="pay">立即提交</button>
+      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+    </div>
+  </div>
+  <!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
+</form>
+
+<script>
+  layer.msg("pay");
+  function pay() {
+    // layer.msg($('#payForm').serialize());
+    $.ajax({
+      //几个参数需要注意一下
+      type: "POST",//方法类型
+      dataType: "json",//预期服务器返回的数据类型
+      url: "http://localhost:8080/mod3/pay",//url
+      data: $('#netFoodForm').serialize(),
+      // data: {payNum : inputNum},
+      success: function (result) {
+        console.log(result);//打印服务端返回的数据(调试用)
+        if (result.resultCode == 200) {
+          layer.msg("SUCCESS");
+        }
+        ;
+      },
+      error: function () {
+        layer.msg("异常！");
+      }
+
+    });
+  };
+  layui.use('form', function(){
+    var form = layui.form;
+    form.render();
+    //各种基于事件的操作，下面会有进一步介绍
+    form.on('submit(pay)', function(data){
+
+      console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
+      console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
+      console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+      layer.msg("pay...");
+      pay();
+      return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+    });
+
+  });
+</script>
