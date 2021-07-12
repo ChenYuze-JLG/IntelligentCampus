@@ -31,4 +31,10 @@ public class ActivityServiceImpl implements ActivityService {
         Timestamp timeAe = Timestamp.valueOf(ae);
         activityMapper.saveActivity(name, activityID, organizer, description, timeRs, timeRe, timeAs, timeAe, imgPath);
     }
+
+    @Override
+    public void saveSignUp(String aID, String uID, String info) {
+        System.out.println("cyz cyz");
+        activityMapper.saveSignUp(aID, uID, info);
+    }
 }

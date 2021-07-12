@@ -17,4 +17,9 @@ Timestamp timeRe, Timestamp timeAs, Timestamp timeAe, String imgPath);
                              #{timeRs}, #{timeRe}, #{timeAs}, #{timeAe}, #{imgPath});
     </insert>
 
+    <insert id="saveSignUp">
+        INSERT INTO activityrecord(activityID, user , info, verify)
+        values (#{aID}, #{uID}, #{info}, 0)
+    </insert>
+
 </mapper>

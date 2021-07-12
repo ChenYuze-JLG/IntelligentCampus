@@ -10,4 +10,5 @@ import java.util.List;
 public interface ActivityMapper {
     List<ActivityBean> listActivities();
     void saveActivity(String name, String activityID, String organizer, String description, Timestamp timeRs, Timestamp timeRe, Timestamp timeAs, Timestamp timeAe, String imgPath);
+    void saveSignUp(String aID, String uID, String info);
 }
