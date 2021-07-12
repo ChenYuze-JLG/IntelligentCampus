@@ -15,5 +15,11 @@ import java.util.List;
 @Mapper
 public interface DmtManageMapper {
 
-    List<DmtManageBean> getInOutRecords(String dormitoryID);
+    List<DmtManageBean> getInOutRecordsAll(String dormitoryID);
+
+    String getUserRole(String userID);
+
+    List<DmtManageBean> getInOutRecordsSelf(String userID);
+
+    String getDmtID(String userID);
 }

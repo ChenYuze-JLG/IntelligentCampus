@@ -51,7 +51,7 @@
 
     </select>
 
-    <select id="payFromCard" resultType="int">
+    <insert id="payFromCard">
 
         update card
         set balance = balance - #{money}
@@ -63,6 +63,6 @@
         insert into transrecord (money, type, username)
         values (#{money}, #{payType}, #{userID});
 
-    </select>
+    </insert>
 
 </mapper>

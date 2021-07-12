@@ -13,6 +13,6 @@ import java.util.List;
 
 
 public interface DmtManageService {
-    List<DmtManageBean> getInOutRecords(String dormitoryID);
+    List<DmtManageBean> getInOutRecords(String userID);
 
 }
