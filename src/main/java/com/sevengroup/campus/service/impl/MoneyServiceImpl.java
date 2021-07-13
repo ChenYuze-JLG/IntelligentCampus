@@ -61,15 +61,17 @@ public class MoneyServiceImpl implements MoneyService {
     @Override
     @Transactional
     public boolean payFromCard(String userID, String payType, double money) {
-
+        System.out.println(moneyMapper.findBalanceByID(userID));
         if (moneyMapper.findBalanceByID(userID) >= money) {
             try {
                 return moneyMapper.payFromCard(userID, payType, money) != 0;
             } catch (Exception e) {
                 log.error("【error】:", e);
+                System.out.println(e);
                 return false;
             }
         } else {
+            System.out.println("else");
             return false;
         }
     }

@@ -61,7 +61,7 @@ public class MoneyController {
     public boolean dealRequestPayFromCard(@RequestParam(value = "payType") String payType,
                                           @RequestParam(value = "money") Double money, HttpServletRequest request){
         String userID = tool.getUserID(request);
-        userID = "20213941";
+//        userID = "20213941";
         return moneyService.payFromCard(userID, payType, money);
     }
 }

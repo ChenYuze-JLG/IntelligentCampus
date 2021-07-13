@@ -63,8 +63,8 @@
     </select>
 
     <update id="borrowBook" parameterType="com.sevengroup.campus.bean.BookBean">
-        insert into borrowrecord(bookid, renewCount, borrowUser)
-        values (#{bookID}, #{borrowCount}, #{borrowUser});
+        insert into borrowrecord(bookid, renewCount, borrowUser,borrowTime,expirationTime)
+        values (#{bookID}, #{borrowCount}, #{borrowUser},#{borrowTime},date_add(#{borrowTime}, interval 1 MONTH));
 
         update books
         set state = 'false'

@@ -51,6 +51,11 @@ public class BookServiceImpl implements BookService {
     public boolean addBorrowRecord(BookBean bookBean) {
         int res = 0;
         try {
+//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
+            Date currentDate = new Date();
+            String date = sdf.format(currentDate);
+            bookBean.setBorrowTime(date);
             res = bookMapper.borrowBook(bookBean);
         } catch (Exception e) {
             log.error("【error】:" + e);
@@ -65,7 +70,8 @@ public class BookServiceImpl implements BookService {
         int res = 0;
         final int MAX_COUNT = 3;
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
             Date currentDate = new Date();
             String date = sdf.format(currentDate);
             Date expirationTime = sdf.parse(bookBean.getExpirationTime());

@@ -34,8 +34,11 @@
     <select id="getInOutRecordsSelf" parameterType="String" resultMap="resultMap">
 
         SELECT *
-        from inoutrecord
-        WHERE username = #{userID};
+        from (dmtroom room
+            inner join user
+            on room.DMTRoomID = user.roomID)
+                 inner join inoutrecord on user.username = inoutrecord.username
+        WHERE user.username = #{userID};
 
     </select>
 

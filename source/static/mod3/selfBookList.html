@@ -141,9 +141,12 @@
             success: function (datas) {
                 // var datas = JSON.parse(datas); //jsonData是该下路下的所有区间（json格式）
                 console.log(datas);//打印服务端返回的数据(调试用)
-                layer.msg("get succeed");
-                layer.msg(datas);
-
+                if(datas == true) {
+                    layer.msg("SUCCESS");
+                }
+                else {
+                    layer.msg("FAILED");
+                }
             },
             error: function () {
                 layer.msg("异常！");
@@ -161,9 +164,12 @@
             success: function (datas) {
                 // var datas = JSON.parse(datas); //jsonData是该下路下的所有区间（json格式）
                 console.log(datas);//打印服务端返回的数据(调试用)
-                layer.msg("get succeed");
-                layer.msg(datas);
-
+                if(datas == true) {
+                    layer.msg("SUCCESS");
+                }
+                else {
+                    layer.msg("FAILED");
+                }
             },
             error: function () {
                 layer.msg("异常！");

@@ -206,9 +206,12 @@
             success: function (datas) {
                 // var datas = JSON.parse(datas); //jsonData是该下路下的所有区间（json格式）
                 console.log(datas);//打印服务端返回的数据(调试用)
-                layer.msg("post succeed");
-                layer.msg(datas);
-
+                if(datas == true) {
+                    layer.msg("SUCCESS");
+                }
+                else {
+                    layer.msg("FAILED");
+                }
             },
             error: function () {
                 layer.msg("异常！");
@@ -229,11 +232,9 @@
             layer.msg("select...");
             if (data.field.bookName != "") {
                 console.log("select");
-                layer.msg("select...");
                 selectBookByName(data.field.bookName);
             } else {
                 console.log("get");
-                layer.msg("get...");
                 get();
             }
             return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
