@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>成绩查询</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1.maximum-scale=1">
+    <link rel="stylesheet" href="../static/layui/css//layui.css" media="all">
+    <script type="text/javascript" src="../static/jquery-3.6.0.min.js"></script>
+</head>
+<style>
+    /*表头字体加粗*/
+    /*.layui-table th{*/
+    /*    font-weight: bold;*/
+    /*}*/
+</style>
+<body class="score-select">
+<div class="layui-layout layui-layout-admin">
+    <!--引入head.html-->
+<!--    <div>-->
+<!--        <iframe name="toppage" width=100% height=100%-->
+<!--                marginwidth=0 marginheight=0 frameborder="no" border="0"-->
+<!--                src="../static/head.html">-->
+<!--        </iframe>-->
+<!--    </div>-->
+    <!--右侧主体-->
+<!--    <div id="content" style="height: 200px;width: 800px;float: left">-->
+    <div class="layui-bg-gray" style="padding: 30px;">
+        <form onsubmit="return false" >
+            <el-row>
+                <el-col span="8">
+                    年份：
+                    <select id="year"></select>
+                </el-col>
+                <el-col span="8">
+                    学期：
+                    <select id="semester">
+                        <option value="春">春季学期</option>
+                        <option value="秋">秋季学期</option>
+                    </select>
+                </el-col>
+                <button onclick="requestData()">检索</button>
+            </el-row>
+        </form>
+        <table class="layui-table" id="scoreTable">
+            <thead>
+            <tr>
+                <th style="font-weight: bold">课程名称</th>
+                <th style="font-weight: bold">成绩</th>
+                <th style="font-weight: bold">学分</th>
+                <th style="font-weight: bold">教师</th>
+                <th style="font-weight: bold">教学班级</th>
+            </tr>
+            </thead>
+            <tbody id="scoreTableBody">
+
+            </tbody>
+        </table>
+        <div id="scoreTablePage"></div>
+    </div>
+</div>
+
+<script src="../static/layui/layui.js" charset="utf-8"></script>
+<script>
+    var gcount;
+    var gdata;
+
+     window.onload= function (){
+         //获取当前年份
+         var year = new Date().getFullYear();
+         //获取下拉列表
+         var sel = document.getElementById("year");
+         //循环添加2006年至当前年份的每个年份到下拉列表
+         for (var i = year; i > 2006;i--){
+             var option = document.createElement('option');
+             option.value = i;
+             var txt = document.createTextNode(i);
+             option.appendChild(txt);
+             sel.appendChild(option);
+         }
+     }
+
+    function requestData(){
+        //获取选择的年份
+        var options_year = $("#year option:selected");
+        var year = options_year.val();
+        //获取选择的学期
+        var options_semester = $("#semester option:selected");
+        var semester = options_semester.val();
+        //确定查询的成绩所在的时间范围
+        var date;
+        if (semester == "春"){
+            date=year+"-8-1";//月份参数值要比实际需要的值小1
+        }else if (semester == "秋"){
+            year=(+year)+1;
+            date=year+"-2-1";
+        }else {
+            alert("日期选择异常");
+        }
+        $.ajax({
+            url:"http://localhost:8080/queryScoreForStudent/"+date,
+            type:"post",
+            dataType:"json",
+            success:function (data) {
+                /*这个方法里是ajax发送请求成功后执行的代码*/
+                //alert("成功了吗？");
+                console.log(data);
+                gdata=data;
+                gcount=data.length;
+                layui.use('laypage', function (){
+                    var laypage = layui.laypage;
+                    laypage.render({
+                        elem:'scoreTablePage',//分页器id
+                        count:gcount,//数据总数
+                        limit:10,//每页数据项数
+                        jump:function (obj,first){
+                            //obj包含了当前分页的所有参数，比如：
+                            // console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
+                            // console.log(obj.limit); //得到每页显示的条数
+
+                            //首次不执行
+                            // if(!first){
+                            //do something
+                            console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
+                            console.log(obj.limit); //得到每页显示的条数
+                            var start = (obj.curr - 1) * obj.limit;
+                            var end;
+                            if(start + obj.limit > gcount ){
+                                end = gcount;
+                            }
+                            else{
+                                end = start + obj.limit;
+                            }
+                            showData(start,end);
+                        }
+                    });
+                });
+                //clearScoreTable();
+                //showData(data);
+                //console.log(data);
+            },
+            error:function (msg) {
+                alert("ajax连接异常："+msg);
+            }
+        })
+    }
+
+    function showData(start,end) {
+        var str = "";
+        for (var i = start; i < end; i++){
+            //拼接表格的行和列
+            str += "<tr><td>"+gdata[i].courseName
+                +"</td><td>"+gdata[i].score
+                +"</td><td>"+gdata[i].credit
+                +"</td><td>"+gdata[i].teacher
+                +"</td><td>"+gdata[i].teachClassName
+                +"</td></tr>";
+            //$("#scoreTable").append(str);
+        }
+        $("#scoreTableBody").html(str);
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sevengroup.campus.mapper.ExamQueryMapper">
+
+    <select id="getExamSchedule" resultType="com.sevengroup.campus.bean.ExamForStudentBean">
+        select distinct c.courseID, c.name as courseName, e.startTime as startExamTime, e.examTime, e.classroomID
+        from tcsnamelist as tl
+            left join teachclass as tc on tl.teachClassID = tc.teachClassID
+            left join examschedule as e on tc.teachClassID = e.teachClassID
+            left join course as c on tc.courseID=c.courseID
+        where tl.studentID = #{studentID} and tc.startDate > #{startDate} and #{endDate} > tc.endDate and e.startTime > 0
+    </select>
+
+</mapper>

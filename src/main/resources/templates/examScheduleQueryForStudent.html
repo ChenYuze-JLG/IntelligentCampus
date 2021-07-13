@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>考试安排</title>
+    <link rel="stylesheet" href="../static/layui/css/layui.css" media="all">
+    <link src="../static/layui/layui.js">
+<!--    &lt;!&ndash; 引入 layui.css &ndash;&gt;-->
+<!--    <link rel="stylesheet" href="//unpkg.com/layui@2.6.8/dist/css/layui.css">-->
+
+<!--    &lt;!&ndash; 引入 layui.js &ndash;&gt;-->
+<!--    <script src="//unpkg.com/layui@2.6.8/dist/layui.js">-->
+    <script type="text/javascript" src="../static/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+    <!--引入head.html-->
+<!--    <div>-->
+<!--        <iframe name="toppage" width=100% height=100%-->
+<!--                marginwidth=0 marginheight=0 frameborder="no" border="0"-->
+<!--                src="../static/head.html">-->
+<!--        </iframe>-->
+<!--    </div>-->
+    <!--右侧主体-->
+    <div class="layui-bg-gray" style="padding: 30px;">
+        <span style="font-size: 20px; color: black">我的考表：</span>
+        <div class="layui-bg-gray" style="padding: 30px;">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div id="tips_color" class="layui-panel" style="background-color: #fffbe6">
+                        <div style="padding: 30px 30px; color: black" >
+                            <i class="layui-icon layui-icon-tips" style="font-size: 20px; color: darkorange"></i>&nbsp;温馨提示:<br/>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1、请持有效证件（身份证、校园卡或学生证）提前15分钟进入考场，证件信息模糊不清或无证件的，一律不得参加考试<br/>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、严禁携带手机入场
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-bg-gray" style="padding: 30px;">
+            <div id="exam_content" class="layui-form-item layui-row layui-col-space15">
+<!--                考试内容卡片模板-->
+<!--                <div class="layui-col-md4">-->
+<!--                    <div class="layui-card">-->
+<!--                        <div class="layui-card-header"><i class="layui-icon layui-icon-file" style="color: lawngreen"></i> [CT35826]多媒体处理技术</div>-->
+<!--                        <div class="layui-card-body">-->
+<!--                            <i class="layui-icon layui-icon-date" style="color: lawngreen"></i><span>2021-06-09 [15周 星期三] 15:00-17:00<br/></span>-->
+<!--                            <i class="layui-icon layui-icon-location" style="color: lawngreen"></i><span>D区-D1314<br/></span>-->
+<!--                            <i class="layui-icon layui-icon-form" style="color: lawngreen"></i><span>XX号座位</span>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.onload = function (){
+        var date_now = new Date();
+        //获取当前时间的年份
+        var year = date_now.getFullYear();
+        //获取当前时间所在的学期
+        var semester;
+        var month = date_now.getMonth();
+        if (month>=2&&month<=8){
+            semester = "春";
+        }else {
+            semester = "秋";
+        }
+        //确定查询的成绩所在的时间范围
+        var date;
+        if (semester == "春"){
+            date=year+"-8-1";//月份参数值要比实际需要的值小1
+        }else if (semester == "秋"){
+            year=(+year)+1;
+            date=year+"-2-1";
+        }else {
+            alert("日期选择异常");
+        }
+        $.ajax({
+            url:"http://localhost:8080/examScheduleQuery/"+date,
+            type:"post",
+            dataType:"json",
+            success:function (data) {
+                /*这个方法里是ajax发送请求成功后执行的代码*/
+                //alert("成功了吗？");
+                // console.log(data);
+                showdata(data);
+            },
+            error:function (msg) {
+                alert("ajax连接异常："+msg);
+            }
+        })
+    }
+
+    function showdata(data){
+        var str = "";
+        for (var i = 0; i < data.length; i++){
+            //计算考试开始于结束时间
+             var startExamTime;
+             var endExamTime;
+             //调整时间显示的格式
+             if (data[i].startExamTime.minutes < 10){
+                 startExamTime = data[i].startExamTime.hours+":0"+data[i].startExamTime.minutes;
+                 endExamTime = (data[i].startExamTime.hours+data[i].examTime)+":0"+data[i].startExamTime.minutes;
+             }else {
+                 startExamTime = data[i].startExamTime.hours+":"+data[i].startExamTime.minutes;
+                 endExamTime = (data[i].startExamTime.hours+data[i].examTime)+":"+data[i].startExamTime.minutes;
+             }
+             //考试时间范围
+             var examTimePeriod = startExamTime+"-"+endExamTime;
+             //计算考试当天的周次以及当天是一周的哪一天
+             var week,day;
+             //计算考试当天与每学期开学日期的时间差（开学日期：XXXX-2-1或XXXX-8-1）
+             if (data[i].startExamTime.month>=2 && data[i].startExamTime.month<8){
+                 var days = [new Date(data[i].startExamTime.year+1900, data[i].startExamTime.month, data[i].startExamTime.date)
+                     - new Date(data[i].startExamTime.year+1900, 2-1, 1)]/(1000 * 60 * 60 * 24);
+                 week = parseInt(days/7)+1;
+             }else if (data[i].startExamTime.month>=8){
+                 var days = [new Date(data[i].startExamTime.year+1900, data[i].startExamTime.month, data[i].startExamTime.date)
+                 - new Date(data[i].startExamTime.year+1900, 8-1, 1)]/(1000 * 60 * 60 * 24);
+                 week = parseInt(days/7)+1;
+             }else {
+                 var days = [new Date(data[i].startExamTime.year+1900, data[i].startExamTime.month, data[i].startExamTime.date)
+                 - new Date(data[i].startExamTime.year+1900-1, 8-1, 1)]/(1000 * 60 * 60 * 24);
+                 week = parseInt(days/7)+1;
+             }
+             //.day为Date转换为json格式的数据的属性，代表一周的第几天
+             switch (data[i].startExamTime.day) {
+                 case 0:
+                     day = " ["+week+"周 星期日] ";
+                 case 1:
+                     day = " ["+week+"周 星期一] ";
+                 case 2:
+                     day = " ["+week+"周 星期二] ";
+                 case 3:
+                     day = " ["+week+"周 星期三] ";
+                 case 4:
+                     day = " ["+week+"周 星期四] ";
+                 case 5:
+                     day = " ["+week+"周 星期五] ";
+                 case 6:
+                     day = " ["+week+"周 星期六] ";
+                 default:
+             }
+            str="<div class=\"layui-col-md4\">"
+                +"<div class=\"layui-card\">"
+                +"<div class=\"layui-card-header\"><i class=\"layui-icon layui-icon-file\""
+                +"style=\"color: lawngreen\"></i>"+"["+data[i].courseID+"] "+data[i].courseName
+                +"</div>"
+                +"<div class=\"layui-card-body\">"
+                +"<i class=\"layui-icon layui-icon-date\" style=\"color: lawngreen\"></i><span>"
+                + (data[i].startExamTime.year+1900) +"-"+(data[i].startExamTime.month+1)+"-"+data[i].startExamTime.date
+                + day
+                // +data[i].startExanTime.hours+":"+data[i].startExanTime.minutes+":"+data[i].startExanTime.seconds
+                // +"-"+(data[i].startExanTime.hours+data[i].examTime)+":"+data[i].startExanTime.minutes+":"+data[i].startExanTime.seconds
+                + examTimePeriod
+                +"<br/></span>"
+                +"<i class=\"layui-icon layui-icon-location\""
+                +"style=\"color: lawngreen\"></i><span>"+"考试教室:"+data[i].classroomID+"<br/></span>"
+                +"<i class=\"layui-icon layui-icon-form\" style=\"color: lawngreen\"></i><span>"+"XX号座位"+"</span>"
+                +"</div>"
+                +"</div>"
+                +"</div>";
+            $("#exam_content").append(str);
+        }
+    }
+
+</script>
+</body>
+</html>
