@@ -103,14 +103,14 @@
                 "</td><td>" + gdatas[i].returnTime +
                 "</td><td style='padding: 0'>"
                 + "<a href='javascript:bookBorrowByID(" + gdatas[i].bookID + ")' " +
-                'style="background-color:#009688;' +
-                '    height: 30px;\n' +
-                '    text-align: center;\n' +
-                '      display: block;\n' +
-                '    line-height: 2;\n' +
-                '    color: white ;\n' +
-                '    display: block;\n' +
-                '    margin: 0;\n,)">预约</a>' + "</td></tr>";
+                // 'style="background-color:#009688;' +
+                // '    height: 30px;\n' +
+                // '    text-align: center;\n' +
+                // '      display: block;\n' +
+                // '    line-height: 2;\n' +
+                // '    color: white ;\n' +
+                // '    display: block;\n' +
+                '    class = "layui-btn" >预约</a>' + "</td></tr>";
         }
         console.log(tbhtml);
         $('#bookTableBody').html(tbhtml);

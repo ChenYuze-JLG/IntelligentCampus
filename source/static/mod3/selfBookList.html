@@ -74,24 +74,17 @@
                 "</td><td>" + gdatas[i].returnTime +
                 "</td><td style='padding: 0'>"
                 +"<a href='javascript:borrowAgainByBookID(" + gdatas[i].bookID +")' "+
-                'style="background-color:#009688;' +
-                '    height: 30px;\n' +
-                '    text-align: center;\n' +
-                '      display: block;\n' +
-                '    line-height: 2;\n' +
-                '    color: white ;\n' +
-                '    display: block;\n' +
-                '    margin: 0;\n,)">续借</a>'+"</td>"+
+                ' class = "layui-btn" >续借</a>'+"</td>"+
                 "</td><td style='padding: 0'>"
                 +"<a href='javascript:lendByBookID(" + gdatas[i].bookID +")' "+
-                'style="background-color:#009688;' +
-                '    height: 30px;\n' +
-                '    text-align: center;\n' +
-                '      display: block;\n' +
-                '    line-height: 2;\n' +
-                '    color: white ;\n' +
-                '    display: block;\n' +
-                '    margin: 0;\n,)">转借</a>'+"</td>"+
+                // 'style="background-color:#009688;' +
+                // '    height: 30px;\n' +
+                // '    text-align: center;\n' +
+                // '      display: block;\n' +
+                // '    line-height: 2;\n' +
+                // '    color: white ;\n' +
+                // '    display: block;\n' +
+                '    class = "layui-btn">转借</a>'+"</td>"+
                 "</tr>";
         }
         $('#bookTableBody').html(tbhtml);
