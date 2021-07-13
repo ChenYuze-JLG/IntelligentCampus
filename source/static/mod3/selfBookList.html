@@ -16,7 +16,7 @@
         <th>状态</th>
         <th>图书作者</th>
         <th>类型</th>
-        <th>借阅次数</th>
+        <th>续借次数</th>
         <th>借阅时间</th>
         <th>借阅人</th>
         <th>超期时间</th>
@@ -73,7 +73,7 @@
                 "</td><td>" + gdatas[i].expirationTime +
                 "</td><td>" + gdatas[i].returnTime +
                 "</td><td style='padding: 0'>"
-                +"<a href='javascript:funcByBookID(" + gdatas[i].bookID +")' "+
+                +"<a href='javascript:borrowAgainByBookID(" + gdatas[i].bookID +")' "+
                 'style="background-color:#009688;' +
                 '    height: 30px;\n' +
                 '    text-align: center;\n' +
@@ -83,7 +83,7 @@
                 '    display: block;\n' +
                 '    margin: 0;\n,)">续借</a>'+"</td>"+
                 "</td><td style='padding: 0'>"
-                +"<a href='javascript:funcByBookID(" + gdatas[i].bookID +")' "+
+                +"<a href='javascript:lendByBookID(" + gdatas[i].bookID +")' "+
                 'style="background-color:#009688;' +
                 '    height: 30px;\n' +
                 '    text-align: center;\n' +
@@ -134,14 +134,14 @@
     function borrowAgainByBookID(bookID) {
         $.ajax({
             //几个参数需要注意一下
-            type: "post",//方法类型
+            type: "get",//方法类型
             dataType: "json",//预期服务器返回的数据类型
             url: "http://localhost:8080/library/borrowAgain",//url
             data: {bookID : bookID},
             success: function (datas) {
                 // var datas = JSON.parse(datas); //jsonData是该下路下的所有区间（json格式）
                 console.log(datas);//打印服务端返回的数据(调试用)
-                layer.msg("post succeed");
+                layer.msg("get succeed");
                 layer.msg(datas);
 
             },
@@ -154,14 +154,14 @@
     function lendByBookID(bookID) {
         $.ajax({
             //几个参数需要注意一下
-            type: "post",//方法类型
+            type: "get",//方法类型
             dataType: "json",//预期服务器返回的数据类型
             url: "http://localhost:8080/library/lend",//url
             data: {bookID : bookID},
             success: function (datas) {
                 // var datas = JSON.parse(datas); //jsonData是该下路下的所有区间（json格式）
                 console.log(datas);//打印服务端返回的数据(调试用)
-                layer.msg("post succeed");
+                layer.msg("get succeed");
                 layer.msg(datas);
 
             },

@@ -1,0 +1,244 @@
+<fieldset class="layui-elem-field layui-field-title site-title">
+    <legend><a name="fixbar">图书列表</a></legend>
+</fieldset>
+<form id="bookFilterForm" class="layui-form" action="##" onsubmit="return false">
+    <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+    <div class="layui-form-item">
+        <label class="layui-form-label">图书或作者名称</label>
+        <div class="layui-input-block">
+            <input id="inputBar1" type="text" name="bookName" placeholder="" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="select">检索</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<a href="javascript:get();" style="padding: 0 0px"><i class="fa fa-refresh fa-lg"></i> <span>刷新</span></a>
+
+<table class="layui-table" id="bookTable">
+    <colgroup>
+        <col>
+    </colgroup>
+<!--    bookAuthor: "老李"-->
+<!--    bookDate: "2021-07-11"-->
+<!--    bookID: "1"-->
+<!--    bookName: "事实上"-->
+<!--    bookState: null-->
+<!--    bookType: "1"-->
+<!--    borrowCount: 0-->
+<!--    borrowTime: null-->
+<!--    borrowUser: null-->
+<!--    expirationTime: null-->
+<!--    returnTime: null-->
+    <thead>
+    <tr>
+        <th>图书编号</th>
+        <th>图书名称</th>
+        <th>出版日期</th>
+        <th>状态</th>
+        <th>图书作者</th>
+        <th>类型</th>
+        <th>续借次数</th>
+        <th>借阅时间</th>
+        <th>借阅人</th>
+        <th>超期时间</th>
+        <th>归还时间</th>
+        <th>预约</th>
+
+    </tr>
+    </thead>
+    <tbody id="bookTableBody">
+    <!--    <tr>-->
+    <!--      <td>1</td>-->
+    <!--      <td>2016-11-29</td>-->
+    <!--      <td>人生就像是一场修行</td>-->
+    <!--    </tr>-->
+
+    </tbody>
+</table>
+
+
+<div id="bookTableBody2"></div>
+
+<script src="/static/build/layui.js"></script>
+</body>
+</html>
+<script>
+    var gcount;
+    var gdatas;
+    var glimit=5;
+    function pagerFunc(obj, first) {
+        //obj包含了当前分页的所有参数，比如：
+        //首次不执行
+        // if(!first){
+        //do something
+        console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
+        console.log(obj.limit); //得到每页显示的条数
+        var start = (obj.curr - 1) * obj.limit;
+        var end;
+        if (start + obj.limit > gcount) {
+            end = gcount;
+        } else {
+            end = start + obj.limit;
+        }
+        mprint(start, end);
+    }
+
+    function mprint(start, end) {
+        var tbhtml = "";
+        for (var i = start; i < end; i++) {
+            tbhtml += "<tr><td>" + gdatas[i].bookID +
+                "</td><td>" + gdatas[i].bookName +
+                "</td><td>" +  gdatas[i].bookDate +
+                "</td><td>" +gdatas[i].bookState +
+                "</td><td>" + gdatas[i].bookAuthor +
+                "</td><td>" + gdatas[i].bookType +
+                "</td><td>" + gdatas[i].borrowCount +
+                "</td><td>" + gdatas[i].borrowTime +
+                "</td><td>" + gdatas[i].borrowUser +
+                "</td><td>" + gdatas[i].expirationTime +
+                "</td><td>" + gdatas[i].returnTime +
+                "</td><td style='padding: 0'>"
+                + "<a href='javascript:bookBorrowByID(" + gdatas[i].bookID + ")' " +
+                'style="background-color:#009688;' +
+                '    height: 30px;\n' +
+                '    text-align: center;\n' +
+                '      display: block;\n' +
+                '    line-height: 2;\n' +
+                '    color: white ;\n' +
+                '    display: block;\n' +
+                '    margin: 0;\n,)">预约</a>' + "</td></tr>";
+        }
+        console.log(tbhtml);
+        $('#bookTableBody').html(tbhtml);
+
+    }
+
+    function get() {
+        $.ajax({
+            //几个参数需要注意一下
+            type: "GET",//方法类型
+            dataType: "json",//预期服务器返回的数据类型
+            url: "http://localhost:8080/library/all",//url
+            // data: $('#form1').serialize(),
+            success: function (datas) {
+                // var datas = JSON.parse(datas); //jsonData是该下路下的所有区间（json格式）
+                // layer.msg(datas)
+                console.log(datas);//打印服务端返回的数据(调试用)
+                // var tbhtml = "";
+                // console.log(datas.length);//打印服务端返回的数据(调试用)
+                // for(var i = 0;i<datas.length;i++){
+                //     layer.msg(datas[i].name);
+                //     tbhtml += "<tr><td>" + datas[i].bookID + "</td><td>" + datas[i].bookName + "</td><td>" + datas[i].bookAuthor +
+                //         "</td><td>" + datas[i].bookYear + "</td><td>" + datas[i].bookType +
+                //         "</td><td>" +"<a herf='javascript:bookBorrowByID(" + datas[i].bookID + ")'>借阅</a>"+"</td></tr>";
+                // }
+                // $('#bookTableBody').html(tbhtml);
+
+                gcount = datas.length;
+                gdatas = datas;
+                console.log('datas.length');//打印服务端返回的数据(调试用)
+                layui.use('laypage', function () {
+                    var laypage = layui.laypage;
+                    //执行一个laypage实例
+                    laypage.render({
+                        elem: 'bookTableBody2' //注意，这里的 test1 是 ID，不用加 # 号
+                        , count: gcount //数据总数，从服务端得到
+                        , limit: glimit
+                        , jump: pagerFunc
+                        // }
+                    });
+
+                });
+            },
+            error: function () {
+                layer.msg("异常！");
+            }
+
+        });
+    };
+
+    function selectBookByName(name) {
+        $.ajax({
+            //几个参数需要注意一下
+            type: "GET",//方法类型
+            dataType: "json",//预期服务器返回的数据类型
+            url: "http://localhost:8080/library/find",//url
+            data: {name: name},
+            success: function (datas) {
+                // var datas = JSON.parse(datas); //jsonData是该下路下的所有区间（json格式）
+                console.log(datas);//打印服务端返回的数据(调试用)
+                console.log(datas.length);//打印服务端返回的数据(调试用)
+
+                gcount = datas.length;
+                gdatas = datas;
+                console.log('datas.length');//打印服务端返回的数据(调试用)
+                layui.use('laypage', function () {
+                    var laypage = layui.laypage;
+                    //执行一个laypage实例
+                    laypage.render({
+                        elem: 'bookTableBody2' //注意，这里的 test1 是 ID，不用加 # 号
+                        , count: gcount //数据总数，从服务端得到
+                        , limit: glimit
+                        , jump: pagerFunc
+                        // }
+                    });
+
+                });
+            },
+            error: function () {
+                layer.msg("异常！");
+            }
+
+        });
+    };
+
+    function bookBorrowByID(bookID) {
+        $.ajax({
+            //几个参数需要注意一下
+            type: "get",//方法类型
+            dataType: "json",//预期服务器返回的数据类型
+            url: "http://localhost:8080/library/order",//url
+            data: {bookID: bookID},
+            success: function (datas) {
+                // var datas = JSON.parse(datas); //jsonData是该下路下的所有区间（json格式）
+                console.log(datas);//打印服务端返回的数据(调试用)
+                layer.msg("post succeed");
+                layer.msg(datas);
+
+            },
+            error: function () {
+                layer.msg("异常！");
+            }
+
+        });
+    };
+    layui.use('form', function () {
+        var form = layui.form;
+        //各种基于事件的操作，下面会有进一步介绍
+        //过滤器test
+        form.on('submit(select)', function (data) {
+
+            console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
+            console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
+            console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+            console.log(data.field.bookName);
+            layer.msg("select...");
+            if (data.field.bookName != "") {
+                console.log("select");
+                layer.msg("select...");
+                selectBookByName(data.field.bookName);
+            } else {
+                console.log("get");
+                layer.msg("get...");
+                get();
+            }
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+    });
+    get();
+
+</script>

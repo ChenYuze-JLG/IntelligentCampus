@@ -65,11 +65,13 @@ public class BookController {
      * 预约借书请求处理
      */
     public boolean dealRequestBorrowBook(@RequestParam(value = "bookID") String bookID, HttpServletRequest request) {
+        System.out.println("getID");
         String userID = tool.getUserID(request);
-
+        System.out.println(userID);
         BookBean bookBean = bookService.getAvailableBookByID(bookID);
-
+        System.out.println("before set");
         bookBean.setBorrowUser(userID);
+        System.out.println("a set");
 
         return bookService.addBorrowRecord(bookBean);
     }
@@ -79,7 +81,9 @@ public class BookController {
      * 续借请求处理
      */
     public boolean dealRequestBorrowAgain(@RequestParam(value = "bookID") String bookID, HttpServletRequest request) {
+        System.out.println("getID");
         String userID = tool.getUserID(request);
+        System.out.println(userID);
 
 
         BookBean bookBean = bookService.getBorrowedBookByID(bookID, userID);

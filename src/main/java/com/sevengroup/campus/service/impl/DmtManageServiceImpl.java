@@ -28,9 +28,13 @@ public class DmtManageServiceImpl implements DmtManageService {
         String dormitoryID = dmtManageMapper.getDmtID(userID);
 
         if (userRole.equals("舍区管理员")) {
+            System.out.println("舍区管理员");
+            System.out.println(dormitoryID);
             return dmtManageMapper.getInOutRecordsAll(dormitoryID);
         }
         else {
+            System.out.println("非舍区管理员");
+            System.out.println(dormitoryID);
             return  dmtManageMapper.getInOutRecordsSelf(userID);
         }
 

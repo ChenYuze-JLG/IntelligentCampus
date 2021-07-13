@@ -66,7 +66,7 @@ public class helloController {
         return "mod3/car";
     }
     @RequestMapping("/test")
-    public String test() {
+    public String mod3Test() {
         return "mod3/index3";
     }
 
