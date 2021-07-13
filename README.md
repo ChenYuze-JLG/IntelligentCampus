@@ -7,6 +7,7 @@
 * activityrecord表需要是否审核(verify)、填报信息(info)两个字段
 * news表需要标题这个属性(title)
 * examschedule表：删除endTime，增加examTime(考试时长)
+* absencerecord表：枚举变量type增加两种枚举类型（"待审核","审核未通过"）
 * ~~books表：添加是否在馆信息(state)~~
 * ~~borrowrecord表：borrowTime更改为timestamp类型~~
 * borrowrecord表：修改renewCount为0-3范围
