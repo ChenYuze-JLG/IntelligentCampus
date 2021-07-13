@@ -29,7 +29,7 @@ public class ScoreRecordController {
      */
 
     // 使用iframe插入的显示成绩页面
-    @RequestMapping("/teachAffairManagement/ViewScore")
+    @RequestMapping("/ViewScore")
     public String showViewScore() {
         return "ViewScore";
     }

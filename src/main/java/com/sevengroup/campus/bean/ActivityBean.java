@@ -1,6 +1,5 @@
 package com.sevengroup.campus.bean;
 
-import jdk.jfr.DataAmount;
 import lombok.Data;
 
 import java.sql.Timestamp;

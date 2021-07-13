@@ -36,7 +36,7 @@ public class ActivityController {
         @Override
         public void addResourceHandlers(ResourceHandlerRegistry registry){
             registry.addResourceHandler("/static/**")
-                    .addResourceLocations("file:E://Intelligence-campus/source/static/");
+                    .addResourceLocations("file:D://IDEA_Project/Intelligence-campus/src/main/resources/static/");
             super.addResourceHandlers(registry);
         }
     }
