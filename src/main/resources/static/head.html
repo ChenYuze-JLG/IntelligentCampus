@@ -20,12 +20,22 @@ body{padding-top:0px;padding-bottom: 0px;}
   <li class="layui-nav-item"><a href="">舍区管理</a></li>
   <li class="layui-nav-item"><a href="">校园服务</a></li>
   <li class="layui-nav-item"><a href="">
-    <img src="yln.jpg" class="layui-nav-img"></a>
-    <dl class="layui-nav-child layui-nav-child-r">
-      <dd>
-        <a href="">管理员</a>
+    <img src="yln.jpg" class="layui-nav-img">
+    <span class="layui-badge-dot"></span>
+    </a>
+    <div style="z-index: 9999;">
+      <dl class="layui-nav-child">
+        <dd>
+          <a href="">管理员</a>
+        </dd>
+        <dd>
+        <a href="../templates/message">
+          消息
+          <span class="layui-badge">10</span>
+        </a>
       </dd>
-    </dl>
+      </dl>
+    </div>
   </li>
 </ul>
 
@@ -33,7 +43,6 @@ body{padding-top:0px;padding-bottom: 0px;}
 <script>
 layui.use(['element', 'form'], function(){
   var element = layui.element;
-
   element.on('nav(test)', function(elem){
     console.log(elem)
   });

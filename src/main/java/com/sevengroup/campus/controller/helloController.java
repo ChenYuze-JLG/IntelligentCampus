@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.annotation.RequestScope;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +24,11 @@ public class helloController {
 //    public String show() {
 //        return "teachAffair";
 //    }
+
+    @RequestMapping("head")
+    public String head() {
+        return "head";
+    }
 
     @RequestMapping("login")
     public String hello() {

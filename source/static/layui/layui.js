@@ -5499,13 +5499,13 @@ layui.define("jquery", function (t) {
             s = n.find("." + e + "-text");
         return n.css("width", a).attr("lay-percent", a), s.text(a), this
     };
-    var o = ".layui-nav",
-        r = "layui-nav-item",
-        c = "layui-nav-bar",
-        u = "layui-nav-tree",
-        y = "layui-nav-child",
-        d = "layui-nav-child-c",
-        f = "layui-nav-more",
+    var o = ".mylayui-nav",
+        r = "mylayui-nav-item",
+        c = "mylayui-nav-bar",
+        u = "mylayui-nav-tree",
+        y = "mylayui-nav-child",
+        d = "mylayui-nav-child-c",
+        f = "mylayui-nav-more",
         h = "layui-icon-down",
         p = "layui-anim layui-anim-upbit",
         b = {

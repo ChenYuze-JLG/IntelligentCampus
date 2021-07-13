@@ -34,6 +34,12 @@ public class ScoreRecordController {
         return "ViewScore";
     }
 
+    // 使用iframe插入的显示成绩页面
+    @RequestMapping("/ViewScore")
+    public String showViewScore1() {
+        return "ViewScore";
+    }
+
     // 学生查询成绩
     @RequestMapping(value = "/teachAffairManagement/ScoreRecord/getScoreForStudent")
     @ResponseBody
