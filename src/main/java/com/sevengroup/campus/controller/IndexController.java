@@ -37,4 +37,9 @@ public class IndexController {
         return "index";
     }
 
+    @RequestMapping(value = "/message")
+    public String showMessages() {
+        return "message";
+    }
+
 }

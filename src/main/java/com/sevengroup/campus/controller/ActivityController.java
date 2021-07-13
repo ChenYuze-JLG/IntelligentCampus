@@ -5,10 +5,7 @@ import com.sevengroup.campus.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -20,7 +17,10 @@ import java.util.*;
 @Controller
 public class ActivityController {
 
-    String imgPath;
+    private String imgPath;
+    private String imgUrl;
+    private String imgInfo;
+    private String activityID;
 
     @Autowired
     ActivityService activityService;
@@ -132,6 +132,40 @@ public class ActivityController {
     @RequestMapping(value = "/launchEvent", method = RequestMethod.GET)
     String launchEvent() {
         return "launchEvent";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/activitySignUp", method = RequestMethod.POST)
+    Map<String, Object> activityInfo(@RequestParam Map<String, String> x) {
+        System.out.println(x.get("url"));
+        System.out.println(x.get("description"));
+        imgUrl = x.get("url");
+        imgInfo = x.get("description");
+        activityID = x.get("id");
+        System.out.println(">>>>");
+        System.out.println(activityID);
+        return new HashMap<>();
+    }
+
+    @RequestMapping("/activitySignUp")
+    String gotoInfo(Map<String, Object> map) {
+        map.put("url", imgUrl);
+        map.put("info" , imgInfo);
+        map.put("id", activityID);
+        map.put("user", request.getSession().getAttribute("username"));
+        return "activitySignUp";
+    }
+
+    @RequestMapping(value = "/saveSignUp",method = RequestMethod.POST)
+    String saveSignUp(
+            @RequestParam("aID") String aID,
+            @RequestParam("uID") String uID,
+            @RequestParam("info") String info) {
+        System.out.println(aID);
+        System.out.println(uID);
+        System.out.println(info);
+        activityService.saveSignUp(aID, uID, info);
+        return "activity";
     }
 
 }
