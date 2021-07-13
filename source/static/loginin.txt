@@ -9,40 +9,35 @@
       padding: 0;
     }
     #wrap {
-      height: 60%;
+      height: 100%;
       width:100%;
       background-image: url("../static/school.png");
       background-repeat: no-repeat;
       background-position: center;
       position: relative;
     }
-    /*#head {*/
-    /*  height: 60px;*/
-    /*  width: 100%;*/
-    /*  background-color: #66CCCC;*/
-    /*  text-align: center;*/
-    /*  position: relative;*/
-    /*}*/
+    #head {
+      height: 80px;
+      width: 100%;
+      background-color: #66CCCC;
+      text-align: center;
+      position: relative;
+    }
     #foot {
       width: 100%;
       height: 80px;
       background-color: #CC9933;
       position:relative;
-      /* bottom: 0px;*/
+     /* bottom: 0px;*/
 
     }
     #wrap .logGet {
-      height: 360px;
-      width: 350px;
+      height: 408px;
+      width: 368px;
       position: absolute;
-      background-color: #B5FFF8;
-      top: 10%;
+      background-color:#e2e2e2;
+      top: 20%;
       right: 15%;
-      border-style: solid;
-      border-radius: 10px; /* 圆角边框  */
-      border-color: #d9d9d9;
-      box-shadow: 3px -1px 10px #b3b3b3; /* 阴影  */
-
     }
     .logC a button {
       width: 100%;
@@ -62,7 +57,7 @@
     #wrap .logGet .logD.logDtip {
       width: 86%;
       border-bottom: 1px solid #FFB800;
-      margin-bottom: 40px;
+      margin-bottom: 60px;
       margin-top: 0px;
       margin-right: auto;
       margin-left: auto;
@@ -110,7 +105,7 @@
       font-family: "宋体";
       color: #FFFFFF;
       position: absolute;
-      top: 20%;
+      top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);  /* 使用css3的transform来实现 */
       height: 60px;
@@ -170,48 +165,44 @@
   <div class="title">高校智慧校园门户网站</div>
 </div>
 <div class="wrap" id="wrap">
-  <img src="../static/img/background/background.jpg"
-       height="40%" width="100%">
+  <img src="../static/img/background/background.jpg" width="100%" height="60%">
   <div class="logGet">
     <!-- 头部提示信息 -->
     <div class="logD logDtip">
       <p class="p1">登录</p>
     </div>
 
-    <form role="form" action = "/loginIn" method="post" style="text-align: center">
     <!-- 输入框 -->
     <div class="lgD">
       <img src="../static/img/login/logName.png" width="20" height="20" alt=""/>
-      <input type="text" name="name" placeholder="输入用户名" />
+      <input type="text" placeholder="输入用户名" />
     </div>
 
     <div class="lgD">
       <img src="../static/img/login/logPwd.png" width="20" height="20" alt=""/>
-      <input type="text" name="password" placeholder="输入用户密码" />
+      <input type="text" placeholder="输入用户密码" />
     </div>
 
     <div class="logC">
       <a href="index.html" target="_self"><button>登 录</button></a>
-      <!--   <input style="background-color: #ffaa00" type="submit" id = "login"  value = "登录" >-->
+   <!--   <input style="background-color: #ffaa00" type="submit" id = "login"  value = "登录" >-->
     </div>
-
-    </form>
   </div>
 </div>
 
 <div class="footer" id="foot">
   <div class="copyright">
-<!--    <p>Copyright © 2018 Qunar.com Inc. All Rights Reserved.</p>-->
-    <div class="img" style="margin-top: 20px">
+    <p>Copyright © 2018 Qunar.com Inc. All Rights Reserved.</p>
+    <div class="img">
       <i class="icon"></i><span>联系邮箱：jiankangsun@yahoo.com</span>
     </div>
 
-<!--    <div >-->
-<!--      <span>联系地址：重庆大学</span>-->
-<!--    </div>-->
+    <div >
+      <span>联系地址：重庆大学</span>
+    </div>
 
     <div >
-      <span>联系电话：18355042634</span>
+     <span>联系电话：18355042634</span>
     </div>
 
 
@@ -222,8 +213,3 @@
 
 </body>
 </html>
-
-
-
-
-

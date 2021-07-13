@@ -3,25 +3,16 @@
 
 ## 数据库更改todo（下划线为已做更改）
 * activity表需要图片的url这个属性(imgUrl)
+* activity表需要活动类型这个属性(type)
+* activityrecord表需要是否审核(verify)、填报信息(info)两个字段
 * news表需要标题这个属性(title)
-* inoutrecord表：将inOutTime拆分为inTime与outTime
-* dmtroom表：增加gasBalance、waterBalance、electricBalance属性
-* activityrecord表：增加审核状态【待审核、审核通过、未审核】
-* ~~user表：添加初始化roomID~~
-* ~~transrecord表：修改money类型为decimal,将支出修改为负值~~
-* ~~borrowrecord表：修改renewCount为0-3范围~~
-* ~~borrowrecord表：修改returnTime为timestamp~~
-* ~~borrowrecord表：增加expirationTime超期时间属性~~
+* examschedule表：删除endTime，增加examTime(考试时长)
+* absencerecord表：枚举变量type增加两种枚举类型（"待审核","审核未通过"）
 * ~~books表：添加是否在馆信息(state)~~
 * ~~borrowrecord表：borrowTime更改为timestamp类型~~
+* borrowrecord表：修改renewCount为0-3范围
 * ~~borrowrecord表：将returnTime < borrowTime 的returnTime更改为NULL~~
 * ~~books表：增加book数量~~
-* ~~activityrecord表：修改regisTime为CURRENT_TIMESTAMP~~
-* ~~activity表：修改属性名，更改publishTime为CURRENT_TIMESTAMP~~
-* ~~transrecord表：修改payTime为CURRENT_TIMESTAMP~~
-* ~~news表：publishTime修改为CURRENT_TIMESTAMP~~
-* ~~lostandfound表：publishTime修改为CURRENT_TIMESTAMP~~
-* ~~inoutrecord表：inOutTime修改为CURRENT_TIMESTAMP~~
  
 
 ## 环境配置：   
@@ -160,53 +151,3 @@
 4. 缴费管理
 5. 归寝管理
 
-### 模块说明
-1. index3.html
-   <dd><a href="javascript: $('#feed').load(localhost+'/car.html')" style="padding: 0 0px"><i class="fa fa-list fa-lg"></i> <span >校车信息</span></a></dd>
-
-在标签中插入javascript语句使其动态加载正文网页
-
-#### 功能需求
-1.获取所有图书
-```javascript
-type: "GET",//方法类型
-dataType: "json",//预期服务器返回的数据类型
-url: "mod3/bookList",//url
-```
-2.根据名字检索图书,返回列表
-```javascript
-type: "GET",//方法类型
-dataType: "json",//预期服务器返回的数据类型
-url: "mod3/selectBookByName",//url
-data:  {name:name},
-```
-
-3.借阅图书
-```javascript
-type: "post",//方法类型
-dataType: "json",//预期服务器返回的数据类型
-url: "mod3/bookBorrowByID",//url
-data: {bookID : bookID},
-```
-
-4.获取自己已借的图书列表
-```javascript
-type: "GET",//方法类型
-dataType: "json",//预期服务器返回的数据类型
-url: "mod3/selfBookList",//url
-```
-
-5.归还图书
-```javascript
-type: "post",//方法类型
-dataType: "json",//预期服务器返回的数据类型
-url: "mod3/bookReturnByID",//url
-data: {bookID : bookID},
-```
-
-6.出入记录
-```javascript
-type: "GET",//方法类型
-dataType: "json",//预期服务器返回的数据类型
-url: "mod3/inOutRecord",//url
-```

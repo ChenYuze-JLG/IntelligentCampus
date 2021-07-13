@@ -31,11 +31,14 @@
 <div class="layui-bg-gray" style="padding: 60px; margin-left: 40px; margin-right: 50px">
   <div class="layui-row layui-col-space15">
 
-    <div class="layui-col-md6" th:each="activity:${activities}">
+    <!-- onclick="sendImg(this,${activity.getActivityID()})" -->
+    <div class="layui-col-md6" th:each="activity,loopStatus:${activities}">
       <div class="layui-panel">
-        <a href="https://www.baidu.com" target="_blank">
+        <a th:onclick="sendImg(this,[[${activity.getActivityID()}]])"
+           target="_blank" th:id="${loopStatus.count}"
+        title="点我进行报名">
           <img th:src="${activity.getImgUrl()}" height="200px" width="300px">
-          <span style="font-size: x-small; color: blue; " th:text="${activity.getDescription()}"></span>
+          <span style="font-size: x-small; color: blue; " th:text="${activity.getDescription()}" id="description"></span>
         </a>
       </div>
     </div>
@@ -43,6 +46,29 @@
   </div>
 </div>
 
+<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+<script type="text/javascript">
+  function sendImg(me,id){
+    console.log(id);
+    $.ajax({
+      type : 'post',
+      url : '/activitySignUp',
+      data:{'url':$(me).children(":first").attr("src"),
+        'description':$(me).children().eq(1).html(),
+        'id':id},
+      traditional : true,
+      async : false,
+      dataType: 'json',
+      success : function(data){//成功的事件
+        window.location.replace("/activitySignUp");
+      },
+      error : function(data){//失败的事件
+        console.log("WWW");
+      }
+    });
+  }
+
+</script>
 
 <script src="../static/layui/layui.js"></script>
 <script>
