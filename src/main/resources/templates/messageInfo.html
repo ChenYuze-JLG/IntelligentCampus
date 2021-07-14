@@ -19,7 +19,7 @@
 <div class="layui-bg-gray" style="padding: 60px; margin-left: 40px; margin-right: 50px">
   <div class="layui-row layui-col-space15">
 
-    <div class="layui-col-md6">
+    <div class="layui-col-md6" th:each="msg:${msgs}">
       <div class="layui-panel" style="width: 600px; height: 100px; margin-left: 100px; margin-top: -20px">
         <span>
           <br>
@@ -28,29 +28,13 @@
            font-weight: bold;
          padding-left: 20px">叮！你有新的活动通知！</span>
           &nbsp;&nbsp;
-          <span style="font-size: 15px;font-weight: lighter">
-            2020年7月13日
+          <span style="font-size: 15px;font-weight: lighter"
+          th:text="${msg.getTime()}">
+
           </span>
           <br><br>&nbsp;&nbsp;
-          <span class="msg">
-            同学你好，你报名的春游活动已通过申请！
-          </span>
-        </span>
-      </div>
-      <div class="layui-panel" style="width: 600px; height: 100px; margin-left: 100px; margin-top: 20px">
-        <span>
-          <br>
-          &nbsp;&nbsp;
-          <span style="font-size: 15px;
-           font-weight: bold;
-         padding-left: 20px">叮！你有新的活动通知！</span>
-          &nbsp;&nbsp;
-          <span style="font-size: 15px;font-weight: lighter">
-            2020年7月13日
-          </span>
-          <br><br>&nbsp;&nbsp;
-          <span class="msg">
-            同学你好，你报名的春游活动已通过申请！
+          <span class="msg" th:text="${msg.getInfo()}">
+<!--            同学你好，你报名的春游活动已通过申请！-->
           </span>
         </span>
       </div>
