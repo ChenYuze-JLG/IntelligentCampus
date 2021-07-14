@@ -5,6 +5,11 @@
     <select id="listActivities" resultType="com.sevengroup.campus.bean.ActivityBean">
         SELECT * FROM activity where imgUrl is not null;
     </select>
+
+    <select id="getOrganizer" parameterType="String" resultType="String">
+        SELECT organizer FROM activity WHERE activityID = #{activityID}
+    </select>
+
 <!--
 void saveActivity(String name, String activityID,
 String organizer, String description, Timestamp timeRs,

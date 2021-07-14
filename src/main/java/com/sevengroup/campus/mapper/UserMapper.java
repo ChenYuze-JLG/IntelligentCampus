@@ -7,6 +7,6 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface UserMapper {
 
-    UserBean getInfo(String name, String password);
+    UserBean getInfo(String username, String password);
 
 }

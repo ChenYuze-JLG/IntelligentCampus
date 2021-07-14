@@ -24,6 +24,11 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
+    public String getOrganizer(String activityID) {
+        return activityMapper.getOrganizer(activityID);
+    }
+
+    @Override
     public void saveActivity(String name, String activityID, String organizer, String description, String rs, String re, String as, String ae, String imgPath) {
         Timestamp timeRs = Timestamp.valueOf(rs);
         Timestamp timeRe = Timestamp.valueOf(re);

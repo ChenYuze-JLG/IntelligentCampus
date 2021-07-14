@@ -68,10 +68,26 @@ margin-left: 150px;">
 </div>
 
 <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-<script type="text/javascript">
-    //在js中引入
+<!--<script type="text/javascript">-->
+<!--    //在js中引入-->
+<!--</script>-->
+
+<script th:inline="javascript">
     $(document).ready(function () {
         $('.top').load('head');
+        // document.getElementById("headPic").src = /*[[${login}]]*/;
+    });
+    $(window).load(function () {
+        $('#headPic').attr('src', /*[[${login}]]*/);
+        $('#role').text(/*[[${role}]]*/);
+        let count = /*[[${msgs.size()}]]*/;
+        if (count === 0) {
+            $('#dot').hide();
+            $('#msgCount').hide();
+        }
+        else {
+            $('#msgCount').text(count);
+        }
     });
 </script>
 
