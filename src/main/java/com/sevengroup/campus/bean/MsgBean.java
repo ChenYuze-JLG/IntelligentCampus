@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 
 @Data
 public class MsgBean {
+    int ID;
     String type;
     String info;
     String sender;

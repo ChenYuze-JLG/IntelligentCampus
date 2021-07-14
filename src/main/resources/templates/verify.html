@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Passing Paraments</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link rel="stylesheet" href="../static/layui/css/layui.css" media="all">
+</head>
+<body>
+
+<table class="layui-table">
+  <colgroup>
+    <col width="150">
+    <col width="400">
+    <col>
+  </colgroup>
+  <thead>
+  <tr>
+    <th>报名者</th>
+    <th>报名信息</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td>许闲心</td>
+    <td>2016-11-28</td>
+  </tr>
+  </tbody>
+</table>
+
+<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+
+<script src="../static/layui/layui.js"></script>
+<script>
+  layui.use('carousel', function(){
+    var carousel = layui.carousel;
+    //建造实例
+    carousel.render({
+      elem: '#test1'
+      ,width: '40%' //设置容器宽度
+      ,arrow: 'hover' //始终显示箭头
+      ,autoplay: true
+      //,anim: 'updown' //切换动画方式
+    });
+  });
+</script>
+
+</body>
+</html>
