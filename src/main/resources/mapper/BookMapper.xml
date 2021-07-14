@@ -2,11 +2,84 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sevengroup.campus.mapper.BookMapper">
 
-    <select id="getBookInfo" parameterType="String" resultType="com.sevengroup.campus.bean.BookBean">
-        SELECT bo.bookid,bo.name,bo.author,bo.publishTime,bo.type,
-               br.borrowTime,br.returnTime,br.renewCount,br.borrowUser
-        from borrowrecord br innerjoin join books bo
-        on  br.bookid = bo.bookid
+    <resultMap id="resultMap" type="com.sevengroup.campus.bean.BookBean">
+        <!-- property 为实体， column 为数据库 -->
+        <result property="bookID" column="bookid"/>
+        <result property="bookName" column="name"/>
+        <result property="bookAuthor" column="author"/>
+        <result property="bookDate" column="publishTime"/>
+        <result property="bookState" column="state"/>
+        <result property="bookType" column="type"/>
+        <result property="borrowTime" column="borrowTime"/>
+        <result property="expirationTime" column="expirationTime"/>
+        <result property="returnTime" column="returnTime"/>
+        <result property="borrowCount" column="renewCount"/>
+        <result property="borrowUser" column="borrowUser"/>
+    </resultMap>
+
+    <select id="getBorrowInfo" parameterType="String" resultMap="resultMap">
+        SELECT *
+        from borrowrecord br
+                 inner join books bo
+                            on br.bookid = bo.bookid
+        WHERE br.borrowUser = #{username}
+          and br.returnTime is null
     </select>
+
+    <select id="getAllBooksList" resultMap="resultMap">
+        SELECT *
+        from books
+    </select>
+
+    <select id="findBookByName" parameterType="String" resultMap="resultMap">
+        SELECT *
+        from books
+        WHERE name like #{name}
+           or author like #{name}
+    </select>
+
+    <select id="findBookByID" parameterType="String" resultMap="resultMap">
+        SELECT *
+        from books
+        WHERE bookid = #{id}
+    </select>
+
+    <select id="findAvailableBookByID" parameterType="String" resultMap="resultMap">
+        SELECT *
+        from books
+        WHERE bookid = #{id}
+          and state = 'true'
+    </select>
+
+    <select id="findBorrowedBookInfoByID" parameterType="String" resultMap="resultMap">
+        SELECT *
+        from books
+                 INNER JOIN
+             borrowrecord br
+             on books.bookID = br.bookID
+        where br.bookID = #{bookID}
+          and borrowUser = #{userID}
+          and br.returnTime is null;
+    </select>
+
+    <update id="borrowBook" parameterType="com.sevengroup.campus.bean.BookBean">
+        insert into borrowrecord(bookid, renewCount, borrowUser,borrowTime,expirationTime)
+        values (#{bookID}, #{borrowCount}, #{borrowUser},#{borrowTime},date_add(#{borrowTime}, interval 1 MONTH));
+
+        update books
+        set state = 'false'
+        where bookid = #{bookID};
+    </update>
+
+    <update id="borrowAgain" parameterType="com.sevengroup.campus.bean.BookBean">
+        update borrowrecord
+        set returnTime = #{returnTime}
+        where bookID = #{bookID}
+          and borrowUser = #{borrowUser}
+          and returnTime is null;
+
+        insert into borrowrecord(bookid, renewCount, borrowUser, expirationTime)
+        values (#{bookID}, #{borrowCount}, #{borrowUser}, date_add(#{returnTime}, interval 1 MONTH));
+    </update>
 
 </mapper>

@@ -1,8 +1,6 @@
 package com.sevengroup.campus.bean;
 
-import lombok.Data;
 
-@Data
 public class ScoreRecordBean {
     private Double score, credit;
     private String collegeID, courseID, teachClassID, studentID, teacherID;

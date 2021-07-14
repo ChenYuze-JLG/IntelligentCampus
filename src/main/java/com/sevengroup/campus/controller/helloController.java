@@ -4,6 +4,7 @@ import com.sevengroup.campus.bean.UserBean;
 import com.sevengroup.campus.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
+@CrossOrigin("http://localhost:8080")
 public class helloController {
     //将Service注入Web层
     @Autowired
@@ -64,6 +66,14 @@ public class helloController {
     public String modifyUser(String name, String password, @RequestParam(name = "modify") String action) {
         System.out.println("OK");
         return "login";
+    }
+    @RequestMapping("/car")
+    public String showCar() {
+        return "mod3/car";
+    }
+    @RequestMapping("/test")
+    public String mod3Test() {
+        return "mod3/index3";
     }
 
 }
