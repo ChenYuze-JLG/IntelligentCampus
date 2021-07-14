@@ -22,17 +22,17 @@
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree" lay-filter="nav-tree-test">
                 <li class="layui-nav-item layui-nav-itemed">
-                    <a href="javascript:">未读消息</a>
+                    <a href="/messageInfo">未读消息</a>
                 </li>
                 <li class="layui-nav-item">
-                    <a href="javascript:">所有消息</a>
+                    <a href="/messageInfo1">所有消息</a>
                 </li>
             </ul>
         </div>
         <script>
             layui.use('element', function () {
                 var $ = layui.jquery, element = layui.element;
-                $('dd>a').click(function (e) {
+                $('a').click(function (e) {
                     e.preventDefault();
                     $('#iframeMain').attr('src',$(this).attr('href'));
                 });

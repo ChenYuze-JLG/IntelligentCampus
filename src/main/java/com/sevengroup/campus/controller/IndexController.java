@@ -35,7 +35,7 @@ public class IndexController {
         List<NewsBean> news = newsService.listNews();
         map.put("news", news);
         String username = (String) request.getSession().getAttribute("username");
-        List<MsgBean> msgs = msgService.listMsgs(username);
+        List<MsgBean> msgs = msgService.allMsgs(username);
         map.put("msgs", msgs);
         for(ActivityBean activity : activities) {
             System.out.println(activity.getImgUrl());

@@ -11,4 +11,6 @@ public interface MsgMapper {
     void saveMsg(String type, Timestamp time, String info, String sender,
                  String receiver, String url);
     List<MsgBean> listMsgs(String username);
+    List<MsgBean> allMsgs(String username);
+    void setHandled(String id);
 }

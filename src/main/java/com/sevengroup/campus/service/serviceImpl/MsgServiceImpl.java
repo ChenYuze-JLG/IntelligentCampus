@@ -32,4 +32,14 @@ public class MsgServiceImpl implements MsgService {
         return msgMapper.listMsgs(username);
     }
 
+    @Override
+    public List<MsgBean> allMsgs(String username) {
+        return msgMapper.allMsgs(username);
+    }
+
+    @Override
+    public void setHandled(String id) {
+        msgMapper.setHandled(id);
+    }
+
 }
