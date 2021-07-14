@@ -34,6 +34,4 @@ public interface BookMapper {
     BookBean findBorrowedBookInfoByID(String bookID, String userID);
 
     List<BookBean> getAllBooksList();
-
-    int confirmLendBook(String bookID, String userID, String fromUser, String currentTime);
 }

@@ -82,16 +82,4 @@
         values (#{bookID}, #{borrowCount}, #{borrowUser}, date_add(#{returnTime}, interval 1 MONTH));
     </update>
 
-    <update id="confirmLendBook" parameterType="String">
-        update borrowrecord
-        set returnTime = #{currentTime}
-        where bookID = #{bookID}
-          and borrowUser = #{fromUser}
-          and returnTime is null;
-
-        insert into borrowrecord(bookid, borrowUser, expirationTime)
-        values (#{bookID}, #{userID}, date_add(#{currentTime}, interval 1 MONTH));
-    </update>
-
-
 </mapper>

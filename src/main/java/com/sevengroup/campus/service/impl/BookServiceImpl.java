@@ -101,22 +101,4 @@ public class BookServiceImpl implements BookService {
     public List<BookBean> getAllBooks() {
         return bookMapper.getAllBooksList();
     }
-
-    @Override
-    @Transactional
-    public boolean confirmLendBook(String bookID, String userID, String fromUser) {
-        boolean res;
-        try {
-//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
-            Date currentDate = new Date();
-            String date = sdf.format(currentDate);
-            res = bookMapper.confirmLendBook(bookID, userID, fromUser, date) != 0;
-        }
-        catch (Exception e){
-            log.error("【error】:",e);
-            return false;
-        }
-        return res;
-    }
 }
