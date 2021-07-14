@@ -68,7 +68,8 @@ public class ActivityController {
         String[] temp = file.getOriginalFilename().split("\\.");
         String imgType = temp[temp.length - 1];
 //        imgPath = "src\\main\\resources\\static\\activity";
-        imgPath = "E://Intelligence-campus/source/static/";
+//        imgPath = "E://Intelligence-campus/source/static/";
+        imgPath = "F:\\new_work\\idea\\campus/source/static/";
         for(int i = 0; i < temp.length - 1; ++i)
             imgPath = imgPath + temp[i];
 

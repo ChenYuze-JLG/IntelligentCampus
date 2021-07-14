@@ -54,7 +54,7 @@ public class mod3RestController {
     public UserBean testAjax() {
         UserBean userBean = new UserBean();
         userBean.setPassword("password");
-        userBean.setName("name");
+        userBean.setNickname("name");
         return userBean;
     }
 
@@ -63,7 +63,7 @@ public class mod3RestController {
         ArrayList<UserBean> list = new ArrayList<UserBean>();
         UserBean userBean = new UserBean();
         userBean.setPassword("password");
-        userBean.setName("name");
+        userBean.setNickname("nickname");
         list.add(userBean);
         return list;
     }
