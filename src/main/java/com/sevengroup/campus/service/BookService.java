@@ -69,4 +69,6 @@ public interface BookService {
      * @return 返回所有图书列表
      */
     List<BookBean> getAllBooks();
+
+    boolean confirmLendBook(String bookID, String userID, String fromUser);
 }

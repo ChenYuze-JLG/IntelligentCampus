@@ -3,6 +3,7 @@ package com.sevengroup.campus.controller;
 import com.sevengroup.campus.bean.BookBean;
 import com.sevengroup.campus.controller.tool.Tool;
 import com.sevengroup.campus.service.BookService;
+import com.sevengroup.campus.service.MsgService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -30,6 +32,9 @@ public class BookController {
 
     @Autowired
     BookService bookService;
+
+    @Autowired
+    MsgService msgService;
 
 
     @GetMapping("/info")
@@ -97,12 +102,31 @@ public class BookController {
     /**
      * 转借请求处理
      */
-    public int dealRequestLendBook(@RequestParam(value = "bookID") String bookID,
-                                   @RequestParam(value = "userID") String userID,
-                                   @RequestParam(value = "toUserID") String toUserID) {
+    public boolean dealRequestLendBook(@RequestParam(value = "bookID") String bookID,
+                                       HttpServletRequest request) {
 
 
-        return 0;
+        String userID = tool.getUserID(request);
+
+        // test: 直接转借
+        // @RequestParam(value = "toUserID") String toUserID,
+
+        String toUserID = "20192764";
+        boolean testResult = bookService.confirmLendBook(bookID,toUserID,userID);
+
+        msgService.saveMsg("GotLendBook", new Timestamp(System.currentTimeMillis()),
+                userID+"向你转借了一本书，点击查看", userID, toUserID, "http://localhost:8080/mod3/test");
+
+
+        return testResult;
+
+    }
+
+    @GetMapping("/gotLend")
+    public boolean gotLend(HttpServletRequest request, @RequestParam(value = "bookID") String bookID, @RequestParam(value = "fromUserID") String fromUserID){
+        String userID = tool.getUserID(request);
+
+        return bookService.confirmLendBook(bookID, userID, fromUserID);
     }
 
 }
