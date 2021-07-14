@@ -7,10 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.context.annotation.RequestScope;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -36,15 +33,18 @@ public class helloController {
     }
 
     @RequestMapping(value = "/loginIn", method = RequestMethod.POST)
-    public String login(HttpServletRequest request, @RequestParam("name") String name,
+    public String login(HttpServletRequest request, @RequestParam("name") String username,
                         @RequestParam("password") String password){
-        UserBean userBean = userService.loginIn(name, password);
-        System.out.println(name);
+        UserBean userBean = userService.loginIn(username, password);
+        System.out.println(username);
         System.out.println(password);
         if(userBean != null) {
-            System.out.println(userBean.getName() + " " + userBean.getPassword());
+            System.out.println(userBean.getUsername() + " " + userBean.getPassword());
+            System.out.println(userBean.getRole());
+            System.out.println(userBean.getRoomID());
             HttpSession session = request.getSession();
-            session.setAttribute("username", name);
+            session.setAttribute("username", username);
+            session.setAttribute("role", userBean.getRole());
             return "redirect:index";
         }
         else {

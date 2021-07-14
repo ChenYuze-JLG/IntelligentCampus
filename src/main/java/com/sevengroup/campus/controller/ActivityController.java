@@ -2,6 +2,7 @@ package com.sevengroup.campus.controller;
 
 import com.sevengroup.campus.bean.ActivityBean;
 import com.sevengroup.campus.service.ActivityService;
+import com.sevengroup.campus.service.MsgService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
+import java.sql.Timestamp;
 import java.util.*;
 
 @Controller
@@ -24,6 +26,8 @@ public class ActivityController {
 
     @Autowired
     ActivityService activityService;
+    @Autowired
+    MsgService msgService;
     @Autowired
     HttpServletRequest request;
 
@@ -48,7 +52,7 @@ public class ActivityController {
         for(ActivityBean activity : activities) {
             System.out.println(activity.getImgUrl());
         }
-//        System.out.println("JHHHHHHHHH");
+//        System.out.println("THOUGH");
 //        System.out.println(request.getSession().getAttribute("username"));
         return "activity";
     }
@@ -161,9 +165,12 @@ public class ActivityController {
             @RequestParam("aID") String aID,
             @RequestParam("uID") String uID,
             @RequestParam("info") String info) {
+        System.out.println("here");
         System.out.println(aID);
         System.out.println(uID);
         System.out.println(info);
+        msgService.saveMsg("activitySignUp", new Timestamp(System.currentTimeMillis()),
+                info, uID, activityService.getOrganizer(aID), "");
         activityService.saveSignUp(aID, uID, info);
         return "activity";
     }

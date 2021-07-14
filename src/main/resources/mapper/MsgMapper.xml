@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sevengroup.campus.mapper.MsgMapper">
+
+<!--    void saveMsg(String type, Timestamp time, String info, String sender,-->
+<!--    String receiver, String url);-->
+
+    <insert id="saveMsg">
+        INSERT INTO message (type, time, info, receiver, sender, url)
+        values (#{type}, #{time}, #{info}, #{receiver}, #{sender}, #{url})
+    </insert>
+
+    <select id="listMsgs" resultType="com.sevengroup.campus.bean.MsgBean">
+        SELECT * FROM message where receiver = #{username};
+    </select>
+
+</mapper>
