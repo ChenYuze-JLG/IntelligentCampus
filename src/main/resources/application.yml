@@ -3,7 +3,7 @@ spring:
     name: campus  #数据库名
     url:  jdbc:mysql://localhost:3306/campus?allowMultiQueries=true #url
     username: root  #用户名
-    password: root  #密码
+    password: lingrui02@  #密码
     driver-class-name: com.mysql.cj.jdbc.Driver  #数据库链接驱动
   mvc:
     static-path-pattern: /static/**

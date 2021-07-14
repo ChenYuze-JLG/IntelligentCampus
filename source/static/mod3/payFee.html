@@ -42,8 +42,13 @@
 </form>
 
 <script>
+  var submitFlag =true;
   layer.msg("pay");
   function pay() {
+    if(submitFlag == false){
+      return false;
+    }
+    submitFlag = false
     // layer.msg($('#payForm').serialize());
     $.ajax({
       //几个参数需要注意一下
@@ -53,6 +58,8 @@
       data: $('#payForm').serialize(),
       // data: {payNum : inputNum},
       success: function (datas) {
+        submitFlag =true;
+
         console.log(datas);//打印服务端返回的数据(调试用)
         if(datas == true) {
           layer.msg("SUCCESS");
@@ -62,6 +69,8 @@
         }
       },
       error: function () {
+        submitFlag =true;
+
         layer.msg("异常！");
       }
 
@@ -77,6 +86,7 @@
       console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
       console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
       layer.msg("pay...");
+
       pay();
       return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
     });

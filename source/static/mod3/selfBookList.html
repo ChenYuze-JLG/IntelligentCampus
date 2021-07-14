@@ -13,9 +13,9 @@
         <th>图书编号</th>
         <th>图书名称</th>
         <th>出版日期</th>
-        <th>状态</th>
+        <th>在馆状态</th>
         <th>图书作者</th>
-        <th>类型</th>
+        <th>图书类型</th>
         <th>续借次数</th>
         <th>借阅时间</th>
         <th>借阅人</th>
@@ -125,12 +125,45 @@
         });
     };
     function borrowAgainByBookID(bookID) {
+            $.ajax({
+                //几个参数需要注意一下
+                type: "get",//方法类型
+                dataType: "json",//预期服务器返回的数据类型
+                url: "http://localhost:8080/library/borrowAgain",//url
+                data: {bookID : bookID},
+                success: function (datas) {
+                    // var datas = JSON.parse(datas); //jsonData是该下路下的所有区间（json格式）
+                    console.log(datas);//打印服务端返回的数据(调试用)
+                    if(datas == true) {
+                        layer.msg("SUCCESS");
+                    }
+                    else {
+                        layer.msg("FAILED");
+                    }
+                },
+                error: function () {
+                    layer.msg("异常！");
+                }
+
+            });
+
+
+    };
+    function lendByBookID(bookID) {
+        layer.prompt({
+            formType: 2,
+            value: '',
+            title: '请输入要转借给的用户编号',
+            area: ['100px', '30px'] //自定义文本域宽高
+        }, function(value, index, elem){
+            // alert(value); //得到value
+            console.log(value);
         $.ajax({
             //几个参数需要注意一下
             type: "get",//方法类型
             dataType: "json",//预期服务器返回的数据类型
-            url: "http://localhost:8080/library/borrowAgain",//url
-            data: {bookID : bookID},
+            url: "http://localhost:8080/library/lend",//url
+            data: {bookID : bookID, toUserID: value},
             success: function (datas) {
                 // var datas = JSON.parse(datas); //jsonData是该下路下的所有区间（json格式）
                 console.log(datas);//打印服务端返回的数据(调试用)
@@ -146,28 +179,7 @@
             }
 
         });
-    };
-    function lendByBookID(bookID) {
-        $.ajax({
-            //几个参数需要注意一下
-            type: "get",//方法类型
-            dataType: "json",//预期服务器返回的数据类型
-            url: "http://localhost:8080/library/lend",//url
-            data: {bookID : bookID},
-            success: function (datas) {
-                // var datas = JSON.parse(datas); //jsonData是该下路下的所有区间（json格式）
-                console.log(datas);//打印服务端返回的数据(调试用)
-                if(datas == true) {
-                    layer.msg("SUCCESS");
-                }
-                else {
-                    layer.msg("FAILED");
-                }
-            },
-            error: function () {
-                layer.msg("异常！");
-            }
-
+            layer.close(index);
         });
     };
     selfBookList();

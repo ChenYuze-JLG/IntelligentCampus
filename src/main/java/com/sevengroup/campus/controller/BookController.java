@@ -103,6 +103,7 @@ public class BookController {
      * 转借请求处理
      */
     public boolean dealRequestLendBook(@RequestParam(value = "bookID") String bookID,
+                                       @RequestParam(value = "toUserID") String toUserID,
                                        HttpServletRequest request) {
 
 
@@ -111,11 +112,13 @@ public class BookController {
         // test: 直接转借
         // @RequestParam(value = "toUserID") String toUserID,
 
-        String toUserID = "20192764";
+//        String toUserID = "20192764";
+        System.out.println(userID);
+        System.out.println(toUserID);
         boolean testResult = bookService.confirmLendBook(bookID,toUserID,userID);
 
         msgService.saveMsg("GotLendBook", new Timestamp(System.currentTimeMillis()),
-                userID+"向你转借了一本书，点击查看", userID, toUserID, "http://localhost:8080/mod3/test");
+                userID+"向你转借了一本书，点击查看", userID, toUserID, "http://localhost:8080/mod3/test?page=selfBookList");
 
 
         return testResult;
