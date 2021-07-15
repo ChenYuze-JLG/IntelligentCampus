@@ -109,27 +109,33 @@ public class BookController {
 
         String userID = tool.getUserID(request);
 
-        // test: 直接转借
-        // @RequestParam(value = "toUserID") String toUserID,
-
-//        String toUserID = "20192764";
         System.out.println(userID);
         System.out.println(toUserID);
-        boolean testResult = bookService.confirmLendBook(bookID,toUserID,userID);
 
         msgService.saveMsg("GotLendBook", new Timestamp(System.currentTimeMillis()),
-                userID+"向你转借了一本书，点击查看", userID, toUserID, "http://localhost:8080/mod3/test?page=selfBookList");
+                userID + " 向你转借了一本书： " + bookID + " ，点击查看", userID, toUserID, "http://localhost:8080/mod3/test?page=selfBookList");
 
 
-        return testResult;
+        return true;
 
     }
 
     @GetMapping("/gotLend")
-    public boolean gotLend(HttpServletRequest request, @RequestParam(value = "bookID") String bookID, @RequestParam(value = "fromUserID") String fromUserID){
+    public boolean gotLend(HttpServletRequest request, @RequestParam(value = "bookID") String bookID,
+                           @RequestParam(value = "fromUserID") String fromUserID) {
         String userID = tool.getUserID(request);
 
-        return bookService.confirmLendBook(bookID, userID, fromUserID);
+        boolean lendRes = bookService.confirmLendBook(bookID, userID, fromUserID);
+
+        if (lendRes) {
+            msgService.saveMsg("lenRes", new Timestamp(System.currentTimeMillis()),
+                    userID + " 成功转借： " + bookID, userID, fromUserID, "");
+        } else {
+            msgService.saveMsg("lenRes", new Timestamp(System.currentTimeMillis()),
+                    userID + " 转借该图书失败： " + bookID, userID, fromUserID, "");
+        }
+
+        return lendRes;
     }
 
 }
