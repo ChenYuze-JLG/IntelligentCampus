@@ -40,7 +40,7 @@ public class ActivityController {
         @Override
         public void addResourceHandlers(ResourceHandlerRegistry registry){
             registry.addResourceHandler("/static/**")
-                    .addResourceLocations("file:F:\\new_work\\idea\\campus/source/static/");
+                    .addResourceLocations("file:E://Intelligence-campus/source/static/");
             super.addResourceHandlers(registry);
         }
     }
@@ -68,7 +68,7 @@ public class ActivityController {
         String[] temp = file.getOriginalFilename().split("\\.");
         String imgType = temp[temp.length - 1];
 //        imgPath = "src\\main\\resources\\static\\activity";
-        imgPath = "F:\\new_work\\idea\\campus/source/static/";
+        imgPath = "E:\\Intelligence-campus/source/static/";
         for(int i = 0; i < temp.length - 1; ++i)
             imgPath = imgPath + temp[i];
 

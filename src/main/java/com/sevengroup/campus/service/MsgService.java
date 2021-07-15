@@ -11,5 +11,6 @@ public interface MsgService {
     List<MsgBean> listMsgs(String username);
     List<MsgBean> allMsgs(String username);
     void setHandled(String id);
+
 //    List<MsgBean>
 }
