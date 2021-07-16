@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!--<h1>添加成功</h1>-->
+<h1 th:text="${now.getTitle()}"></h1>
+<hr>
+<!--帖子内容-->
+<div class="m-text ui attached padded segment">
+    <div class="typo typo-selection">
+        <div id="test-editormd-view">
+            <textarea id="append-test" style="display:none;">[[${now.getInfo()}]]</textarea>
+        </div>
+    </div>
+</div>
+
+<!--editormd-->
+<script src="../static/editor.md/examples/js/jquery.min.js"></script>
+<!--editormd-->
+<script src="../static/editor.md/lib/marked.min.js" ></script>
+<script src="../static/editor.md/lib/prettify.min.js" ></script>
+<script src="../static/editor.md/lib/raphael.min.js"></script>
+<script src="../static/editor.md/lib/underscore.min.js" ></script>
+<script src="../static/editor.md/lib/sequence-diagram.min.js" ></script>
+<script src="../static/editor.md/lib/flowchart.min.js" ></script>
+<script src="../static/editor.md/lib/jquery.flowchart.min.js" ></script>
+<script src="../static/editor.md/editormd.js"></script>
+<script type="text/javascript">
+    /*editormd*/
+    $(function () {
+        editormd.markdownToHTML("test-editormd-view", {
+            htmlDecode      : "style,script,iframe",  // you can filter tags decode
+            emoji           : true,
+            taskList        : true,
+            tex             : true,  // 默认不解析
+            flowChart       : true,  // 默认不解析
+            sequenceDiagram : true,  // 默认不解析
+        });
+    })
+</script>
+
+</body>
+</html>

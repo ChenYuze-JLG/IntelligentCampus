@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <meta name="renderer" content="webkit"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <meta name="keywords"
+          content="Editor.md,editor,Markdown Editor,Markdown,编辑器,Markdown编辑器,Markdown在线编辑器,在线编辑器,开源编辑器,开源Markdown编辑器"/>
+    <meta name="description" content="Editor.md: a simple online markdown editor. 开源在线 Markdown 编辑器"/>
+    <title>Simple example - Editor.md examples</title>
+    <link rel="stylesheet" href="../static/editor.md/examples/css/style.css"/>
+    <link rel="stylesheet" href="../static/editor.md/css/editormd.css"/>
+    <link rel="stylesheet" href="../static/editor.md/tests/css/bootstrap.min.css">
+    <link rel="shortcut icon" href="https://pandao.github.io/editor.md/favicon.ico" type="image/x-icon"/>
+</head>
+
+<body>
+
+<h1 style="text-align: center">资讯编辑</h1>
+<div class="panel panel-default" style="width: 90%;margin: auto;">
+    <div class="panel-body">
+        <!--博客表单-->
+        <form name="mdEditorForm">
+            <!-- 文章的标题 -->
+            <div class="input-group input-group-lg">
+                <span class="input-group-addon" id="sizing-addon1">标题</span>
+                <input type="text" class="form-control" placeholder="请输入标题" aria-describedby="sizing-addon1" name="title" autocomplete="off" required>
+            </div>
+            <br>
+            <!-- 文章的作者 -->
+            <div class="input-group input-group-lg ">
+                <span class="input-group-addon" id="sizing-addon2">作者</span>
+                <input type="text" class="form-control" placeholder="请输入作者" aria-describedby="sizing-addon2" name="author" autocomplete="off" required>
+            </div>
+            <br>
+            <!-- 文章的主体内容 textarea -->
+            <!--富文本编辑器以 id="article-content" 为定位点 -->
+            <div id="editormd">
+                <textarea name="content" id="content" style="display:none;"></textarea>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+<script src="../static/editor.md/tests/js/bootstrap.mim.js"></script>
+<script src="../static/editor.md/examples/js/jquery.min.js"></script>
+<script src="../static/editor.md/editormd.min.js"></script>
+
+<script type="text/javascript">
+    var testEditor;
+    $(function () {
+        testEditor = editormd("editormd", {
+            width: "100%",
+            height: 640,
+            syncScrolling: "single",
+            path: "../static/editor.md/lib/",
+            saveHTMLToTextarea: true,
+            imageUpload: true,
+            emoji: true,
+            imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+            imageUploadURL : "",//注意你后端的上传图片服务地址
+            toolbarIcons: function () {
+                return ["undo", "redo", "|",
+                    "bold", "del", "italic", "quote", "ucwords", "uppercase", "lowercase", "|",
+                    // "h1","h2","h3","h4","h5","h6","|",
+                    "list-ul", "list-ol", "hr", "|",
+                    "link", "reference-link", "image", "code", "preformatted-text",
+                    "code-block", "table", "datetime", "emoji", "html-entities", "pagebreak", "|",
+                    "goto-line", "watch", "preview", "fullscreen", "clear", "search", "|",
+                    //"help","info",
+                    "releaseIcon", "index"]
+            },
+            /*自定义功能按钮，下面我自定义了2个，一个是发布，一个是返回首页*/
+            toolbarIconTexts: {
+                releaseIcon: "<span bgcolor=\"gray\">发布</span>",
+            },
+
+            /*给自定义按钮指定回调函数*/
+            toolbarHandlers: {
+                releaseIcon: function (cm, icon, cursor, selection) {
+                    mdEditorForm.method = "post";
+                    mdEditorForm.action = "/getNewsHtml";//提交至服务器的路径
+                    mdEditorForm.submit();
+                }
+            }
+        });
+    });
+</script>
+
+<style>#cnzz_stat_icon_1254310986 {
+    display: none;
+}</style>
+
+<script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan id='cnzz_stat_icon_1254310986'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s11.cnzz.com/stat.php%3Fid%3D1254310986%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+</body>
+</html>

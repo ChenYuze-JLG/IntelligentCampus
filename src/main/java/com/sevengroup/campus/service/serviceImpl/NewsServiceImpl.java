@@ -17,4 +17,9 @@ public class NewsServiceImpl implements NewsService {
     public List<NewsBean> listNews() {
         return newsMapper.listNews();
     }
+
+    @Override
+    public void saveNews(String author, String title, String info) {
+        newsMapper.saveNews(author, title, info);
+    }
 }

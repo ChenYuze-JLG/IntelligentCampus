@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>all activities</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link rel="stylesheet" href="../static/layui/css/layui.css" media="all">
+</head>
+<body>
+
+<div class="top" style="margin-bottom: 20px"></div>
+
+<span class="layui-breadcrumb" lay-separator=" "
+  style="margin: -100px 80px">
+  <a href="" style="width:400px; margin-left: 200px; margin-top: 50px">查看资讯</a>
+  <a href="/launchNews" style="width:400px; margin: 0 50px; float: right">
+    <img src="../static/edit.png" width="20px" height="20px" alt="">
+    发布资讯
+  </a>
+</span>
+
+<div class="layui-bg-gray" style="padding: 60px; margin-left: 40px; margin-right: 50px">
+  <div class="layui-row layui-col-space15">
+
+    <!-- onclick="sendImg(this,${activity.getActivityID()})" -->
+    <div th:each="_new,loopStatus:${news}"
+         th:onclick="sendNews([[${_new.getID()}]], [[${_new.getPublisher()}]],
+             [[${_new.getTitle()}]], [[${_new.getInfo()}]],)">
+      <h1 th:if="${loopStatus.index} eq 0">
+        <a th:href="${_new.getUrl()}" th:text="${_new.getTitle()}"></a>
+        <br>
+      </h1>
+      <h2 th:if="${loopStatus.index} eq 1">
+        <a th:href="${_new.getUrl()}" th:text="${_new.getTitle()}"></a>
+        <br>
+      </h2>
+      <h3 th:if="${loopStatus.index} gt 1">
+        <a th:href="${_new.getUrl()}" th:text="${_new.getTitle()}"></a>
+        <br>
+      </h3>
+    </div>
+
+    <div class="layui-carousel" id="test1" style="float: right;
+    margin-top: -250px; margin-right: 100px">
+      <div carousel-item>
+        <div><img src="../static/1.png" style="width:100%;height:100%"></div>
+        <div><img src="../static/2.png" style="width:100%;height:100%"></div>
+        <div><img src="../static/3.png" style="width:100%;height:100%"></div>
+        <div><img src="../static/4.png" style="width:100%;height:100%"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+<script th:inline="javascript">
+  function sendNews(id, author, title, info){
+    console.log(id);
+    $.ajax({
+      type : 'post',
+      url : '/newsInfo',
+      data:{
+        'id': id,
+        'author': author,
+        'title': title,
+        'info': info
+      },
+      traditional : true,
+      async : false,
+      dataType: 'json',
+      success : function(data){//成功的事件
+        console.log("新闻ok");
+        window.location.replace("newsInfo");
+      },
+      error : function(data){//失败的事件
+        console.log("WWW");
+      }
+    });
+  }
+
+</script>
+
+
+<script type="text/javascript">
+  //在js中引入
+  $(document).ready(function () {
+    $('.top').load('head');
+  });
+</script>
+<script src="../static/layui/layui.js"></script>
+<script>
+  layui.use('carousel', function(){
+    var carousel = layui.carousel;
+    //建造实例
+    carousel.render({
+      elem: '#test1'
+      ,width: '40%' //设置容器宽度
+      ,arrow: 'hover' //始终显示箭头
+      ,autoplay: true
+    });
+  });
+</script>
+
+</body>
+</html>

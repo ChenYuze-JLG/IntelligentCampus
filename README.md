@@ -6,6 +6,7 @@
 * activity表需要活动类型这个属性(type)
 * activityrecord表需要是否审核(verify)、填报信息(info)两个字段
 * news表需要标题这个属性(title)
+* news表需要具体内容这个属性(info)
 * examschedule表：删除endTime，增加examTime(考试时长)
 * absencerecord表：枚举变量type增加两种枚举类型（"待审核","审核未通过"）
 * inoutrecord表：将inOutTime拆分为inTime与outTime
