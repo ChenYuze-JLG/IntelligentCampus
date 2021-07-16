@@ -6,10 +6,8 @@
 
 <script src="/static/build/layui.js"></script>
 <script>
-
     layui.use('table', function () {
         var table = layui.table;
-        var bookName = "";
         table.render({
             elem: '#bookInfoTable'
             , height: 'full'
@@ -27,15 +25,16 @@
                 , type: 'asc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
             }
             , cols: [
-                [   {field: 'cardBalance', title: '校园卡金额', width: 120, sort: true, align: 'center'}
-                    , {field: 'waterBalance', title: '水费金额', width: 120, sort: true, align: 'center'}
-                    , {field: 'electricBalance', title: '电费金额', width: 120, sort: true, align: 'center'}
-                    , {field: 'gasBalance', title: '气费金额', width: 120, sort: true, align: 'center'}
-                     , {field: 'payTime', title: '付款时间', width: 150, sort: true, align: 'center'}
-                    , {field: 'transactionMoney', title: '交易金额', width: 150, sort: true, align: 'center'}
-                    , {field: 'transactionType', title: '交易类型', width: 150, sort: true, align: 'center'}
-                    , {field: 'userID', title: '用户编号', width: 150, sort: true, align: 'center'}
-                    , {field: 'username', title: '用户名', width: 150, sort: true, align: 'center'}
+                [
+                //    {field: 'cardBalance', title: '校园卡金额', width: 120, sort: true, align: 'center'}
+                //     , {field: 'waterBalance', title: '水费金额', width: 120, sort: true, align: 'center'}
+                //     , {field: 'electricBalance', title: '电费金额', width: 120, sort: true, align: 'center'}
+                //     , {field: 'gasBalance', title: '气费金额', width: 120, sort: true, align: 'center'}
+                     {field: 'payTime', title: '付款时间',  sort: true, align: 'center'}
+                    , {field: 'transactionMoney', title: '交易金额',  sort: true, align: 'center'}
+                    , {field: 'transactionType', title: '交易类型',  sort: true, align: 'center'}
+                    , {field: 'userID', title: '用户编号',  sort: true, align: 'center'}
+                    // , {field: 'username', title: '用户名',  sort: true, align: 'center'}
                 ]
             ]
         });

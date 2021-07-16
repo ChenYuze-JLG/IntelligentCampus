@@ -1,0 +1,186 @@
+<fieldset class="layui-elem-field layui-field-title site-title">
+    <legend><a name="fixbar">已借图书列表</a></legend>
+</fieldset>
+<form id="selfBookFilterForm" class="layui-form" action="##" onSubmit="return false">
+    <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+    <div class="layui-form-item">
+        <label class="layui-form-label">图书或作者名称</label>
+        <div class="layui-input-block">
+            <input id="inputBar2" type="text" name="bookName" placeholder="" autoComplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="select">检索</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<a href="javascript:selectBookByName('');" style="padding: 0 0px"><i class="fa fa-refresh fa-lg"></i>
+    <span>刷新</span></a>
+
+<table class="layui-table" id="bookInfoTable" lay-filter="bookInfoTableFilter"></table>
+
+<script type="text/html" id="barView">
+    <a class="layui-btn layui-btn-xs" lay-event="again">续借</a>
+    <a class="layui-btn layui-btn-xs" lay-event="lend">转借</a>
+</script>
+<script src="/static/build/layui.js"></script>
+<script>
+    function bookBorrowAgainByID(bookID){
+        layer.confirm('确定续借?', function(index){
+        $.ajax({
+            //几个参数需要注意一下
+            type: "get",//方法类型
+            dataType: "json",//预期服务器返回的数据类型
+            url: "http://localhost:8080/library/bookBorrowAgainByID",//url
+            data: {bookID: bookID},
+            success: function (datas) {
+                // var datas = JSON.parse(datas); //jsonData是该下路下的所有区间（json格式）
+                console.log(datas);//打印服务端返回的数据(调试用)
+                if (datas == true) {
+                    layer.msg("SUCCESS");
+                } else {
+                    layer.msg("FAILED");
+                }
+            },
+            error: function () {
+                layer.msg("异常！");
+            }
+
+        });
+            layer.close(index);
+
+        });
+    };
+    layui.use('table', function () {
+        var table = layui.table;
+        var bookName = "";
+        table.render({
+            elem: '#bookInfoTable'
+            , height: 'full'
+            , url: 'http://localhost:8080/mod3/selfBookTable' //数据接口
+            , where: {  // 接口的其他参数（自己定义传递的参数）
+                // teacherID: teacherID
+            }
+            , title: '图书信息列表'
+            , page: true //开启分页
+            , limit: 10  // 每页显示的条数
+            , limits: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]  //每页显示条数的可选择数目
+            // ,autoSort: false //禁用前端自动排序
+            , initSort: {  //初始化排序方式
+                field: 'bookID' //排序字段，对应 cols 设定的各字段名
+                , type: 'asc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
+            }
+            , cols: [
+                [{field: 'bookID', title: '图书编号',sort: true, align: 'center'}
+                    , {field: 'bookName', title: '图书名称',sort: true, align: 'center'}
+                    // , {field: 'bookAuthor', title: '图书作者',sort: true, align: 'center'}
+                    // , {field: 'bookDate', title: '出版日期',sort: true, align: 'center'}
+                    // , {field: 'bookState', title: '在馆状态',  sort: true, align: 'center'}
+                    // , {field: 'bookType', title: '图书类型',  sort: true, align: 'center'}
+                    , {field: 'borrowCount', title: '续借次数',  sort: true, align: 'center'}
+                    , {field: 'borrowTime', title: '借阅时间',  sort: true, align: 'center'}
+                    , {field: 'borrowUser', title: '借阅人',  sort: true, align: 'center'}
+                    , {field: 'expirationTime', title: '超期时间',  sort: true, align: 'center'}
+                    // , {field: 'returnTime', title: '归还时间',  sort: true, align: 'center'}
+                    , {fixed: 'right', title: '操作',  toolbar: '#barView',align: 'center'}
+                ]
+            ]
+        });
+
+        //监听行工具事件
+        table.on('tool(bookInfoTableFilter)', function (obj) {
+            var data = obj.data; //获得当前行数据
+            console.log(data);
+            console.log(data.bookID);
+            var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+            var tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
+            if (layEvent === 'again') { //查看
+                bookBorrowAgainByID(data.bookID);
+            }
+            if (layEvent === 'lend') { //查看
+                lendByBookID(data.bookID);
+            }
+        });
+
+        //触发排序事件
+        table.on('sort(bookInfoTableFilter)', function (obj) { //注：sort 是工具条事件名，bookInfoTableFilter 是 table 原始容器的属性 lay-filter="对应的值"
+            console.log(obj.field); //当前排序的字段名
+            console.log(obj.type); //当前排序类型：desc（降序）、asc（升序）、null（空对象，默认排序）
+            console.log(this); //当前排序的 th 对象
+
+            //尽管我们的 table 自带排序功能，但并没有请求服务端。
+            //有些时候，你可能需要根据当前排序的字段，重新向服务端发送请求，从而实现服务端排序，如：
+            table.reload('bookInfoTable', {
+                initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+                , where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                    field: obj.field //排序字段
+                    , order: obj.type  //排序方式
+                    , name: bookName  //
+                }
+            });
+            layer.msg('服务端排序。order by ' + obj.field + ' ' + obj.type);
+        });
+    });
+
+    function selectBookByName(bookName) {
+        var table = layui.table;
+        console.log("selectBookByName");
+        table.reload('bookInfoTable', {
+            where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                bookName: bookName  //
+            }
+        });
+    }
+
+    layui.use('form', function () {
+        var form = layui.form;
+        //各种基于事件的操作，下面会有进一步介绍
+        //过滤器test
+        form.on('submit(select)', function (data) {
+
+            console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
+            console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
+            console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+            console.log(data.field.bookName);
+            layer.msg("select...");
+            console.log("select");
+            selectBookByName(data.field.bookName);
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+    });
+    function lendByBookID(bookID) {
+        layer.prompt({
+            formType: 2,
+            value: '',
+            title: '请输入要转借给的用户编号',
+            area: ['100px', '30px'] //自定义文本域宽高
+        }, function(value, index, elem){
+            // alert(value); //得到value
+            console.log(value);
+            $.ajax({
+                //几个参数需要注意一下
+                type: "get",//方法类型
+                dataType: "json",//预期服务器返回的数据类型
+                url: "http://localhost:8080/library/lend",//url
+                data: {bookID : bookID, toUserID: value},
+                success: function (datas) {
+                    // var datas = JSON.parse(datas); //jsonData是该下路下的所有区间（json格式）
+                    console.log(datas);//打印服务端返回的数据(调试用)
+                    if(datas == true) {
+                        layer.msg("SUCCESS");
+                    }
+                    else {
+                        layer.msg("FAILED");
+                    }
+                },
+                error: function () {
+                    layer.msg("异常！");
+                }
+
+            });
+            layer.close(index);
+        });
+    };
+</script>

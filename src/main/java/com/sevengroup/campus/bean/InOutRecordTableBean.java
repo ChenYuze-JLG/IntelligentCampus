@@ -2,7 +2,7 @@ package com.sevengroup.campus.bean;
 
 import java.util.List;
 
-public class inOutRecordTableBean {
+public class InOutRecordTableBean {
     private String code;
     private String msg;
     private int count;

@@ -1,16 +1,15 @@
 package com.sevengroup.campus.bean;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class bookTableBean {
+public class PayRecordTableBean {
     private String code;
     private String msg;
     private int count;
 
 
 
-    private List<BookBean> data;
+    private List<MoneyBean> data;
     public int getCount() {
         return count;
     }
@@ -34,11 +33,11 @@ public class bookTableBean {
     public void setMsg(String msg) {
         this.msg = msg;
     }
-    public List<BookBean> getData() {
+    public List<MoneyBean> getData() {
         return data;
     }
 
-    public void setData(List<BookBean> data) {
+    public void setData(List<MoneyBean> data) {
         this.data = data;
     }
 }

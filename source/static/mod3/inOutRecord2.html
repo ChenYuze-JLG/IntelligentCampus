@@ -23,17 +23,17 @@
             , limits: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]  //每页显示条数的可选择数目
             // ,autoSort: false //禁用前端自动排序
             , initSort: {  //初始化排序方式
-                field: 'payTime' //排序字段，对应 cols 设定的各字段名
+                field: 'inTime' //排序字段，对应 cols 设定的各字段名
                 , type: 'asc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
             }
             , cols: [
-                [   {field: 'dmtid', title: '宿舍号', width: 120, sort: true, align: 'center'}
-                    , {field: 'dmtname', title: '宿舍名称', width: 120, sort: true, align: 'center'}
-                    , {field: 'dmtroom', title: '宿舍房间', width: 120, sort: true, align: 'center'}
-                    , {field: 'inTime', title: '进入时间', width: 120, sort: true, align: 'center'}
-                     , {field: 'outTime', title: '出去时间', width: 150, sort: true, align: 'center'}
-                    , {field: 'userID', title: '用户编号', width: 150, sort: true, align: 'center'}
-                    , {field: 'username', title: '用户名', width: 150, sort: true, align: 'center'}
+                [   {field: 'dmtid', title: '宿舍号', sort: true, align: 'center'}
+                    , {field: 'dmtname', title: '宿舍名称', sort: true, align: 'center'}
+                    , {field: 'dmtroom', title: '宿舍房间', sort: true, align: 'center'}
+                    , {field: 'inTime', title: '进入时间', width: 200, sort: true, align: 'center'}
+                     , {field: 'outTime', title: '出去时间', width: 200, sort: true, align: 'center'}
+                    , {field: 'userID', title: '用户编号',  sort: true, align: 'center'}
+                    , {field: 'username', title: '用户名',  sort: true, align: 'center'}
                 ]
             ]
         });
