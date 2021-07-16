@@ -13,9 +13,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Controller
 public class newsController {
@@ -72,13 +75,28 @@ public class newsController {
     @ResponseBody
     @RequestMapping(value = "/loadPic", method = RequestMethod.POST)
     public Map<String, Object> uploadPic(
-            @RequestParam(value = "img", required = true)MultipartFile file,
-            HttpServletRequest request
-            ) {
+            @RequestParam(value = "editormd-image-file", required = true)
+                    MultipartFile file, HttpServletRequest request
+            ) throws IOException {
         Map<String, Object> res = new HashMap<>();
-        res.put("url", "");
+
+        String path = System.getProperty("user.dir") + "/source/static/upload";
+        System.out.println(path);
+
+        // 将要上传的图片放在的本地位置
+        File realPath = new File(path);
+        if(!realPath.exists())
+            realPath.mkdirs();
+
+        String fileName = UUID.randomUUID().toString().replaceAll("-", "") + ".jpg";
+        file.transferTo(new File(realPath + "/" + fileName));
+
+        System.out.println("????????????");
+        System.out.println(file.getOriginalFilename());
+        res.put("url", "/source/static/upload/" + fileName);
         res.put("success", 1);
         res.put("message", "upload sucesss!");
+        System.out.println(res);
         return res;
     }
 
