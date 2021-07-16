@@ -13,5 +13,5 @@ public class NewsBean {
     private Date publishTime;
     private int views;
     private String title;
-
+    private String info;
 }

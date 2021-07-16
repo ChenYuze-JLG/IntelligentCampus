@@ -6,4 +6,8 @@
         SELECT * FROM news where title != '';
     </select>
 
+    <insert id="saveNews">
+        INSERT INTO news(publisher, title, info, url) values (#{author}, #{title}, #{info}, "/newsInfo")
+    </insert>
+
 </mapper>
