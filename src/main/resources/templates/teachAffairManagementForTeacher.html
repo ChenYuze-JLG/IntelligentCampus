@@ -7,6 +7,10 @@
 <!--    <link rel="stylesheet" href="../static/css/teachAffair.css">-->
 <!--    <script src="../static/layui/layui.js"></script>-->
     <script src="https://unpkg.com//layui@2.6.8//dist//layui.js"></script>
+    <link rel="stylesheet" href="//unpkg.com/layui@2.6.8/dist/css/layui.css">
+    <style>
+        #layui-body{position:fixed;top:1px;bottom:1px}
+    </style>
 </head>
 <body>
 
@@ -16,7 +20,6 @@
         <div class="top" style="margin-bottom: 20px"></div>
     </div>
     <!--左侧导航栏-->
-    <link rel="stylesheet" href="//unpkg.com/layui@2.6.8/dist/css/layui.css">
     <div class="layui-side layui-bg-black">
         <div class="layui-side-scroll">
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
@@ -24,24 +27,24 @@
                 <li class="layui-nav-item layui-nav-itemed">
                     <a class="" href="javascript:;">成绩管理</a>
                     <dl class="layui-nav-child">
-                        <dd><a class="layui-this ScoreTest" href="ViewScore">成绩查询</a></dd>
+                        <dd><a class="layui-this ScoreTest" href="/teachAffairManagementForTeacher/ScoreQuery">成绩查询</a></dd>
                         <dd><a href="javascript:;">未定</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
                     <a href="javascript:;">课程管理</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="ViewLessonSchedule">课表查询</a></dd>
-                        <dd><a href="ViewAbsenceRecord">考勤记录查询</a></dd>
-                        <dd><a href="AskForLeave">课程请假</a></dd>
+                        <dd><a href="/teachAffairManagementForTeacher/LessonScheduleQuery">课表查询</a></dd>
+                        <dd><a href="/teachAffairManagementForTeacher/AbsenceRecordQuery">考勤记录查询</a></dd>
+                        <dd><a href="/teachAffairManagementForTeacher/CourseLeaveCheck">课程请假</a></dd>
                         <dd><a href="">超链接</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
                     <a href="javascript:;">教室申请管理</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="ApplicationForm">申请表填写</a></dd>
-                        <dd><a href="ApplicationRecord">申请记录查询</a></dd>
+                        <dd><a href="/teachAffairManagement/ApplicationFormFill">申请表填写</a></dd>
+                        <dd><a href="/teachAffairManagement/ApplicationRecordQuery">申请记录查询</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item"><a href="">the links</a></li>
@@ -58,16 +61,16 @@
         </script>
     </div>
     <!--右侧主体-->
-    <div class="layui-body">
+    <div class="layui-body" style="position:fixed;top:60px;bottom:0px">
         <!--用iframe渲染嵌入页面-->
         <div>
-            <iframe id="iframeMain" src="ViewScore" width=100% height=500></iframe>
+            <iframe id="iframeMain" src="/teachAffairManagementForTeacher/ScoreQuery" width=100% height=570></iframe>
         </div>
         <!--右侧主体底部-->
-        <div class="layui-footer">
-            <!-- 底部固定区域 -->
-            底部固定区域
-        </div>
+<!--        <div class="layui-footer">-->
+<!--            &lt;!&ndash; 底部固定区域 &ndash;&gt;-->
+<!--            底部固定区域-->
+<!--        </div>-->
     </div>
 </div>
 

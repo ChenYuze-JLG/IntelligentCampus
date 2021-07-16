@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sevengroup.campus.mapper.TeachAffairManageMapper">
+
+    <!--获取教师管理的所有教学班信息-->
+    <resultMap id="RMTeachClassInfoBean" type="com.sevengroup.campus.bean.TeachClassInfoBean">
+        <!-- property 为实体， column 为数据库 -->
+        <result property="teachClassID" column="teachclassid"/>
+        <result property="collegeName" column="collegename"/>
+        <result property="courseName" column="coursename"/>
+        <result property="teachClassName" column="teachclassname"/>
+        <result property="teachStartDate" column="startdate"/>
+        <result property="teachEndDate" column="enddate"/>
+        <result property="courseCredit" column="credit"/>
+        <result property="teachClassCapacity" column="teachclasscapacity"/>
+    </resultMap>
+
+    <select id="getTeachClassInfo" parameterType="String" resultMap="RMTeachClassInfoBean">
+        SELECT t.teachclassid, t.teachclassname, t.startdate, t.enddate,
+               t.coursename, t.credit, t.collegename, COUNT(*) AS teachclasscapacity FROM (
+                  SELECT tc.teachClassID AS teachclassid,
+                         tc.name AS teachclassname, tc.startDate AS startdate,
+                         tc.endDate AS enddate, c.`name` AS coursename,
+                         sc.credit AS credit, cg.collegeName AS collegename
+                  FROM teachclass AS tc,  tcsnamelist AS tl, course AS c, scorerecord AS sc, college AS cg
+                  WHERE tc.teachCLassID = tl.teachCLassID AND tc.courseID = c.courseID
+                    AND tc.teachClassID = sc.teachClassID AND sc.collegeID = cg.collegeID
+                    AND tc.teacherID = #{teacherID}
+              ) AS t
+        GROUP BY t.teachclassid, t.teachclassname, t.coursename, t.startDate, t.endDate, t.credit, t.collegename
+    </select>
+
+    <!--获取教学班级学生成绩表-->
+    <resultMap id="RMTeachClassScoreRecordBean" type="com.sevengroup.campus.bean.TeachClassScoreRecordBean">
+        <!-- property 为实体， column 为数据库 -->
+        <result property="studentID" column="studentid"/>
+        <result property="studentName" column="studentname"/>
+        <result property="collegeName" column="collegename"/>
+        <result property="majorName" column="majorname"/>
+        <result property="classNumber" column="classnumber"/>
+        <result property="grade" column="grade"/>
+        <result property="courseScore" column="score"/>
+    </resultMap>
+
+    <select id="getTeachClassScoreRecord" parameterType="String" resultMap="RMTeachClassScoreRecordBean">
+        SELECT s.studentID AS studentid, s.`name` AS studentname,
+               cg.collegeName AS collegename, m.`name` AS majorname,
+               ac.grade AS grade, ac.classnumber AS classnumber, sc.score AS score
+        FROM student AS s, college AS cg, teachclass AS tc,
+             major AS m, scorerecord AS sc, tcsnamelist AS tl,
+             adminclass AS ac
+        WHERE tc.teachClassID = #{teachClassID} AND s.studentID = tl.studentID AND tc.teachClassID = tl.teachClassID
+          AND sc.teachClassID = tc.teachClassID AND sc.collegeID = cg.collegeID AND m.collegeID = cg.collegeID
+          AND m.majorid = ac.majorid
+    </select>
+
+    <!--获取教学班级考勤记录-->
+    <resultMap id="RMTeachClassAbsenceRecordBean" type="com.sevengroup.campus.bean.TeachClassAbsenceRecordBean">
+        <!-- property 为实体， column 为数据库 -->
+        <result property="studentID" column="studentid"/>
+        <result property="studentName" column="studentname"/>
+        <result property="collegeName" column="collegename"/>
+        <result property="majorName" column="majorname"/>
+        <result property="grade" column="grade"/>
+        <result property="classNumber" column="classnumber"/>
+        <result property="date" column="date"/>
+        <result property="section" column="section"/>
+        <result property="state" column="state"/>
+    </resultMap>
+
+    <select id="getTeachClassAbsenceRecord" parameterType="String" resultMap="RMTeachClassAbsenceRecordBean">
+        SELECT s.studentID AS studentid, s.`name` AS studentname,
+               cg.collegeName AS collegename, m.`name` AS majorname,
+               ac.grade AS grade, ac.classnumber AS classnumber,
+               l.date AS `date`, l.section AS `section`, ar.type AS `type`
+        FROM student AS s, college AS cg, teachclass AS tc,
+             major AS m, scorerecord AS sc, tcsnamelist AS tl,
+             adminclass AS ac, absencerecord AS ar, lesson AS l
+        WHERE tc.teachClassID = #{teachClassID} AND s.studentID = tl.studentID AND tc.teachClassID = tl.teachClassID
+            AND sc.teachClassID = tc.teachClassID AND sc.collegeID = cg.collegeID AND m.collegeID = cg.collegeID
+            AND m.majorid = ac.majorid AND l.teachClassID = tc.teachClassID AND ar.lessonID = l.lessonID
+    </select>
+
+    <!--获取教室申请记录-->
+    <resultMap id="RMCRApplicationRecordBean" type="com.sevengroup.campus.bean.CRApplicationRecordBean">
+        <!-- property 为实体， column 为数据库 -->
+        <result property="classroomID" column="classroomid"/>
+        <result property="date" column="date"/>
+        <result property="section" column="section"/>
+        <result property="capacity" column="capacity"/>
+        <result property="check" column="check"/>
+        <result property="role" column="role"/>
+    </resultMap>
+
+    <select id="getCRApplicationRecord" parameterType="String" resultMap="RMCRApplicationRecordBean">
+        SELECT cr.classroomID AS classroomid, cr.date AS date, cr.section AS section,
+       c.capacity AS capacity, cr.`check` AS `check`, u.role AS role
+        FROM classroomrecord AS cr, classroom AS c, `user` AS u
+        WHERE cr.`user` = #{username} AND c.classroomID = cr.classroomID AND cr.`user` = u.username
+    </select>
+
+
+<!--    <update id="borrowAgain" parameterType="com.sevengroup.campus.bean.BookBean">-->
+<!--        update borrowrecord-->
+<!--        set returnTime = #{returnTime}-->
+<!--        where bookID = #{bookID}-->
+<!--          and borrowUser = #{borrowUser}-->
+<!--          and returnTime is null;-->
+
+<!--        insert into borrowrecord(bookid, renewCount, borrowUser, expirationTime)-->
+<!--        values (#{bookID}, #{borrowCount}, #{borrowUser}, date_add(#{returnTime}, interval 1 MONTH));-->
+<!--    </update>-->
+
+</mapper>
