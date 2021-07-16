@@ -3,6 +3,7 @@
 </fieldset>
 <a href="javascript:layui.table.reload('bookInfoTable');" style="padding: 0 0px"><i class="fa fa-refresh fa-lg"></i> <span>刷新</span></a>
 <table class="layui-table" id="bookInfoTable" lay-filter="bookInfoTableFilter"></table>
+<script src="http://localhost:8080/static/layui_extends/tableFilter.js"></script>
 
 <script src="/static/build/layui.js"></script>
 <script>
@@ -57,5 +58,27 @@
             layer.msg('服务端排序。order by ' + obj.field + ' ' + obj.type);
         });
     });
+    function filterInit() {
+        var tableFilter = layui.tableFilter;
+        console.log("filter");
+        var tableFilterIns = tableFilter.render({
+            'elem': '#bookInfoTable',//table的选择器
+            'mode': 'local',//过滤模式
+            'filters': [
+                {field: 'dmtid', type: 'input'}
+                ,{field: 'dmtname', type: 'input'}
+                ,{field: 'dmtroom', type: 'input'}
+                ,{field: 'inTime', type: 'input'}
+                ,{field: 'outTime', type: 'input'}
+                ,{field: 'userID', type: 'input'}
+                ,{field: 'username', type: 'input'}
+                , {field: 'userID', type: 'input'}
+            ],//过滤项配置
+            'done': function (filters) {
+                //结果回调
+            }
+        })
+    }
+    filterInit();
 
 </script>

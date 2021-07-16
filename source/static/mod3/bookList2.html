@@ -16,6 +16,7 @@
         </div>
     </div>
 </form>
+
 <a href="javascript:selectBookByName('');" style="padding: 0 0px"><i class="fa fa-refresh fa-lg"></i> <span>刷新</span></a>
 
 <table class="layui-table" id="bookInfoTable" lay-filter="bookInfoTableFilter"></table>
@@ -23,6 +24,8 @@
 <script type="text/html" id="barView">
     <a class="layui-btn layui-btn-xs" lay-event="order">预约图书</a>
 </script>
+<script src="http://localhost:8080/static/layui_extends/tableFilter.js"></script>
+
 <script src="/static/build/layui.js"></script>
 <script>
     function bookBorrowByID(bookID) {
@@ -108,6 +111,7 @@
                 }
             });
             layer.msg('服务端排序。order by ' + obj.field + ' ' + obj.type);
+            filterInit();
         });
     });
 
@@ -115,10 +119,14 @@
         var table = layui.table;
         console.log("selectBookByName");
         table.reload('bookInfoTable', {
+            page: {
+                curr: 1 //重新从第 1 页开始
+            },
             where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
                 bookName:  bookName  //
             }
         });
+        filterInit();
     }
     layui.use('form', function () {
         var form = layui.form;
@@ -136,4 +144,27 @@
             return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
         });
     });
+    function filterInit() {
+        var tableFilter = layui.tableFilter;
+        console.log("filter");
+        var tableFilterIns = tableFilter.render({
+            'elem': '#bookInfoTable',//table的选择器
+            'mode': 'local',//过滤模式
+            'filters': [
+                {field: 'bookID', type: 'input'}
+                , {field: 'bookName', type: 'input'}
+                , {field: 'bookAuthor', type: 'input'}
+                , {field: 'bookDate', type: 'input'}
+                , {
+                    field: 'bookState', type: 'checkbox', data:
+                        [{"key": "true", "value": "true"}, {"key": "false", "value": "false"}]
+                }
+                , {field: 'bookType', type: 'input'}
+            ],//过滤项配置
+            'done': function (filters) {
+                //结果回调
+            }
+        })
+    }
+    filterInit();
 </script>

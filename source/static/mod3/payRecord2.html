@@ -3,6 +3,7 @@
 </fieldset>
 <a href="javascript:layui.table.reload('bookInfoTable');" style="padding: 0 0px"><i class="fa fa-refresh fa-lg"></i> <span>刷新</span></a>
 <table class="layui-table" id="bookInfoTable" lay-filter="bookInfoTableFilter"></table>
+<script src="http://localhost:8080/static/layui_extends/tableFilter.js"></script>
 
 <script src="/static/build/layui.js"></script>
 <script>
@@ -55,7 +56,28 @@
                 }
             });
             layer.msg('服务端排序。order by ' + obj.field + ' ' + obj.type);
+            filterInit();
+
         });
     });
-
+    function filterInit() {
+        var tableFilter = layui.tableFilter;
+        console.log("filter");
+        var tableFilterIns = tableFilter.render({
+            'elem': '#bookInfoTable',//table的选择器
+            'mode': 'local',//过滤模式
+            'filters': [
+                {field: 'payTime', type: 'input'}
+                , {field: 'transactionMoney', type: 'input'}
+                , {field: 'transactionType', type: 'checkbox', data:
+                        [{"key": "校园卡支出", "value": "校园卡支出"}, {"key": "校园卡充值", "value": "校园卡充值"}]
+                }
+                , {field: 'userID', type: 'input'}
+            ],//过滤项配置
+            'done': function (filters) {
+                //结果回调
+            }
+        })
+    }
+    filterInit();
 </script>
