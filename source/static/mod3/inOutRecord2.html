@@ -1,0 +1,61 @@
+<fieldset class="layui-elem-field layui-field-title site-title">
+    <legend><a name="fixbar">归寝记录</a></legend>
+</fieldset>
+<a href="javascript:layui.table.reload('bookInfoTable');" style="padding: 0 0px"><i class="fa fa-refresh fa-lg"></i> <span>刷新</span></a>
+<table class="layui-table" id="bookInfoTable" lay-filter="bookInfoTableFilter"></table>
+
+<script src="/static/build/layui.js"></script>
+<script>
+
+    layui.use('table', function () {
+        var table = layui.table;
+        var bookName = "";
+        table.render({
+            elem: '#bookInfoTable'
+            , height: 'full'
+            , url: 'http://localhost:8080/mod3/inOutRecordTable' //数据接口
+            , where: {  // 接口的其他参数（自己定义传递的参数）
+                // teacherID: teacherID
+            }
+            , title: '图书信息列表'
+            , page: true //开启分页
+            , limit: 10  // 每页显示的条数
+            , limits: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]  //每页显示条数的可选择数目
+            // ,autoSort: false //禁用前端自动排序
+            , initSort: {  //初始化排序方式
+                field: 'payTime' //排序字段，对应 cols 设定的各字段名
+                , type: 'asc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
+            }
+            , cols: [
+                [   {field: 'dmtid', title: '宿舍号', width: 120, sort: true, align: 'center'}
+                    , {field: 'dmtname', title: '宿舍名称', width: 120, sort: true, align: 'center'}
+                    , {field: 'dmtroom', title: '宿舍房间', width: 120, sort: true, align: 'center'}
+                    , {field: 'inTime', title: '进入时间', width: 120, sort: true, align: 'center'}
+                     , {field: 'outTime', title: '出去时间', width: 150, sort: true, align: 'center'}
+                    , {field: 'userID', title: '用户编号', width: 150, sort: true, align: 'center'}
+                    , {field: 'username', title: '用户名', width: 150, sort: true, align: 'center'}
+                ]
+            ]
+        });
+
+        //触发排序事件
+        table.on('sort(bookInfoTableFilter)', function (obj) { //注：sort 是工具条事件名，bookInfoTableFilter 是 table 原始容器的属性 lay-filter="对应的值"
+            console.log(obj.field); //当前排序的字段名
+            console.log(obj.type); //当前排序类型：desc（降序）、asc（升序）、null（空对象，默认排序）
+            console.log(this); //当前排序的 th 对象
+
+            //尽管我们的 table 自带排序功能，但并没有请求服务端。
+            //有些时候，你可能需要根据当前排序的字段，重新向服务端发送请求，从而实现服务端排序，如：
+            table.reload('bookInfoTable', {
+                initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+                , where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                    field: obj.field //排序字段
+                    , order: obj.type  //排序方式
+                    , name:  bookName  //
+                }
+            });
+            layer.msg('服务端排序。order by ' + obj.field + ' ' + obj.type);
+        });
+    });
+
+</script>

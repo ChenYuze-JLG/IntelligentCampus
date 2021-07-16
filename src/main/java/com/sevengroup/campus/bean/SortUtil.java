@@ -136,4 +136,16 @@ public class SortUtil {
         Collections.sort(list, comparator);
         return list;
     }
+    public static List<MoneyBean> SortMoneyBean(List<MoneyBean> list, String properName, boolean flag) {
+        AnyProperComparator comparator = new AnyProperComparator(properName, flag);
+        Collections.sort(list, comparator);
+        return list;
+    }
+    public static List<DmtManageBean> SortDmtManageBean(List<DmtManageBean> list, String properName, boolean flag) {
+        AnyProperComparator comparator = new AnyProperComparator(properName, flag);
+        Collections.sort(list, comparator);
+        return list;
+    }
+
+
 }

@@ -1,16 +1,15 @@
 package com.sevengroup.campus.bean;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class layuiTableBean {
+public class inOutRecordTableBean {
     private String code;
     private String msg;
     private int count;
 
 
 
-    private List<BookBean> data;
+    private List<DmtManageBean> data;
     public int getCount() {
         return count;
     }
@@ -34,11 +33,11 @@ public class layuiTableBean {
     public void setMsg(String msg) {
         this.msg = msg;
     }
-    public List<BookBean> getData() {
+    public List<DmtManageBean> getData() {
         return data;
     }
 
-    public void setData(List<BookBean> data) {
+    public void setData(List<DmtManageBean> data) {
         this.data = data;
     }
 }
