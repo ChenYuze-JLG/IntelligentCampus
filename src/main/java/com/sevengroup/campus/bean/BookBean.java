@@ -38,4 +38,20 @@ public class BookBean {
 
     private String borrowUser;  // 借阅人
 
+    @Override
+    public String toString() {
+        return "{" +
+                "bookID='" + bookID + '\'' +
+                ", bookName='" + bookName + '\'' +
+                ", bookAuthor='" + bookAuthor + '\'' +
+                ", bookDate='" + bookDate + '\'' +
+                ", bookState='" + bookState + '\'' +
+                ", bookType='" + bookType + '\'' +
+                ", borrowTime='" + borrowTime + '\'' +
+                ", expirationTime='" + expirationTime + '\'' +
+                ", returnTime='" + returnTime + '\'' +
+                ", borrowCount=" + borrowCount +
+                ", borrowUser='" + borrowUser + '\'' +
+                '}';
+    }
 }

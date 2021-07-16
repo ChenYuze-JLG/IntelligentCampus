@@ -130,4 +130,10 @@ public class SortUtil {
         Collections.sort(list, comparator);
         return list;
     }
+
+    public static List<BookBean> SortBookBean(List<BookBean> list, String properName, boolean flag) {
+        AnyProperComparator comparator = new AnyProperComparator(properName, flag);
+        Collections.sort(list, comparator);
+        return list;
+    }
 }

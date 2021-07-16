@@ -1,25 +1,22 @@
 package com.sevengroup.campus.bean;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class layuiTableBean {
     private String code;
     private String msg;
     private int count;
-    private String data;
+
+
+
+    private List<BookBean> data;
     public int getCount() {
         return count;
     }
 
     public void setCount(int count) {
         this.count = count;
-    }
-    public String getData() {
-        return data;
-    }
-
-    public void setData(String data) {
-        this.data = data;
     }
 
     public String getCode() {
@@ -37,15 +34,11 @@ public class layuiTableBean {
     public void setMsg(String msg) {
         this.msg = msg;
     }
+    public List<BookBean> getData() {
+        return data;
+    }
 
-
-    @Override
-    public String toString() {
-        return "layuiTableBean{" +
-                "code='" + code + '\'' +
-                ", msg='" + msg + '\'' +
-                ", count='" + count + '\'' +
-                ", data='" + data + '\'' +
-                '}';
+    public void setData(List<BookBean> data) {
+        this.data = data;
     }
 }
