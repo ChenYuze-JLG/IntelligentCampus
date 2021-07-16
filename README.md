@@ -8,18 +8,31 @@
 * news表需要标题这个属性(title)
 * examschedule表：删除endTime，增加examTime(考试时长)
 * absencerecord表：枚举变量type增加两种枚举类型（"待审核","审核未通过"）
+* inoutrecord表：将inOutTime拆分为inTime与outTime
+* dmtroom表：增加gasBalance、waterBalance、electricBalance属性
+* activityrecord表：增加审核状态【待审核、审核通过、未审核】
+* ~~user表：添加初始化roomID~~
+* ~~transrecord表：修改money类型为decimal,将支出修改为负值~~
+* ~~borrowrecord表：修改renewCount为0-3范围~~
+* ~~borrowrecord表：修改returnTime为timestamp~~
+* ~~borrowrecord表：增加expirationTime超期时间属性~~
 * ~~books表：添加是否在馆信息(state)~~
 * ~~borrowrecord表：borrowTime更改为timestamp类型~~
 * borrowrecord表：修改renewCount为0-3范围
 * ~~borrowrecord表：将returnTime < borrowTime 的returnTime更改为NULL~~
 * ~~books表：增加book数量~~
- 
+* ~~activityrecord表：修改regisTime为CURRENT_TIMESTAMP~~
+* ~~activity表：修改属性名，更改publishTime为CURRENT_TIMESTAMP~~
+* ~~transrecord表：修改payTime为CURRENT_TIMESTAMP~~
+* ~~news表：publishTime修改为CURRENT_TIMESTAMP~~
+* ~~lostandfound表：publishTime修改为CURRENT_TIMESTAMP~~
+* ~~inoutrecord表：inOutTime修改为CURRENT_TIMESTAMP~~
 
 ## 环境配置：   
 
 * MySQL: 8.0.x
 * Idea: 2021.1.x
-* JDK: 1.8.x
+* JDK: 11.x.x
 * Maven: 3.6.3 (idea 自带)
 
 ## 功能需求：

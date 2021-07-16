@@ -107,10 +107,27 @@ public class SortUtil {
     }
 
      //按任意给定的字段进行排序，升序或降序由flag决定
-    public static List<ScoreRecordBean> anyProperSort(List<ScoreRecordBean> list, String properName, boolean flag) {
+    public static List<TeachClassInfoBean> SortTeachClassInfoBean(List<TeachClassInfoBean> list, String properName, boolean flag) {
         AnyProperComparator comparator = new AnyProperComparator(properName, flag);
         Collections.sort(list, comparator);
         return list;
     }
 
+    public static List<TeachClassScoreRecordBean> SortTeachClassScoreRecordBean(List<TeachClassScoreRecordBean> list, String properName, boolean flag) {
+        AnyProperComparator comparator = new AnyProperComparator(properName, flag);
+        Collections.sort(list, comparator);
+        return list;
+    }
+
+    public static List<TeachClassAbsenceRecordBean> SortTeachClassAbsenceRecordBean(List<TeachClassAbsenceRecordBean> list, String properName, boolean flag) {
+        AnyProperComparator comparator = new AnyProperComparator(properName, flag);
+        Collections.sort(list, comparator);
+        return list;
+    }
+
+    public static List<CRApplicationRecordBean> SortCRApplicationRecordBean(List<CRApplicationRecordBean> list, String properName, boolean flag) {
+        AnyProperComparator comparator = new AnyProperComparator(properName, flag);
+        Collections.sort(list, comparator);
+        return list;
+    }
 }

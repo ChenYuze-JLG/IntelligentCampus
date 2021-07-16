@@ -1,5 +1,6 @@
 package com.sevengroup.campus.bean;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,8 +13,8 @@ import lombok.NoArgsConstructor;
  */
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class BookBean {
     private String bookID; // 编号
 
@@ -21,16 +22,20 @@ public class BookBean {
 
     private String bookAuthor; // 书作者
 
-    private String bookYear;  // 出版年份
+    private String bookDate;  // 出版日期
+
+    private String bookState; // 图示是否在馆
 
     private String bookType;  // 图书类型
 
     private String borrowTime;  // 借阅时间
 
+    private String expirationTime; // 图书借阅到期时间
+
     private String returnTime;  // 还书时间
 
-    private String renewCount;  // 续借次数
+    private int borrowCount;  // 续借次数
 
-    private String borrowUserID; // 借阅人
+    private String borrowUser;  // 借阅人
 
 }

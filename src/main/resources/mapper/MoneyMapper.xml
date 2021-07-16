@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sevengroup.campus.mapper.MoneyMapper">
+
+    <resultMap id="resultMap" type="com.sevengroup.campus.bean.MoneyBean">
+        <!-- property 为实体， column 为数据库 -->
+        <result property="transactionMoney" column="money"/>
+        <result property="transactionType" column="type"/>
+        <result property="payTime" column="paytime"/>
+        <result property="userID" column="username"/>
+        <result property="userID" column="cardID"/>
+        <result property="cardBalance" column="balance"/>
+    </resultMap>
+
+    <select id="findBalanceByID" parameterType="String" resultType="double">
+        SELECT balance
+        from card
+        WHERE card.cardID = #{userID}
+    </select>
+
+    <select id="getBalanceByID" parameterType="String" resultMap="resultMap">
+        SELECT *
+        from card
+        WHERE cardID = #{userID}
+    </select>
+
+    <update id="addCreditRecord" parameterType="com.sevengroup.campus.bean.MoneyBean">
+        insert into transrecord(money, type, username)
+        values (#{transactionMoney}, #{transactionType}, #{userID});
+    </update>
+
+    <insert id="addCardCreditRecord" parameterType="com.sevengroup.campus.bean.MoneyBean">
+
+        insert into transrecord(money, type, username)
+        values (#{transactionMoney}, #{transactionType}, #{userID});
+
+
+        update card
+        set balance = #{transactionMoney}+#{cardBalance}
+        where cardID = #{userID}
+
+    </insert>
+
+    <select id="getRecordByID" parameterType="String" resultMap="resultMap">
+
+        select *
+        from transrecord
+        where (type = '校园卡支出'
+            or type = '校园卡充值')
+          and username = #{userID}
+
+    </select>
+
+    <insert id="payFromCard">
+
+        update card
+        set balance = balance - #{money}
+        where cardID = #{userID};
+
+        insert into transrecord (money, type, username)
+        values (0 - #{money}, '校园卡支出', #{userID});
+
+        insert into transrecord (money, type, username)
+        values (#{money}, #{payType}, #{userID});
+
+    </insert>
+
+</mapper>

@@ -19,9 +19,21 @@ import java.util.List;
 @Component
 public interface BookMapper {
 
-    List<BookBean> getBookInfo(String username);
+    List<BookBean> getBorrowInfo(String username);
 
-    BookBean findBookByName(String name);
+    List<BookBean> findBookByName(String name);
 
+    BookBean findBookByID(String id);
 
+    BookBean findAvailableBookByID(String id);
+
+    int borrowBook(BookBean bookBean);
+
+    int borrowAgain(BookBean bookBean);
+
+    BookBean findBorrowedBookInfoByID(String bookID, String userID);
+
+    List<BookBean> getAllBooksList();
+
+    int confirmLendBook(String bookID, String userID, String fromUser, String currentTime);
 }

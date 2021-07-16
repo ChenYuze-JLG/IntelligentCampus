@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.sevengroup.campus.mapper.ScoreRecordMapper">
-
-    <select id="getStudentScore" parameterType="String" resultType="com.sevengroup.campus.bean.ScoreRecordBean">
-        SELECT * FROM scorerecord WHERE studentID = #{studentID}
-    </select>
-</mapper>

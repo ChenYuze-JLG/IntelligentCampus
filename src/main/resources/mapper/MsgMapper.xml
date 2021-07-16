@@ -11,7 +11,15 @@
     </insert>
 
     <select id="listMsgs" resultType="com.sevengroup.campus.bean.MsgBean">
-        SELECT * FROM message where receiver = #{username};
+        SELECT * FROM message where receiver = #{username} AND state = 0
     </select>
+
+    <select id="allMsgs" resultType="com.sevengroup.campus.bean.MsgBean">
+        SELECT * FROM message where receiver = #{username}
+    </select>
+
+    <update id="setHandled">
+        UPDATE message SET state = 1 WHERE ID = #{id}
+    </update>
 
 </mapper>

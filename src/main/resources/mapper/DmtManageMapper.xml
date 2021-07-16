@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sevengroup.campus.mapper.DmtManageMapper">
+
+    <resultMap id="resultMap" type="com.sevengroup.campus.bean.DmtManageBean">
+        <!-- property 为实体， column 为数据库 -->
+        <result property="username" column="nickname"/>
+        <result property="userID" column="username"/>
+        <result property="inTime" column="inOutTime"/>
+        <result property="outTime" column="inOutTime"/>
+        <result property="DMTRoom" column="roomID"/>
+        <result property="DMTName" column="nickname"/>
+        <result property="DMTID" column="DMTID"/>
+    </resultMap>
+
+    <select id="getInOutRecordsAll" parameterType="String" resultMap="resultMap">
+        SELECT *
+        from (dmtroom room
+            inner join user
+            on room.DMTRoomID = user.roomID)
+                 inner join inoutrecord on user.username = inoutrecord.username
+        WHERE room.DMTID = #{dormitoryID}
+          and user.role = '学生';
+    </select>
+
+    <select id="getUserRole" parameterType="String" resultType="String">
+
+        select role
+        from user
+        where username = #{userID};
+
+    </select>
+
+    <select id="getInOutRecordsSelf" parameterType="String" resultMap="resultMap">
+
+        SELECT *
+        from (dmtroom room
+            inner join user
+            on room.DMTRoomID = user.roomID)
+                 inner join inoutrecord on user.username = inoutrecord.username
+        WHERE user.username = #{userID};
+
+    </select>
+
+    <select id="getDmtID" parameterType="String" resultType="String" >
+
+        select DMTID
+        from (dmtroom
+            inner join dormitory d on dmtroom.DMTID = d.dormitoryID)
+                 inner join user on dmtroom.DMTRoomID = user.roomID
+        where user.username = #{userID};
+
+    </select>
+
+</mapper>

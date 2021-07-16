@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="//unpkg.com/layui@2.6.8/dist/css/layui.css">
+    <script src="https://unpkg.com//layui@2.6.8//dist//layui.js"></script>
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+</head>
+<body>
+
+<!--<blockquote class="layui-elem-quote layui-text">-->
+<!--    鉴于小伙伴的普遍反馈，先温馨提醒两个常见“问题”：1. <a href="/doc/base/faq.html#form" target="_blank">为什么select/checkbox/radio没显示？</a> 2. <a href="/doc/modules/form.html#render" target="_blank">动态添加的表单元素如何更新？</a>-->
+<!--</blockquote>-->
+
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+    <legend>教室申请表</legend>
+</fieldset>
+
+<form class="layui-form" action="" lay-filter="CRApplicationForm">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">教室编号</label>
+            <div class="layui-input-inline">
+                <input type="text" name="classroomID" id="classroomID" lay-verify="classroomID" autocomplete="off" placeholder="请输入教室编号" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">使用日期</label>
+            <div class="layui-input-inline">
+                <input type="text" name="date" id="date" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <!--申请节次——复选框-->
+    <div class="layui-form-item">
+        <div class="layui-form-item" pane="">
+            <label class="layui-form-label">申请节次</label>
+            <div class="layui-input-block">
+                <div class="layui-inline">
+                    <input lay-filter="CB" type="checkbox" name="section[1]" title="第01节" value="第一节" checked="" style="width:80%;">
+                    <input lay-filter="CB" type="checkbox" name="section[2]" title="第02节" value="第二节">
+                    <input lay-filter="CB" type="checkbox" name="section[3]" title="第03节" value="第三节">
+                    <input lay-filter="CB" type="checkbox" name="section[4]" title="第04节" value="第四节">
+                </div>
+            </div>
+            <div class="layui-input-block">
+                <div class="layui-inline">
+                    <input lay-filter="CB" type="checkbox" name="section[5]" title="第05节" value="第五节">
+                    <input lay-filter="CB" type="checkbox" name="section[6]" title="第06节" value="第六节">
+                    <input lay-filter="CB" type="checkbox" name="section[7]" title="第07节" value="第七节">
+                    <input lay-filter="CB" type="checkbox" name="section[8]" title="第08节" value="第八节">
+                </div>
+            </div>
+            <div class="layui-input-block">
+                <div class="layui-inline">
+                    <input lay-filter="CB" type="checkbox" name="section[9]" title="第09节" value="第九节">
+                    <input lay-filter="CB" type="checkbox" name="section[10]" title="第10节" value="第十节">
+                    <input lay-filter="CB" type="checkbox" name="section[11]" title="第11节" value="第十一节">
+                    <input lay-filter="CB" type="checkbox" name="section[12]" title="第12节" value="第十二节">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">申请用途</label>
+        <div class="layui-input-block">
+            <textarea placeholder="请输入内容" name="usage" class="layui-textarea"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+<!--            <button type="button" class="layui-btn layui-btn-normal" id="GET-VALUE">取值</button>-->
+            <button type="button" class="layui-btn layui-btn-normal" id="SET-VALUE">填写样例</button>
+            <button type="submit" class="layui-btn" lay-submit="" lay-filter="submitForm">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary" id="RESET">重置</button>
+        </div>
+    </div>
+</form>
+
+<!--    <div class="layui-form-item">-->
+<!--        <div class="layui-input-block">-->
+<!--            <button type="button" class="layui-btn layui-btn-normal" id="LAY-component-form-setval">赋值</button>-->
+<!--            <button type="button" class="layui-btn layui-btn-normal" id="LAY-component-form-getval">取值</button>-->
+<!--            <button type="submit" class="layui-btn" lay-submit="" lay-filter="submitForm">立即提交</button>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="layui-form-item">-->
+<!--        <button class="layui-btn" lay-submit="" lay-filter="demo2">跳转式提交</button>-->
+<!--    </div>-->
+
+<!-- 注意：如果你直接复制所有代码到本地，上述 JS 路径需要改成你本地的 -->
+<script>
+    layui.use(['form', 'laydate', 'layer'], function(){
+        var form = layui.form
+            ,layer = layui.layer
+            ,laydate = layui.laydate;
+        var sectionList = ["第一节"];  // 存放选中的节次
+        // layer.msg('有表情地提示', {icon: 6});
+        //日期
+        laydate.render({
+            elem: '#date'
+        });
+
+        //自定义验证规则
+        form.verify({
+            classroomID: function(value){
+                if(value.length < 5){
+                    return '教室编号为5个字符';
+                }
+            }
+            ,date: function (value) {
+                s = value.replace(/-/g,"/");
+                var d = new Date(s);
+                if(d < Date.now()) {
+                    return '请选择正确日期！';
+                }
+            }
+        });
+
+        // 监听复选框点击
+        form.on('checkbox(CB)', function(data){
+            // console.log(data.elem); //得到checkbox原始DOM对象
+            // console.log(data.elem.checked); //是否被选中，true或者false
+            // console.log(data.value); //复选框value值，也可以通过data.elem.value得到
+            // console.log(data.othis); //得到美化后的DOM对象
+            if(data.elem.checked) {
+                sectionList.push(data.value);
+            } else if(!data.elem.checked) {
+                for(var i = 0; i < sectionList.length; i++) {
+                    if(data.value === sectionList[i]) sectionList.splice(i, 1);
+                }
+            }
+            console.log(sectionList);
+        });
+
+        form.on('reset(resetForm)', function (data) {
+            alert("here");
+            sectionList.length = 0;
+            sectionList.push("第一节");
+        });
+
+        //监听提交
+        form.on('submit(submitForm)', function(data){
+            // layer.alert(JSON.stringify(data.field), {
+            //     title: '最终的提交信息'
+            // })
+            if(sectionList.length === 0) {
+                layer.msg('未选择申请节次！', {icon: 1});
+                return false;
+            }
+            // return false;
+            layer.confirm('您确认保存设置吗', {icon: 3, title:'提示'}, function(index){
+                layer.close(index);//关闭询问弹框
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: data.field,
+                    traditional: true, //是否使用传统的方式浅层序列化,若有数组参数或对象参数需要设置true!!!!!!
+                    dataType:"json",
+                    success: function(returnData){
+                        if(returnData.code === 1){
+                            //修改隐藏input[oldCrontabStatusInt]的值
+                            var new_oldCrontabStatusInt = returnData.obj;
+                            $('input[name=oldCrontabStatusInt]').val(new_oldCrontabStatusInt);
+                            layer.msg('保存成功', {
+                                icon: 1,
+                                time: 20000, //20s后自动关闭
+                                btn: ['确定']
+                            }, function(){
+                                parent.layer.closeAll();
+                            });
+                        }else{
+                            layer.msg(returnData.msg, {icon: 2});
+                        }
+                    }
+                });
+            });
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+
+        //表单复选框重置
+        layui.$('#RESET').on('click', function(){
+            // var data = form.val('CRApplicationForm');
+            // alert(JSON.stringify(data));
+            form.val('CRApplicationForm', {
+                 "section[1]": true //复选框选中状态
+                ,"section[2]": false
+                ,"section[3]": false
+                ,"section[4]": false
+                ,"section[5]": false
+                ,"section[6]": false
+                ,"section[7]": false
+                ,"section[8]": false
+                ,"section[9]": false
+                ,"section[10]": false
+                ,"section[11]": false
+                ,"section[12]": false
+            });
+            sectionList.length = 0;
+            sectionList.push("第一节");
+        });
+
+        //表单赋值
+        layui.$('#SET-VALUE').on('click', function(){
+            form.val('CRApplicationForm', {
+                "classroomID": "12345" // "name": "value"
+                ,"date": "2021-09-01"
+                ,"section[1]": true //复选框选中状态
+                ,"section[2]": false
+                ,"section[3]": false
+                ,"section[4]": false
+                ,"section[5]": false
+                ,"section[6]": false
+                ,"section[7]": false
+                ,"section[8]": false
+                ,"section[9]": false
+                ,"section[10]": false
+                ,"section[11]": false
+                ,"section[12]": false
+                ,"usage": "活动教室"
+            });
+            sectionList.length = 0;
+            sectionList.push("第一节");
+        });
+
+        //表单取值
+        layui.$('#GET-VALUE').on('click', function(){
+            var data = form.val('CRApplicationForm');
+            alert(JSON.stringify(data));
+        });
+    });
+</script>
+
+</body>
+</html>

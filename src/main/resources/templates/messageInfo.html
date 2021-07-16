@@ -1,49 +1,151 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>我的消息</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <link rel="stylesheet" href="../static/layui/css/layui.css" media="all">
-  <style>
-    @font-face {
-      font-family: x;
-      src: url("../static/FZMiaoWuJW.TTF");
-    }
-    body {
-      font-family: x;
-    }
-  </style>
+    <title>我的消息</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="../static/layui/css/layui.css" media="all">
+    <style>
+        @font-face {
+            font-family: x;
+            src: url("../static/FZMiaoWuJW.TTF");
+        }
+
+        body {
+            font-family: x;
+        }
+    </style>
 </head>
 <body>
 
 <div class="layui-bg-gray" style="padding: 60px; margin-left: 40px; margin-right: 50px">
-  <div class="layui-row layui-col-space15">
+    <div class="layui-row layui-col-space15">
 
     <div class="layui-col-md6" th:each="msg:${msgs}">
       <div class="layui-panel" style="width: 600px; height: 100px; margin-left: 100px; margin-top: -20px">
-        <span>
+<!--        <a th:href="${msg.getUrl()}">-->
+        <span th:onclick="deal([[${msg.getID()}]], [[${msg.getInfo()}]], [[${msg.getSender()}]], [[${msg.getType()}]])"
+              th:id="${msg.getID()}">
           <br>
           &nbsp;&nbsp;
           <span style="font-size: 15px;
            font-weight: bold;
-         padding-left: 20px">叮！你有新的活动通知！</span>
+         padding-left: 20px" th:if="${msg.getType()} eq 'activitySignUp'">
+              叮！有新的同学报名了你发布的活动！
+          </span>
+
+          <span style="font-size: 15px;
+           font-weight: bold;
+         padding-left: 20px" th:if="${msg.getType()} eq 'admission'">
+              叮！您报名的活动已通过申请！
+          </span>
+
+
+            <span style="font-size: 15px;
+           font-weight: bold;
+         padding-left: 20px" th:if="${msg.getType()} eq 'GotLendBook'">
+              叮！转借申请！
+          </span>
+
           &nbsp;&nbsp;
           <span style="font-size: 15px;font-weight: lighter"
-          th:text="${msg.getTime()}">
-
+                th:text="${msg.getTime()}">
           </span>
           <br><br>&nbsp;&nbsp;
           <span class="msg" th:text="${msg.getInfo()}">
 <!--            同学你好，你报名的春游活动已通过申请！-->
           </span>
         </span>
+<!--        </a>-->
       </div>
     </div>
 
   </div>
 </div>
 
+<script src="../static/layui/layui.js"></script>
+<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+<script>
+    function deal(id, info, sender, type) {
 
+        if (type === 'GotLendBook' || type === 'lenRes') {
+            if (type !== 'lenRes'){
+                layui.use('layer', function () {
+                    var layer = layui.layer;
+                    layer.open({
+                        type: 1,
+                        content: "是否同意转借",
+                        btn: ['同意', '拒绝'],
+                        yes: function (index, layero) {
+                            $.ajax({
+                                type: 'get',
+                                url: 'library/gotLend',
+                                data: {
+                                    'bookID': info.split(' ')[2],
+                                    'fromUserID': sender
+                                },
+                                traditional: true,
+                                async: false,
+                                dataType: 'json',
+                                success: function (data) {//成功的事件
+                                    layer.closeAll();
+                                    data === true ? layer.msg("转借成功") : layer.msg("转借失败，请稍后再尝试");
+                                    if (data === true) {
+                                        window.open("http://localhost:8080/mod3/test?page=selfBookList");
+                                    }
+
+                                },
+                                error: function (data) {//失败的事件
+                                    layer.msg("转借失败，请稍后再尝试");
+                                    layer.close();
+                                }
+                            });
+
+                        },
+                        btn2: function (index, layero) {
+                            layer.msg("已拒绝转借");
+                        }
+                    });
+                });
+            }
+        }
+        else {
+            layui.use('layer', function () {
+                var layer = layui.layer;
+                layer.open({
+                    type: 2,
+                    content: "verify",
+                    btn: ['yes', 'no'],
+                    yes: function (index, layero) {
+                        $.ajax({
+                            type: 'post',
+                            url: 'verify',
+                            data: {
+                                'id': id,
+                                'info': info,
+                                'receiver': sender
+                            },
+                            traditional: true,
+                            async: false,
+                            dataType: 'json',
+                            success: function (data) {//成功的事件
+                                layer.closeAll();
+                                layer.msg("已通过该用户的请求");
+                            },
+                            error: function (data) {//失败的事件
+                                layer.close();
+                            }
+                        });
+
+                    },
+                    btn2: function (index, layero) {
+                        layer.msg("已拒绝该用户的请求");
+                    }
+                });
+            });
+        }
+
+    }
+</script>
 
 </body>
 </html>
