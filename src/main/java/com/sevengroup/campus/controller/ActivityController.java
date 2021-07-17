@@ -40,11 +40,8 @@ public class ActivityController {
          */
         @Override
         public void addResourceHandlers(ResourceHandlerRegistry registry){
-            rootPath = System.getProperty("user.dir") + "/source/static/";
-            System.out.println(rootPath);
             registry.addResourceHandler("/static/**")
-                    .addResourceLocations("file:" + rootPath);
-//                    .addResourceLocations("file:E://Intelligence-campus\\source\\static\\");
+                    .addResourceLocations("file:E://IDEA\\JavaProject\\Intelligence-campus\\source\\static\\");
             super.addResourceHandlers(registry);
         }
     }
@@ -72,8 +69,7 @@ public class ActivityController {
         String[] temp = file.getOriginalFilename().split("\\.");
         String imgType = temp[temp.length - 1];
 //        imgPath = "src\\main\\resources\\static\\activity";
-//        imgPath = "E:\\Intelligence-campus/source/static/";
-        imgPath = rootPath;
+        imgPath = "E:\\Intelligence-campus/source/static/";
         for(int i = 0; i < temp.length - 1; ++i)
             imgPath = imgPath + temp[i];
 
@@ -104,8 +100,7 @@ public class ActivityController {
         System.out.println("start");
         System.out.println(imgPath);
 
-//        imgPath = imgPath.replace("E://Intelligence-campus/source/static", "../static/");
-        imgPath = imgPath.replace(rootPath, "../static/");
+        imgPath = imgPath.replace("E://Intelligence-campus/source/static", "../static/");
         imgPath = imgPath.replace("\\", "/");
         System.out.println(imgPath);
         System.out.println("end");

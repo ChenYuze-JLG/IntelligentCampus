@@ -1,9 +1,6 @@
 package com.sevengroup.campus.service.serviceImpl;
 
-import com.sevengroup.campus.bean.CRApplicationRecordBean;
-import com.sevengroup.campus.bean.TeachClassAbsenceRecordBean;
-import com.sevengroup.campus.bean.TeachClassScoreRecordBean;
-import com.sevengroup.campus.bean.TeachClassInfoBean;
+import com.sevengroup.campus.bean.*;
 import com.sevengroup.campus.mapper.TeachAffairManageMapper;
 import com.sevengroup.campus.service.TeachAffairManageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,5 +33,10 @@ public class TeachAffairManageServiceImpl implements TeachAffairManageService {
     @Override
     public List<CRApplicationRecordBean> getCRApplicationRecord(String username) {
         return teachAffairManageMapper.getCRApplicationRecord(username);
+    }
+
+    @Override
+    public List<TeacherCourseScheduleBean> getTeacherCourseSchedule(String teacherID) {
+        return teachAffairManageMapper.getTeacherCourseSchedule(teacherID);
     }
 }
