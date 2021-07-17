@@ -10,12 +10,24 @@
 <!--    </div>-->
 <!--  </div>-->
   <div class="layui-form-item">
+    <label class="layui-form-label">水费余额(元)</label>
+    <div class="layui-form-mid layui-word-aux" id="waterBalanceBody">balanceBody</div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">电费余额(元)</label>
+    <div class="layui-form-mid layui-word-aux" id="electricBalanceBody">balanceBody</div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">气费余额(元)</label>
+    <div class="layui-form-mid layui-word-aux" id="gasBalanceBody">balanceBody</div>
+  </div>
+  <div class="layui-form-item">
     <label class="layui-form-label">缴费类型</label>
     <div class="layui-input-block">
       <select name="payType" lay-filter="payType">
         <option value="水费">水费</option>
         <option value="电费">电费</option>
-        <option value="气费">气费</option>
+        <option value="燃气费">气费</option>
       </select>
     </div>
   </div>
@@ -40,11 +52,33 @@
   </div>
   <!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
 </form>
-
+<script src="/static/build/layui.js"></script>
 <script>
+  function selectCard() {
+    $.ajax({
+      //几个参数需要注意一下
+      type: "get",//方法类型
+      dataType: "json",//预期服务器返回的数据类型
+      url: "http://localhost:8080/money/getBalance",//url
+      success: function (datas) {
+        console.log(datas);//打印服务端返回的数据(调试用)
+        console.log(datas.length);//打印服务端返回的数据(调试用)
+        // $('#cardIDBody').html(datas.userID);
+        // $('#balanceBody').html(datas.cardBalance);
+        $('#waterBalanceBody').html(datas.waterBalance);
+        $('#electricBalanceBody').html(datas.electricBalance);
+        $('#gasBalanceBody').html(datas.gasBalance);
+      },
+      error: function () {
+        layer.msg("异常！");
+      }
+
+    });
+  };
+  selectCard();
   var submitFlag =true;
   layer.msg("pay");
-  function pay() {
+  function pay(data) {
     if(submitFlag == false){
       return false;
     }
@@ -62,7 +96,23 @@
 
         console.log(datas);//打印服务端返回的数据(调试用)
         if(datas == true) {
+          var org = $('#waterBalanceBody')[0].innerText;
+          var type = data.field.payType;
+          var money = data.field.money;
+          console.log(org);
+          console.log(type);
+          console.log(money);
+          if( type == "水费"){
+          $('#waterBalanceBody').html(eval(org)+eval(money));
+          }
+          else if(type == "电费"){
+            $('#electricBalanceBody').html(eval(org)+eval(money));
+          }
+          else if(type == "燃气费"){
+            $('#gasBalanceBody').html(eval(org)+eval(money));
+          }
           layer.msg("SUCCESS");
+
         }
         else {
           layer.msg("FAILED");
@@ -87,7 +137,8 @@
       console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
       layer.msg("pay...");
 
-      pay();
+      pay(data);
+
       return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
     });
 

@@ -1,5 +1,7 @@
 package com.sevengroup.campus.controller.tool;
 
+import org.springframework.stereotype.Component;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -9,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
  * @Date: 2021/7/12/20:49
  */
 
+@Component
 public class Tool {
 
     public String getUserID(HttpServletRequest request) {

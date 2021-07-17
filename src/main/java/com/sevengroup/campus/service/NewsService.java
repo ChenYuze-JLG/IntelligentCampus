@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface NewsService {
     List<NewsBean> listNews();
+    void saveNews(String author, String title, String info);
 }
