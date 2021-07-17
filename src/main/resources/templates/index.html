@@ -26,7 +26,40 @@
 </head>
 <body>
 
-<div class="top" style="margin-bottom: 20px"></div>
+<ul class="mylayui-nav" style="z-index:1000;">
+    <li class="mylayui-nav-item"><a href="/index">首页</a></li>
+    <li class="mylayui-nav-item"><a href="/teachAffairManagement">教务管理</a></li>
+    <li class="mylayui-nav-item"><a href="/mod3/test">舍区管理</a></li>
+    <li class="mylayui-nav-item"><a href="">校园服务</a></li>
+    <li class="mylayui-nav-item"><a href="">
+
+        <img th:src="${headPic}" class="mylayui-nav-img" id="headPic">
+        <span class="layui-badge-dot" id="dot" th:if="${msgs.size() gt 0}"></span>
+    </a>
+
+        <dl class="mylayui-nav-child">
+            <dd>
+                <a href="" id="role" th:text="${role}"></a>
+            </dd>
+            <dd>
+                <a href="/message">
+                    消息
+                    <span class="layui-badge" id="msgCount"
+                          th:text="${msgs.size()}" th:if="${msgs.size()} gt 0">
+                    </span>
+                </a>
+            </dd>
+            <dd>
+                <a href="/logout" th:if="${username} ne ''">
+                    注销
+                </a>
+                <a href="/login" th:if="${username} eq ''">
+                    登录
+                </a>
+            </dd>
+        </dl>
+    </li>
+</ul>
 
 <blockquote class="layui-elem-quote" style="margin-left: 100px">
     校内新闻
@@ -88,25 +121,6 @@ margin-left: 150px;">
 
 <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
 
-<script th:inline="javascript">
-    $(document).ready(function () {
-        $('.top').load('head');
-        // document.getElementById("headPic").src = /*[[${login}]]*/;
-    });
-    $(window).load(function () {
-        $('#headPic').attr('src', /*[[${login}]]*/);
-        $('#role').text(/*[[${role}]]*/);
-        let count = /*[[${msgs.size()}]]*/;
-        if (count === 0) {
-            $('#dot').hide();
-            $('#msgCount').hide();
-        }
-        else {
-            $('#msgCount').text(count);
-        }
-    });
-</script>
-
 <script src="../static/layui/layui.js"></script>
 <script>
     layui.use('carousel', function(){
@@ -117,10 +131,8 @@ margin-left: 150px;">
             ,width: '40%' //设置容器宽度
             ,arrow: 'hover' //始终显示箭头
             ,autoplay: true
-            //,anim: 'updown' //切换动画方式
         });
     });
-
 </script>
 
 </body>
