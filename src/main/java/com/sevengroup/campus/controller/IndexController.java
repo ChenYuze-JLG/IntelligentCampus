@@ -4,6 +4,7 @@ import com.sevengroup.campus.bean.ActivityBean;
 import com.sevengroup.campus.bean.MsgBean;
 import com.sevengroup.campus.bean.NewsBean;
 import com.sevengroup.campus.service.ActivityService;
+import com.sevengroup.campus.service.HeadService;
 import com.sevengroup.campus.service.MsgService;
 import com.sevengroup.campus.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,35 +27,47 @@ public class IndexController {
     @Autowired
     MsgService msgService;
     @Autowired
+    HeadService headService;
+    @Autowired
     HttpServletRequest request;
+
+    private List<ActivityBean> activities;
+    private List<NewsBean> news;
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String index(Map<String, Object> map) {
-        List<ActivityBean> activities = activityService.listActivities();
+        activities = activityService.listActivities();
         map.put("activities", activities);
-        List<NewsBean> news = newsService.listNews();
+        news = newsService.listNews();
         map.put("news", news);
-        String username = (String) request.getSession().getAttribute("username");
-        List<MsgBean> msgs = msgService.allMsgs(username);
-        map.put("msgs", msgs);
+        headService.showHeadInfo(map);
         for(ActivityBean activity : activities) {
             System.out.println(activity.getImgUrl());
         }
         for(NewsBean _new : news) {
             System.out.println(_new.getTitle());
         }
-        for(MsgBean msg : msgs) {
-            System.out.println(msg.getInfo());
-        }
-        map.put("login", username == null ? "#" : "../static/yln.jpg");
-        map.put("role", request.getSession().getAttribute("role"));
-//        map.put("x", 12);
         return "index";
     }
 
     @RequestMapping(value = "/message")
     public String showMessages(Map<String, Object> map) {
         return "message";
+    }
+
+    @RequestMapping(value = "/logout")
+    public String logout(Map<String, Object> map) {
+        activities = activityService.listActivities();
+        map.put("activities", activities);
+        news = newsService.listNews();
+        map.put("news", news);
+
+        request.getSession().setAttribute("username", "");
+        request.getSession().setAttribute("role", "游客");
+
+        headService.showHeadInfo(map);
+
+        return "index";
     }
 
 }
