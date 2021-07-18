@@ -20,46 +20,40 @@
 <div class="layui-bg-gray" style="padding: 60px; margin-left: 40px; margin-right: 50px">
     <div class="layui-row layui-col-space15">
 
-    <div class="layui-col-md6" th:each="msg:${msgs}">
-      <div class="layui-panel" style="width: 600px; height: 100px; margin-left: 100px; margin-top: -20px">
-<!--        <a th:href="${msg.getUrl()}">-->
-        <span th:onclick="deal([[${msg.getID()}]], [[${msg.getInfo()}]], [[${msg.getSender()}]], [[${msg.getType()}]])"
-              th:id="${msg.getID()}">
-          <br>
-          &nbsp;&nbsp;
-          <span style="font-size: 15px;
-           font-weight: bold;
-         padding-left: 20px" th:if="${msg.getType()} eq 'activitySignUp'">
-              叮！有新的同学报名了你发布的活动！
-          </span>
+        <div class="layui-col-md6" th:each="msg:${msgs}">
+            <div class="layui-panel" style="width: 400px; height: 100px;
+            margin-left: 0; margin-top: -20px; margin-bottom: 40px;
+            ">
+                <!--        <a th:href="${msg.getUrl()}">-->
+                <span th:onclick="deal([[${msg.getID()}]], [[${msg.getInfo()}]], [[${msg.getSender()}]], [[${msg.getType()}]])"
+                      th:id="${msg.getID()}">
+                <br>
+                &nbsp;&nbsp;
+                <span style="font-size: 15px; font-weight: bold;
+                            padding-left: 30px" th:if="${msg.getType()} eq 'activitySignUp'">
+                叮！有新的同学报名了你发布的活动！
+                </span>
+                <span style="font-size: 15px; font-weight: bold;
+                            padding-left: 30px" th:if="${msg.getType()} eq 'admission'">
+                叮！您报名的活动已通过申请！
+                </span>
+                <span style="font-size: 15px; font-weight: bold;
+                            padding-left: 30px" th:if="${msg.getType()} eq 'GotLendBook'">
+                叮！转借申请！
+                </span>
 
-          <span style="font-size: 15px;
-           font-weight: bold;
-         padding-left: 20px" th:if="${msg.getType()} eq 'admission'">
-              叮！您报名的活动已通过申请！
-          </span>
+                &nbsp;&nbsp;
+                <span style="font-size: 15px;font-weight: lighter"
+                    th:text="${msg.getTime()}">
+                </span>
+                <br><br>&nbsp;&nbsp;
+                <span class="msg" th:text="${msg.getInfo()}">
+                </span>
+                </span>
+            </div>
+        </div>
 
-
-            <span style="font-size: 15px;
-           font-weight: bold;
-         padding-left: 20px" th:if="${msg.getType()} eq 'GotLendBook'">
-              叮！转借申请！
-          </span>
-
-          &nbsp;&nbsp;
-          <span style="font-size: 15px;font-weight: lighter"
-                th:text="${msg.getTime()}">
-          </span>
-          <br><br>&nbsp;&nbsp;
-          <span class="msg" th:text="${msg.getInfo()}">
-<!--            同学你好，你报名的春游活动已通过申请！-->
-          </span>
-        </span>
-<!--        </a>-->
-      </div>
     </div>
-
-  </div>
 </div>
 
 <script src="../static/layui/layui.js"></script>
@@ -68,7 +62,7 @@
     function deal(id, info, sender, type) {
 
         if (type === 'GotLendBook' || type === 'lenRes') {
-            if (type !== 'lenRes'){
+            if (type !== 'lenRes') {
                 layui.use('layer', function () {
                     var layer = layui.layer;
                     layer.open({
@@ -107,8 +101,7 @@
                     });
                 });
             }
-        }
-        else {
+        } else {
             layui.use('layer', function () {
                 var layer = layui.layer;
                 layer.open({
