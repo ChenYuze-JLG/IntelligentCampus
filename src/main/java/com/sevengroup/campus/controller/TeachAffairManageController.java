@@ -116,13 +116,15 @@ public class TeachAffairManageController {
         List<List<String>> lessonDateInfo = new ArrayList<>();
         List<List<String>> TCStartDateInfo = new ArrayList<>();
         List<List<String>> TCEndDateInfo = new ArrayList<>();
+        System.out.println(dateFormat.format(firstDate));
         for (TeacherCourseScheduleBean teacherCourseScheduleBean : teacherCourseSchedule) {
             List<String> courseScheduleDay = Arrays.asList("", "", "", "", "", "", "", "", "", "", "", "");
             Date readDate = dateFormat.parse(teacherCourseScheduleBean.getLessonDate());
             long currDateTime = currDate.getTime();
             long readDateTime = readDate.getTime();
             int days = (int) ((readDateTime - currDateTime) / (1000 * 60 * 60 * 24));
-            if (days <= 0) {
+            if(days < 0) continue;
+            if (days == 0) {
                 switchLessonSection(courseSchedule, TCNameInfo, lessonDateInfo,
                                     TCStartDateInfo, TCEndDateInfo, teacherCourseScheduleBean);
                 continue;
@@ -220,7 +222,7 @@ public class TeachAffairManageController {
     // 获取当前日期学期的第一个星期一
     public static Date getFirstDay() throws ParseException {
         // 设定当前日期（数据库数据修改后再更改处理）
-        String currStr = "2020-09-01";
+        String currStr = "2021-03-01";
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date currDate = dateFormat.parse(currStr);
         int currYear = currDate.getYear();
