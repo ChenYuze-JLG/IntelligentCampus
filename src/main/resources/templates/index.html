@@ -4,7 +4,7 @@
     <title>Passing Paraments</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="../static/layui/css/layui.css" media="all">
-    <style type="text/css">
+    <style>
         a.more{
             font-size: 14px;
             color: cornflowerblue;
@@ -26,8 +26,18 @@
 
 </head>
 <style>
-
-
+    .floatButton {
+        position: fixed;
+        top: 200px;
+        left: 1180px;
+        width: 60px;
+        height: 60px;
+        background-color: rgba(0, 0, 0, 0);
+        background-image: url('../static/search.png');
+        background-size: 60px 60px;
+        border: none;
+        cursor: pointer;
+    }
     .matchitem{
         margin-top: 9px;
         border-bottom-width: 9px;
@@ -42,57 +52,65 @@
     <form class="layui-form" action="##" onsubmit="return false" >
         <div class="layui-form-item">
 
-            <label class="layui-form-label">搜索</label>
+<!--            <label class="layui-form-label">搜索</label>-->
+<!--            <div class="layui-input-inline">-->
+<!--                <input id="myinput" type="text" name="title" placeholder="请输入应用名称" autocomplete="off" class="layui-input">-->
+<!--            </div>-->
             <div class="layui-input-inline">
-                <input id="myinput" type="text" name="title" placeholder="请输入应用名称" autocomplete="off" class="layui-input">
+                <input id="myinput" type="text" name="title" placeholder="请输入应用名称"
+                       autocomplete="off" class="extend layui-input" style="display: none">
             </div>
             <div class="layui-input-inline">
                 <button class="extend layui-btn" style="display: none" lay-submit lay-filter="formDemo">立即搜索</button>
                 <!--                <button type="reset" class="layui-btn layui-btn-primary">重置</button>-->
             </div>
-            <button class ="body layui-btn"  onclick="javascript:$('.extend').css('display','block');
-    $('.body').css('display','none');">显示扩展</button>
-            <button class ="extend layui-btn" onclick="javascript:$('.extend').css('display','none');
-    $('.body').css('display','block');" style="display : none;">隐藏扩展</button>
-        </div>
-    </form>
-</div>
-<div style="z-index: 999999;position: absolute;left: 100px;width: 200px;border-radius: 3px;background-color: #ffffff;cursor: pointer;padding-left: 10px;">
-    <ul id="matchlist">
+<!--            <button class ="body layui-btn"  onclick="$('.extend').css('display','block');-->
+<!--    $('.body').css('display','none');">显示扩展</button>-->
+                <button class="body floatButton" onclick="$('.extend').css('display','block');
+                    $('.body').css('display','none');">
+                </button>
 
-    </ul>
-</div>
-<div class="extend" style="display: none">
-    <form id = "typeForm" class="layui-form" action="##" onsubmit="return false" >
+                <button class ="extend layui-btn" onclick="$('.extend').css('display','none');
+                    $('.body').css('display','block');" style="display : none;">隐藏扩展</button>
+                        </div>
+                    </form>
+                </div>
+                <div style="z-index: 999999;position: absolute;left: 100px;width: 200px;border-radius: 3px;background-color: #ffffff;cursor: pointer;padding-left: 10px;">
+                    <ul id="matchlist">
 
-        <div class="layui-form-item">
-            <label class="layui-form-label">身份</label>
-            <input type="radio" lay-filter="type" name="type" value="0" title="游客" checked>
-            <input type="radio" lay-filter="type" name="type" value="1" title="教师" >
-            <input type="radio" lay-filter="type" name="type" value="2" title="学生" >
-        </div>
+                    </ul>
+                </div>
+                <div class="extend" style="display: none">
+                    <form id = "typeForm" class="layui-form" action="##" onsubmit="return false" >
 
-    </form>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">身份</label>
+                            <input type="radio" lay-filter="type" name="type" value="0" title="游客" checked>
+                            <input type="radio" lay-filter="type" name="type" value="1" title="教师" >
+                            <input type="radio" lay-filter="type" name="type" value="2" title="学生" >
+                        </div>
 
-    <table class="layui-table" id="Table">
-        <colgroup>
-            <col>
-        </colgroup>
+                    </form>
 
-        <thead>
-        <tr>
-            <th>应用编号</th>
-            <th>应用名称</th>
-            <th>应用类型</th>
-            <th>操作</th>
-        </tr>
-        </thead>
-        <tbody id="TableBody">
+                    <table class="layui-table" id="Table">
+                        <colgroup>
+                            <col>
+                        </colgroup>
 
-        </tbody>
-    </table>
+                        <thead>
+                        <tr>
+                            <th>应用编号</th>
+                            <th>应用名称</th>
+                            <th>应用类型</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody id="TableBody">
 
-    <!--    </table>-->
+                        </tbody>
+                    </table>
+
+                    <!--    </table>-->
     <!--    <ul id = "content">-->
     <!--        <li><a href="/1" class="layui-btn">learn English</a></li>-->
     <!--    </ul>-->
@@ -102,9 +120,7 @@
 </div>
 <div id="Body" class="body" style="display: block">
 
-    <body>
-
-    <ul class="mylayui-nav" style="z-index:1000;">
+    <ul class="mylayui-nav" style="z-index:1000;margin-left: 20px">
         <li class="mylayui-nav-item"><a href="/index">首页</a></li>
         <li class="mylayui-nav-item"><a href="/teachAffairManagement">教务管理</a></li>
         <li class="mylayui-nav-item"><a href="/mod3/test">舍区管理</a></li>
