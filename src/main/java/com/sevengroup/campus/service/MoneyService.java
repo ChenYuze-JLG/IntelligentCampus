@@ -24,7 +24,7 @@ public interface MoneyService {
      * @param userID 用户id
      * @return 返回当前用户信息
      */
-    MoneyBean getBalance(String userID);
+    MoneyBean getCardBalance(String userID);
 
     /**
      *
@@ -41,4 +41,6 @@ public interface MoneyService {
      * @return 返回成功与否
      */
     boolean payFromCard(String userID, String payType, double money);
+
+    MoneyBean getCAllBalance(String userID);
 }

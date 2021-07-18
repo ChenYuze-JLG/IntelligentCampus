@@ -32,7 +32,7 @@ public class MoneyServiceImpl implements MoneyService {
         moneyBean.setUserID(userID);
         moneyBean.setTransactionType("校园卡充值");
 
-        double balance = moneyMapper.findBalanceByID(userID);
+        double balance = moneyMapper.getCardBalanceByID(userID);
         moneyBean.setCardBalance(balance);
 
         try {
@@ -49,8 +49,8 @@ public class MoneyServiceImpl implements MoneyService {
     }
 
     @Override
-    public MoneyBean getBalance(String userID) {
-        return moneyMapper.getBalanceByID(userID);
+    public MoneyBean getCardBalance(String userID) {
+        return moneyMapper.getCardBalance(userID);
     }
 
     @Override
@@ -61,10 +61,25 @@ public class MoneyServiceImpl implements MoneyService {
     @Override
     @Transactional
     public boolean payFromCard(String userID, String payType, double money) {
-        System.out.println(moneyMapper.findBalanceByID(userID));
-        if (moneyMapper.findBalanceByID(userID) >= money) {
+        System.out.println(moneyMapper.getCardBalanceByID(userID));
+        if (moneyMapper.getCardBalanceByID(userID) >= money) {
             try {
-                return moneyMapper.payFromCard(userID, payType, money) != 0;
+                System.out.println(payType);
+                String insertPara;
+                switch (payType) {
+                    case "燃气费":
+                        insertPara = "gasBalance";
+                        break;
+                    case "电费":
+                        insertPara = "electricBalance";
+                        break;
+                    case "水费":
+                        insertPara = "waterBalance";
+                        break;
+                    default:
+                        throw new IllegalStateException("Unexpected value: " + payType);
+                }
+                return moneyMapper.payFromCard(userID, payType, money, insertPara) != 0;
             } catch (Exception e) {
                 log.error("【error】:", e);
                 System.out.println(e);
@@ -74,5 +89,10 @@ public class MoneyServiceImpl implements MoneyService {
             System.out.println("else");
             return false;
         }
+    }
+
+    @Override
+    public MoneyBean getCAllBalance(String userID) {
+        return moneyMapper.getAllBalance(userID);
     }
 }
