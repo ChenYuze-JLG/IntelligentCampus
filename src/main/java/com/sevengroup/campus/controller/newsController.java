@@ -2,6 +2,7 @@ package com.sevengroup.campus.controller;
 
 import com.sevengroup.campus.bean.ArticleBean;
 import com.sevengroup.campus.bean.NewsBean;
+import com.sevengroup.campus.service.HeadService;
 import com.sevengroup.campus.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,6 +26,8 @@ public class newsController {
 
     @Autowired
     NewsService newsService;
+    @Autowired
+    HeadService headService;
 
     NewsBean now;
     List<NewsBean> news;
@@ -36,6 +39,7 @@ public class newsController {
             System.out.println(_new.getTitle());
         }
         map.put("news", news);
+        headService.showHeadInfo(map);
         return "news";
     }
 

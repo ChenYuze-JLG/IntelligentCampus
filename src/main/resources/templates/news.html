@@ -7,7 +7,42 @@
 </head>
 <body>
 
-<div class="top" style="margin-bottom: 20px"></div>
+<!--<div class="top" style="margin-bottom: 20px"></div>-->
+
+<ul class="mylayui-nav" style="z-index:1000;">
+  <li class="mylayui-nav-item"><a href="/index">首页</a></li>
+  <li class="mylayui-nav-item"><a href="/teachAffairManagement">教务管理</a></li>
+  <li class="mylayui-nav-item"><a href="/mod3/test">舍区管理</a></li>
+  <li class="mylayui-nav-item"><a href="">校园服务</a></li>
+  <li class="mylayui-nav-item"><a href="">
+
+    <img th:src="${headPic}" class="mylayui-nav-img" id="headPic">
+    <span class="layui-badge-dot" id="dot" th:if="${msgs.size() gt 0}"></span>
+  </a>
+
+    <dl class="mylayui-nav-child">
+      <dd>
+        <a href="" id="role" th:text="${role}"></a>
+      </dd>
+      <dd>
+        <a href="/message">
+          消息
+          <span class="layui-badge" id="msgCount"
+                th:text="${msgs.size()}" th:if="${msgs.size()} gt 0">
+                    </span>
+        </a>
+      </dd>
+      <dd>
+        <a href="/logout" th:if="${username} ne ''">
+          注销
+        </a>
+        <a href="/login" th:if="${username} eq ''">
+          登录
+        </a>
+      </dd>
+    </dl>
+  </li>
+</ul>
 
 <span class="layui-breadcrumb" lay-separator=" "
   style="margin: -100px 80px">
@@ -84,12 +119,12 @@
 </script>
 
 
-<script type="text/javascript">
-  //在js中引入
-  $(document).ready(function () {
-    $('.top').load('head');
-  });
-</script>
+<!--<script type="text/javascript">-->
+<!--  //在js中引入-->
+<!--  $(document).ready(function () {-->
+<!--    $('.top').load('head');-->
+<!--  });-->
+<!--</script>-->
 <script src="../static/layui/layui.js"></script>
 <script>
   layui.use('carousel', function(){

@@ -52,6 +52,7 @@ public class IndexController {
 
     @RequestMapping(value = "/message")
     public String showMessages(Map<String, Object> map) {
+        headService.showHeadInfo(map);
         return "message";
     }
 
