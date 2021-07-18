@@ -4,10 +4,7 @@ import com.sevengroup.campus.bean.UserBean;
 import com.sevengroup.campus.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -19,10 +16,6 @@ public class helloController {
     @Autowired
     UserService userService;
 
-//    @RequestMapping("/index")
-//    public String show() {
-//        return "teachAffair";
-//    }
 
     @RequestMapping("head")
     public String head() {
@@ -34,9 +27,10 @@ public class helloController {
         return "login";
     }
 
+    @ResponseBody
     @RequestMapping(value = "/loginIn", method = RequestMethod.POST)
-    public String login(HttpServletRequest request, @RequestParam("name") String username,
-                        @RequestParam("password") String password){
+    public boolean login(HttpServletRequest request, @RequestParam("name") String username,
+                         @RequestParam("password") String password){
         UserBean userBean = userService.loginIn(username, password);
         System.out.println(username);
         System.out.println(password);
@@ -47,10 +41,10 @@ public class helloController {
             HttpSession session = request.getSession();
             session.setAttribute("username", username);
             session.setAttribute("role", userBean.getRole());
-            return "redirect:index";
+            return true;
         }
         else {
-            return "login";
+            return false;
         }
     }
 

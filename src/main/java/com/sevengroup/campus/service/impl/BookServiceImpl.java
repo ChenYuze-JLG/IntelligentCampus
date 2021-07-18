@@ -49,10 +49,9 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public boolean addBorrowRecord(BookBean bookBean) {
-        int res = 0;
+        int res;
         try {
-//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
             Date currentDate = new Date();
             String date = sdf.format(currentDate);
             bookBean.setBorrowTime(date);
