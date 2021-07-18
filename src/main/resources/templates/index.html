@@ -4,12 +4,71 @@
     <title>Passing Paraments</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="../static/layui/css/layui.css" media="all">
+    <style type="text/css">
+        a.more{
+            font-size: 14px;
+            color: cornflowerblue;
+            font-weight: normal;
+            background: lightcyan;
+            border-radius: 20px;
+            margin-right: 100px;
+            display: block;
+            width: 120px;
+            height: 30px;
+            line-height: 30px;
+            float: right;
+            text-align: center;
+        }
+        a.more:hover{
+            background: #4579EA;
+        }
+    </style>
 </head>
 <body>
 
-<div class="top" style="margin-bottom: 20px"></div>
+<ul class="mylayui-nav" style="z-index:1000;">
+    <li class="mylayui-nav-item"><a href="/index">首页</a></li>
+    <li class="mylayui-nav-item"><a href="/teachAffairManagement">教务管理</a></li>
+    <li class="mylayui-nav-item"><a href="/mod3/test">舍区管理</a></li>
+    <li class="mylayui-nav-item"><a href="">校园服务</a></li>
+    <li class="mylayui-nav-item"><a href="">
 
-<div class="layui-carousel" id="test1" style="float: left">
+        <img th:src="${headPic}" class="mylayui-nav-img" id="headPic">
+        <span class="layui-badge-dot" id="dot" th:if="${msgs.size() gt 0}"></span>
+    </a>
+
+        <dl class="mylayui-nav-child">
+            <dd>
+                <a href="" id="role" th:text="${role}"></a>
+            </dd>
+            <dd>
+                <a href="/message">
+                    消息
+                    <span class="layui-badge" id="msgCount"
+                          th:text="${msgs.size()}" th:if="${msgs.size()} gt 0">
+                    </span>
+                </a>
+            </dd>
+            <dd>
+                <a href="/logout" th:if="${username} ne ''">
+                    注销
+                </a>
+                <a href="/login" th:if="${username} eq ''">
+                    登录
+                </a>
+            </dd>
+        </dl>
+    </li>
+</ul>
+
+<blockquote class="layui-elem-quote" style="margin-left: 100px">
+    校内新闻
+    <a href="/news" class="more">
+        >>查看更多新闻
+    </a>
+</blockquote>
+
+<div class="layui-carousel" id="test1" style="float: left;">
     <div carousel-item>
         <div><img src="../static/1.png" style="width:100%;height:100%"></div>
         <div><img src="../static/2.png" style="width:100%;height:100%"></div>
@@ -18,39 +77,32 @@
     </div>
 </div>
 
-<table class="layui-table" style="width: 500px; float: left;
+<div>
+    <table class="layui-table" style="width: 500px; float: left;
 margin-left: 150px;">
-    <thead>
-    <tr>
-        <th>要闻 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-            <a target="_blank" href="/news"
-               style="color: #eb7350">
-                +more news
-            </a>
-        </th>
-    </tr>
-    </thead>
-    <tbody th:each="_new:${news}">
-    <tr>
-        <td><a target="_blank" th:href="${_new.getUrl()}"  th:text="${_new.getTitle()}" class="linkNewsTopBold"
-               style="color: blue; text-decoration:underline">
-        </a></td>
-    </tr>
-    </tbody>
-</table>
+        <thead>
+        <tr>
+            <th>要闻</th>
+        </tr>
+        </thead>
+        <tbody th:each="_new, loopStatus:${news}">
+        <tr th:if="${loopStatus.index} lt 6">
+            <td><a target="_blank" th:href="${_new.getUrl()}"  th:text="${_new.getTitle()}" class="linkNewsTopBold"
+                   style="color: blue; text-decoration:underline">
+            </a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 
-<header style="float: right; margin-top: 20px; margin-right: 120px">
-    <h3>
-        <a target="_blank" href="/activity" style="color: #eb7350">
-            +查看更多活动
-        </a>
-    </h3>
-</header>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+<blockquote class="layui-elem-quote" style="float: left; margin-left: 100px">
+    校园活动
+    <a href="/activity" class="more" style="margin-left: 850px">
+        >>查看更多活动
+    </a>
+</blockquote>
 
 <div class="layui-bg-gray" style="padding: 60px; margin-left: 40px; margin-right: 50px">
     <div class="layui-row layui-col-space15">
@@ -68,28 +120,6 @@ margin-left: 150px;">
 </div>
 
 <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-<!--<script type="text/javascript">-->
-<!--    //在js中引入-->
-<!--</script>-->
-
-<script th:inline="javascript">
-    $(document).ready(function () {
-        $('.top').load('head');
-        // document.getElementById("headPic").src = /*[[${login}]]*/;
-    });
-    $(window).load(function () {
-        $('#headPic').attr('src', /*[[${login}]]*/);
-        $('#role').text(/*[[${role}]]*/);
-        let count = /*[[${msgs.size()}]]*/;
-        if (count === 0) {
-            $('#dot').hide();
-            $('#msgCount').hide();
-        }
-        else {
-            $('#msgCount').text(count);
-        }
-    });
-</script>
 
 <script src="../static/layui/layui.js"></script>
 <script>
@@ -101,7 +131,6 @@ margin-left: 150px;">
             ,width: '40%' //设置容器宽度
             ,arrow: 'hover' //始终显示箭头
             ,autoplay: true
-            //,anim: 'updown' //切换动画方式
         });
     });
 </script>

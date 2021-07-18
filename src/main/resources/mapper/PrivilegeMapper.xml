@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sevengroup.campus.mapper.PrivilegeMapper">
+
+
+    <select id="hasRight" parameterType="String" resultType="Integer">
+        SELECT ${right}
+        from privilege
+        WHERE username = #{userID}
+    </select>
+
+    <update id="addRight" parameterType="String">
+        Update privilege
+        set #{right} = 1
+        WHERE username = #{userID}
+    </update>
+
+    <update id="delRight" parameterType="String">
+        Update privilege
+        set #{right} = 0
+        WHERE username = #{userID}
+    </update>
+
+    <update id="addColomn" parameterType="String">
+        ALTER TABLE privilege
+            ADD ${right} int;
+    </update>
+
+
+</mapper>

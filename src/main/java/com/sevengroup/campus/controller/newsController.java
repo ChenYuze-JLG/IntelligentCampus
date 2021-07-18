@@ -27,10 +27,11 @@ public class newsController {
     NewsService newsService;
 
     NewsBean now;
+    List<NewsBean> news;
 
     @RequestMapping("/news")
     String showNews(Map<String, Object> map) {
-        List<NewsBean> news = newsService.listNews();
+        news = newsService.listNews();
         for(NewsBean _new : news) {
             System.out.println(_new.getTitle());
         }
@@ -44,10 +45,15 @@ public class newsController {
     }
 
     @RequestMapping("/getNewsHtml")
-    String getHtml(ArticleBean acticle, Model model) {
+    String getHtml(ArticleBean acticle, Model model, Map<String, Object> map) {
         System.out.println(acticle.getContent());
         newsService.saveNews(acticle.getAuthor(), acticle.getTitle(), acticle.getContent());
-        return "news";
+        news = newsService.listNews();
+        for(NewsBean _new : news) {
+            System.out.println(_new.getTitle());
+        }
+        map.put("news", news);
+        return "redirect:news";
     }
 
     @ResponseBody

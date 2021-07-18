@@ -33,4 +33,19 @@ public class MoneyBean {
     private double transactionMoney = 0; // 交易金额
 
     private String transactionType; // 交易类型
+
+    @Override
+    public String toString() {
+        return "{" +
+                "UserID='" + UserID + '\'' +
+                ", username='" + username + '\'' +
+                ", cardBalance=" + cardBalance +
+                ", waterBalance=" + waterBalance +
+                ", gasBalance=" + gasBalance +
+                ", electricBalance=" + electricBalance +
+                ", payTime='" + payTime + '\'' +
+                ", transactionMoney=" + transactionMoney +
+                ", transactionType='" + transactionType + '\'' +
+                '}';
+    }
 }
