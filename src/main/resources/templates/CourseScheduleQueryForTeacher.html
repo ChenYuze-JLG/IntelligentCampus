@@ -104,6 +104,7 @@
     </style>
 </head>
 <body onload="renderCourseSchedule()">
+    <div></div>
     <div id="coursesTable"></div>
     <div class="layui-input-block">
         <!--    <button  onclick="onChange()"-->
@@ -116,11 +117,9 @@
         <button onclick="returnCurrWeek()" type="button" class="layui-btn layui-btn-primary" id="RESET">回到当前周</button>
     </div>
     <script>
-        var courseListAll;
-        var week;
-        var day;
-        var courseType;
-        var Timetable;
+        var courseScheduleAll, TCNameInfo, lessonDateInfo, TCStartDateInfo, TCEndDateInfo;
+        // var courseList, TCNameInfoList, lessonDateInfoList, TCStartDateList, TCEndDateList;
+        var week, day, courseType, Timetable;
         var teacherID = "20175686";
         page = 0;
         function getCourseScheduleInfo() {
@@ -135,7 +134,13 @@
                 dataType: "json",
                 success: function(returnData){
                     obj = returnData;
-                    courseListAll = obj['courseInfo'];
+                    courseScheduleAll = obj['courseSchedule'];
+                    TCNameInfo = obj['TCNameInfo'];
+                    lessonDateInfo = obj['lessonDateInfo'];
+                    TCStartDateInfo = obj['TCStartDateInfo'];
+                    TCEndDateInfo = obj['TCEndDateInfo'];
+                    console.log(obj);
+                    console.log(typeof(lessonDateInfo.slice(0, 7)));
                     if(obj['code'] === 1){
                         layer.msg('获取成功', {
                             icon: 6,
@@ -153,9 +158,35 @@
                 }
             });
         }
+
+        function selectWeekIndex(week) {
+            switch (week) {
+                case "周一":
+                    return 0;
+                case "周二":
+                    return 1;
+                case "周三":
+                    return 2;
+                case "周四":
+                    return 3;
+                case "周五":
+                    return 4;
+                case "周六":
+                    return 5;
+                case "周日":
+                    return 6;
+            }
+        }
+
         function renderCourseSchedule() {
             getCourseScheduleInfo();
-            courseList = courseListAll.slice(0, 7);
+            var start = 0, end = 7;
+            courseList = courseScheduleAll.slice(start, end);
+            TCNameInfoList = TCNameInfo.slice(start, end);
+            lessonDateInfoList = lessonDateInfo.slice(start, end);
+            TCStartDateList = TCStartDateInfo.slice(start, end);
+            TCEndDateList = TCEndDateInfo.slice(start, end);
+            console.log(courseList);
             week = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
             day = new Date().getDay();
             courseType = [
@@ -180,8 +211,27 @@
                 timetableType: courseType,
                 highlightWeek: day,
                 gridOnClick: function (e) {
-                    alert(e.name + '  ' + e.week + ', 第' + e.index + '节课, 课长' + e.length + '节');
+                    const row = e.index - 1;
+                    const col = selectWeekIndex(e.week);
+                    const courseName = courseList[start + col][row];
+                    const teachClassName = TCNameInfoList[start + col][row];
+                    const lessonDate = lessonDateInfoList[start + col][row];
+                    const teachClassStartDate = TCStartDateList[start + col][row];
+                    const teachClassEndDate = TCEndDateList[start + col][row];
+                    // alert(e.name + '  ' + e.week + ', 第' + e.index + '节课, 课长' + e.length + '节');
+                    layer.alert("<br>课程名：" + courseName + "<br>"
+                        + "教学班名：" + teachClassName + "<br>"
+                        + "课程日期：" + lessonDate + "<br>"
+                        + "教学班开始时间：" + teachClassStartDate + "<br>"
+                        + "教学班结束时间：" + teachClassEndDate + "<br>", {
+                        icon: 1
+                        , skin: 'layui-layer-lan'
+                        // , skin: 'layui-layer-molv'
+                        , area: ['500px', '300px']
+                        , anim: 1
+                    });
                     console.log(e);
+                    console.log(week.indexOf(e.week));
                 },
                 styles: {
                     Gheight: 50
@@ -190,7 +240,7 @@
         }
         function lastWeek() {
             page = Math.max(0, page - 1);
-            courseList = courseListAll.slice(page * 7, 7 + page * 7);
+            courseList = courseScheduleAll.slice(page * 7, 7 + page * 7);
             Timetable.setOption({
                 timetables: courseList,
                 week: week,
@@ -206,8 +256,8 @@
         }
 
         function nextWeek() {
-            page = Math.min(Math.ceil(courseListAll.length / 7) - 1, page + 1);
-            courseList = courseListAll.slice(page * 7, Math.min(7 + page * 7, courseListAll.length));
+            page = Math.min(Math.ceil(courseScheduleAll.length / 7) - 1, page + 1);
+            courseList = courseScheduleAll.slice(page * 7, Math.min(7 + page * 7, courseScheduleAll.length));
             Timetable.setOption({
                 timetables: courseList,
                 week: week,

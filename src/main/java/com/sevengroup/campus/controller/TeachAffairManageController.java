@@ -112,7 +112,10 @@ public class TeachAffairManageController {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date firstDate = getFirstDay(), currDate = getFirstDay();
         List<List<String>> courseSchedule = new ArrayList<>();
-        List<List<String>> courseInfo  = new ArrayList<>();
+        List<List<String>> TCNameInfo = new ArrayList<>();
+        List<List<String>> lessonDateInfo = new ArrayList<>();
+        List<List<String>> TCStartDateInfo = new ArrayList<>();
+        List<List<String>> TCEndDateInfo = new ArrayList<>();
         for (TeacherCourseScheduleBean teacherCourseScheduleBean : teacherCourseSchedule) {
             List<String> courseScheduleDay = Arrays.asList("", "", "", "", "", "", "", "", "", "", "", "");
             Date readDate = dateFormat.parse(teacherCourseScheduleBean.getLessonDate());
@@ -120,11 +123,12 @@ public class TeachAffairManageController {
             long readDateTime = readDate.getTime();
             int days = (int) ((readDateTime - currDateTime) / (1000 * 60 * 60 * 24));
             if (days <= 0) {
-                switchLessonSection(courseSchedule, teacherCourseScheduleBean);
+                switchLessonSection(courseSchedule, TCNameInfo, lessonDateInfo,
+                                    TCStartDateInfo, TCEndDateInfo, teacherCourseScheduleBean);
                 continue;
             }
             while(days > 0) {
-                courseSchedule.add(Arrays.asList("", "", "", "", "", "", "", "", "", "", "", ""));
+                addEmptyList(courseSchedule, TCNameInfo, lessonDateInfo, TCStartDateInfo, TCEndDateInfo);
                 Calendar calendar = new GregorianCalendar();
                 calendar.setTime(currDate);
                 calendar.add(Calendar.DATE,1); //把日期往后增加一天,整数  往后推,负数往前移动
@@ -132,56 +136,79 @@ public class TeachAffairManageController {
                 currDateTime = currDate.getTime();
                 days = (int) (Math.ceil(readDateTime - currDateTime) / (1000 * 60 * 60 * 24));
             }
-            courseSchedule.add(Arrays.asList("", "", "", "", "", "", "", "", "", "", "", ""));
-            switchLessonSection(courseSchedule, teacherCourseScheduleBean);
+            addEmptyList(courseSchedule, TCNameInfo, lessonDateInfo, TCStartDateInfo, TCEndDateInfo);
+            switchLessonSection(courseSchedule, TCNameInfo, lessonDateInfo,
+                                TCStartDateInfo, TCEndDateInfo, teacherCourseScheduleBean);
         }
         JSONObject jsonResult = new JSONObject();
         jsonResult.put("code", 1);
-        jsonResult.put("courseInfo", courseSchedule);
-        jsonResult.put("courseSchedule", courseInfo);
+        jsonResult.put("courseSchedule", courseSchedule);
+        jsonResult.put("TCNameInfo", TCNameInfo);
+        jsonResult.put("lessonDateInfo", lessonDateInfo);
+        jsonResult.put("TCStartDateInfo", TCStartDateInfo);
+        jsonResult.put("TCEndDateInfo", TCEndDateInfo);
         return jsonResult.toJSONString();
     }
 
+    public void addEmptyList(List<List<String>> courseSchedule, List<List<String>> TCNameInfo, List<List<String>> lessonDateInfo, List<List<String>> TCStartDateInfo, List<List<String>> TCEndDateInfo) {
+        courseSchedule.add(Arrays.asList("", "", "", "", "", "", "", "", "", "", "", ""));
+        TCNameInfo.add(Arrays.asList("", "", "", "", "", "", "", "", "", "", "", ""));
+        lessonDateInfo.add(Arrays.asList("", "", "", "", "", "", "", "", "", "", "", ""));
+        TCStartDateInfo.add(Arrays.asList("", "", "", "", "", "", "", "", "", "", "", ""));
+        TCEndDateInfo.add(Arrays.asList("", "", "", "", "", "", "", "", "", "", "", ""));
+    }
+
     // 根据节次安排课表
-    public void switchLessonSection(List<List<String>> courseSchedule, TeacherCourseScheduleBean teacherCourseScheduleBean) {
+    public void switchLessonSection(List<List<String>> courseSchedule,
+                                    List<List<String>> TCNameInfo,
+                                    List<List<String>> lessonDateInfo,
+                                    List<List<String>> TCStartDateInfo,
+                                    List<List<String>> TCEndDateInfo,
+                                    TeacherCourseScheduleBean teacherCourseScheduleBean) {
+        int sectionNumber = -1;
         switch (teacherCourseScheduleBean.getLessonSection()) {
             case "第一节":
-                courseSchedule.get(courseSchedule.size() - 1).set(0, teacherCourseScheduleBean.getCourseName().toString());
+                sectionNumber = 0;
                 break;
             case "第二节":
-                courseSchedule.get(courseSchedule.size() - 1).set(1, teacherCourseScheduleBean.getCourseName().toString());
+                sectionNumber = 1;
                 break;
             case "第三节":
-                courseSchedule.get(courseSchedule.size() - 1).set(2, teacherCourseScheduleBean.getCourseName().toString());
+                sectionNumber = 2;
                 break;
             case "第四节":
-                courseSchedule.get(courseSchedule.size() - 1).set(3, teacherCourseScheduleBean.getCourseName().toString());
+                sectionNumber = 3;
                 break;
             case "第五节":
-                courseSchedule.get(courseSchedule.size() - 1).set(4, teacherCourseScheduleBean.getCourseName().toString());
+                sectionNumber = 4;
                 break;
             case "第六节":
-                courseSchedule.get(courseSchedule.size() - 1).set(5, teacherCourseScheduleBean.getCourseName().toString());
+                sectionNumber = 5;
                 break;
             case "第七节":
-                courseSchedule.get(courseSchedule.size() - 1).set(6, teacherCourseScheduleBean.getCourseName().toString());
+                sectionNumber = 6;
                 break;
             case "第八节":
-                courseSchedule.get(courseSchedule.size() - 1).set(7, teacherCourseScheduleBean.getCourseName().toString());
+                sectionNumber = 7;
                 break;
             case "第九节":
-                courseSchedule.get(courseSchedule.size() - 1).set(8, teacherCourseScheduleBean.getCourseName().toString());
+                sectionNumber = 8;
                 break;
             case "第十节":
-                courseSchedule.get(courseSchedule.size() - 1).set(9, teacherCourseScheduleBean.getCourseName().toString());
+                sectionNumber = 9;
                 break;
             case "第十一节":
-                courseSchedule.get(courseSchedule.size() - 1).set(10, teacherCourseScheduleBean.getCourseName().toString());
+                sectionNumber = 10;
                 break;
             case "第十二节":
-                courseSchedule.get(courseSchedule.size() - 1).set(11, teacherCourseScheduleBean.getCourseName().toString());
+                sectionNumber = 11;
                 break;
         }
+        courseSchedule.get(courseSchedule.size() - 1).set(sectionNumber, teacherCourseScheduleBean.getCourseName().toString());
+        TCNameInfo.get(TCNameInfo.size() - 1).set(sectionNumber, teacherCourseScheduleBean.getTeachClassName().toString());
+        lessonDateInfo.get(lessonDateInfo.size() - 1).set(sectionNumber, teacherCourseScheduleBean.getLessonDate().toString());
+        TCStartDateInfo.get(TCStartDateInfo.size() - 1).set(sectionNumber, teacherCourseScheduleBean.getTCStartDate().toString());
+        TCEndDateInfo.get(TCEndDateInfo.size() - 1).set(sectionNumber, teacherCourseScheduleBean.getTCEndDate().toString());
     }
 
     // 获取当前date的星期（周一~周日）
