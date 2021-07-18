@@ -22,11 +22,13 @@ public interface MoneyMapper {
     int addCardCreditRecord(MoneyBean moneyBean);
 
 
-    double findBalanceByID(String userID);
+    double getCardBalanceByID(String userID);
 
-    MoneyBean getBalanceByID(String userID);
+    MoneyBean getCardBalance(String userID);
 
     List<MoneyBean> getRecordByID(String userID);
 
-    int payFromCard(@Param("userID") String userID,@Param("payType") String payType, @Param("money") double money);
+    int payFromCard(@Param("userID") String userID, @Param("payType") String payType, @Param("money") double money, @Param("insertType") String insertPayType);
+
+    MoneyBean getAllBalance(String userID);
 }

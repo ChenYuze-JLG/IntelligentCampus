@@ -2,6 +2,7 @@ package com.sevengroup.campus.controller;
 
 import com.sevengroup.campus.bean.ArticleBean;
 import com.sevengroup.campus.bean.NewsBean;
+import com.sevengroup.campus.service.HeadService;
 import com.sevengroup.campus.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,16 +26,20 @@ public class newsController {
 
     @Autowired
     NewsService newsService;
+    @Autowired
+    HeadService headService;
 
     NewsBean now;
+    List<NewsBean> news;
 
     @RequestMapping("/news")
     String showNews(Map<String, Object> map) {
-        List<NewsBean> news = newsService.listNews();
+        news = newsService.listNews();
         for(NewsBean _new : news) {
             System.out.println(_new.getTitle());
         }
         map.put("news", news);
+        headService.showHeadInfo(map);
         return "news";
     }
 
@@ -44,10 +49,15 @@ public class newsController {
     }
 
     @RequestMapping("/getNewsHtml")
-    String getHtml(ArticleBean acticle, Model model) {
+    String getHtml(ArticleBean acticle, Model model, Map<String, Object> map) {
         System.out.println(acticle.getContent());
         newsService.saveNews(acticle.getAuthor(), acticle.getTitle(), acticle.getContent());
-        return "news";
+        news = newsService.listNews();
+        for(NewsBean _new : news) {
+            System.out.println(_new.getTitle());
+        }
+        map.put("news", news);
+        return "redirect:news";
     }
 
     @ResponseBody

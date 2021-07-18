@@ -4,7 +4,7 @@
     <title>Passing Paraments</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="../static/layui/css/layui.css" media="all">
-    <style type="text/css">
+    <style>
         a.more{
             font-size: 14px;
             color: cornflowerblue;
@@ -23,117 +23,385 @@
             background: #4579EA;
         }
     </style>
+
 </head>
-<body>
+<style>
+    .floatButton {
+        position: fixed;
+        top: 200px;
+        left: 1180px;
+        width: 60px;
+        height: 60px;
+        background-color: rgba(0, 0, 0, 0);
+        background-image: url('../static/search.png');
+        background-size: 60px 60px;
+        border: none;
+        cursor: pointer;
+    }
+    .matchitem{
+        margin-top: 9px;
+        border-bottom-width: 9px;
+        margin-bottom: 9px;
+        font-size: 18px;
+    }
+    #matchlist>div:hover {
+        background-color: rgba(33,150,243,.1);
+    }
+</style>
+<div id="head">
+    <form class="layui-form" action="##" onsubmit="return false" >
+        <div class="layui-form-item">
 
-<ul class="mylayui-nav" style="z-index:1000;">
-    <li class="mylayui-nav-item"><a href="/index">首页</a></li>
-    <li class="mylayui-nav-item"><a href="/teachAffairManagement">教务管理</a></li>
-    <li class="mylayui-nav-item"><a href="/mod3/test">舍区管理</a></li>
-    <li class="mylayui-nav-item"><a href="">校园服务</a></li>
-    <li class="mylayui-nav-item"><a href="">
-
-        <img th:src="${headPic}" class="mylayui-nav-img" id="headPic">
-        <span class="layui-badge-dot" id="dot" th:if="${msgs.size() gt 0}"></span>
-    </a>
-
-        <dl class="mylayui-nav-child">
-            <dd>
-                <a href="" id="role" th:text="${role}"></a>
-            </dd>
-            <dd>
-                <a href="/message">
-                    消息
-                    <span class="layui-badge" id="msgCount"
-                          th:text="${msgs.size()}" th:if="${msgs.size()} gt 0">
-                    </span>
-                </a>
-            </dd>
-            <dd>
-                <a href="/logout" th:if="${username} ne ''">
-                    注销
-                </a>
-                <a href="/login" th:if="${username} eq ''">
-                    登录
-                </a>
-            </dd>
-        </dl>
-    </li>
-</ul>
-
-<blockquote class="layui-elem-quote" style="margin-left: 100px">
-    校内新闻
-    <a href="/news" class="more">
-        >>查看更多新闻
-    </a>
-</blockquote>
-
-<div class="layui-carousel" id="test1" style="float: left;">
-    <div carousel-item>
-        <div><img src="../static/1.png" style="width:100%;height:100%"></div>
-        <div><img src="../static/2.png" style="width:100%;height:100%"></div>
-        <div><img src="../static/3.png" style="width:100%;height:100%"></div>
-        <div><img src="../static/4.png" style="width:100%;height:100%"></div>
-    </div>
-</div>
-
-<div>
-    <table class="layui-table" style="width: 500px; float: left;
-margin-left: 150px;">
-        <thead>
-        <tr>
-            <th>要闻</th>
-        </tr>
-        </thead>
-        <tbody th:each="_new, loopStatus:${news}">
-        <tr th:if="${loopStatus.index} lt 6">
-            <td><a target="_blank" th:href="${_new.getUrl()}"  th:text="${_new.getTitle()}" class="linkNewsTopBold"
-                   style="color: blue; text-decoration:underline">
-            </a></td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-<blockquote class="layui-elem-quote" style="float: left; margin-left: 100px">
-    校园活动
-    <a href="/activity" class="more" style="margin-left: 850px">
-        >>查看更多活动
-    </a>
-</blockquote>
-
-<div class="layui-bg-gray" style="padding: 60px; margin-left: 40px; margin-right: 50px">
-    <div class="layui-row layui-col-space15">
-
-        <div class="layui-col-md6" th:each="activity:${activities}">
-            <div class="layui-panel">
-                <a href="https://www.baidu.com" target="_blank">
-                    <img th:src="${activity.getImgUrl()}" height="200px" width="300px">
-                    <span style="font-size: x-small; color: blue; " th:text="${activity.getDescription()}"></span>
-                </a>
+<!--            <label class="layui-form-label">搜索</label>-->
+<!--            <div class="layui-input-inline">-->
+<!--                <input id="myinput" type="text" name="title" placeholder="请输入应用名称" autocomplete="off" class="layui-input">-->
+<!--            </div>-->
+            <div class="layui-input-inline">
+                <input id="myinput" type="text" name="title" placeholder="请输入应用名称"
+                       autocomplete="off" class="extend layui-input" style="display: none">
             </div>
-        </div>
+            <div class="layui-input-inline">
+                <button class="extend layui-btn" style="display: none" lay-submit lay-filter="formDemo">立即搜索</button>
+                <!--                <button type="reset" class="layui-btn layui-btn-primary">重置</button>-->
+            </div>
+<!--            <button class ="body layui-btn"  onclick="$('.extend').css('display','block');-->
+<!--    $('.body').css('display','none');">显示扩展</button>-->
+                <button class="body floatButton" onclick="$('.extend').css('display','block');
+                    $('.body').css('display','none');">
+                </button>
 
-    </div>
+                <button class ="extend layui-btn" onclick="$('.extend').css('display','none');
+                    $('.body').css('display','block');" style="display : none;">隐藏扩展</button>
+                        </div>
+                    </form>
+                </div>
+                <div style="z-index: 999999;position: absolute;left: 100px;width: 200px;border-radius: 3px;background-color: #ffffff;cursor: pointer;padding-left: 10px;">
+                    <ul id="matchlist">
+
+                    </ul>
+                </div>
+                <div class="extend" style="display: none">
+                    <form id = "typeForm" class="layui-form" action="##" onsubmit="return false" >
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">身份</label>
+                            <input type="radio" lay-filter="type" name="type" value="0" title="游客" checked>
+                            <input type="radio" lay-filter="type" name="type" value="1" title="教师" >
+                            <input type="radio" lay-filter="type" name="type" value="2" title="学生" >
+                        </div>
+
+                    </form>
+
+                    <table class="layui-table" id="Table">
+                        <colgroup>
+                            <col>
+                        </colgroup>
+
+                        <thead>
+                        <tr>
+                            <th>应用编号</th>
+                            <th>应用名称</th>
+                            <th>应用类型</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody id="TableBody">
+
+                        </tbody>
+                    </table>
+
+                    <!--    </table>-->
+    <!--    <ul id = "content">-->
+    <!--        <li><a href="/1" class="layui-btn">learn English</a></li>-->
+    <!--    </ul>-->
+    <table class="layui-table" id="bookInfoTable" lay-filter="bookInfoTableFilter"></table>
+
+
 </div>
+<div id="Body" class="body" style="display: block">
 
-<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <ul class="mylayui-nav" style="z-index:1000;margin-left: 20px">
+        <li class="mylayui-nav-item"><a href="/index">首页</a></li>
+        <li class="mylayui-nav-item"><a href="/teachAffairManagement">教务管理</a></li>
+        <li class="mylayui-nav-item"><a href="/mod3/test">舍区管理</a></li>
+        <li class="mylayui-nav-item"><a href="">校园服务</a></li>
+        <li class="mylayui-nav-item"><a href="">
 
-<script src="../static/layui/layui.js"></script>
-<script>
-    layui.use('carousel', function(){
-        var carousel = layui.carousel;
-        //建造实例
-        carousel.render({
-            elem: '#test1'
-            ,width: '40%' //设置容器宽度
-            ,arrow: 'hover' //始终显示箭头
-            ,autoplay: true
+            <img th:src="${headPic}" class="mylayui-nav-img" id="headPic">
+            <span class="layui-badge-dot" id="dot" th:if="${msgs.size() gt 0}"></span>
+        </a>
+
+            <dl class="mylayui-nav-child">
+                <dd>
+                    <a href="" id="role" th:text="${role}"></a>
+                </dd>
+                <dd>
+                    <a href="/message">
+                        消息
+                        <span class="layui-badge" id="msgCount"
+                              th:text="${msgs.size()}" th:if="${msgs.size()} gt 0">
+                    </span>
+                    </a>
+                </dd>
+                <dd>
+                    <a href="/logout" th:if="${username} ne ''">
+                        注销
+                    </a>
+                    <a href="/login" th:if="${username} eq ''">
+                        登录
+                    </a>
+                </dd>
+            </dl>
+        </li>
+    </ul>
+
+    <blockquote class="layui-elem-quote" style="margin-left: 100px">
+        校内新闻
+        <a href="/news" class="more">
+            >>查看更多新闻
+        </a>
+    </blockquote>
+
+    <div class="layui-carousel" id="test1" style="float: left;">
+        <div carousel-item>
+            <div><img src="../static/1.png" style="width:100%;height:100%"></div>
+            <div><img src="../static/2.png" style="width:100%;height:100%"></div>
+            <div><img src="../static/3.png" style="width:100%;height:100%"></div>
+            <div><img src="../static/4.png" style="width:100%;height:100%"></div>
+        </div>
+    </div>
+
+    <div>
+        <table class="layui-table" style="width: 500px; float: left;
+margin-left: 150px;">
+            <thead>
+            <tr>
+                <th>要闻</th>
+            </tr>
+            </thead>
+            <tbody th:each="_new, loopStatus:${news}">
+            <tr th:if="${loopStatus.index} lt 6">
+                <td><a target="_blank" th:href="${_new.getUrl()}"  th:text="${_new.getTitle()}" class="linkNewsTopBold"
+                       style="color: blue; text-decoration:underline">
+                </a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+    <blockquote class="layui-elem-quote" style="float: left; margin-left: 100px">
+        校园活动
+        <a href="/activity" class="more" style="margin-left: 850px">
+            >>查看更多活动
+        </a>
+    </blockquote>
+
+    <div class="layui-bg-gray" style="padding: 60px; margin-left: 40px; margin-right: 50px">
+        <div class="layui-row layui-col-space15">
+
+            <div class="layui-col-md6" th:each="activity:${activities}">
+                <div class="layui-panel">
+                    <a href="https://www.baidu.com" target="_blank">
+                        <img th:src="${activity.getImgUrl()}" height="200px" width="300px">
+                        <span style="font-size: x-small; color: blue; " th:text="${activity.getDescription()}"></span>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+
+    <script src="../static/layui/layui.js"></script>
+    <script>
+        layui.use('carousel', function(){
+            var carousel = layui.carousel;
+            //建造实例
+            carousel.render({
+                elem: '#test1'
+                ,width: '40%' //设置容器宽度
+                ,arrow: 'hover' //始终显示箭头
+                ,autoplay: true
+            });
         });
-    });
+    </script>
+
+    </body>
+</div>
+<script type="text/html" id="barView">
+    <a class="layui-btn layui-btn-xs" lay-event="jump">跳转</a>
 </script>
 
-</body>
+<script>
+    var gdatas;
+    var gcount;
+    var keyword="";
+
+    function getApps() {
+        $.ajax({
+            //几个参数需要注意一下
+            type: "GET",//方法类型
+            dataType: "json",//预期服务器返回的数据类型
+            url: "http://localhost:8080/getApps",//url
+            success: function (datas) {
+                console.log(datas);//打印服务端返回的数据(调试用)
+                gcount = datas.length;
+                gdatas = datas;
+                console.log('datas.length');//打印服务端返回的数据(调试用)
+                mprint();
+            },
+            error: function () {
+                layer.msg("异常！");
+            }
+
+        });
+    }
+    function mprint() {
+        var tbhtml = "";
+        let  subArr = selByStr(gdatas,input.value);
+        console.log("subArr");
+        console.log(subArr);
+        for (let i = 0; i < subArr.length; i++) {
+            tbhtml += "<tr><td>" + subArr[i].id +
+                "</td><td>" + subArr[i].name +
+                "</td><td>" +  subArr[i].type +
+                "</td><td style='padding: 0'>"
+                + "<a href='" + subArr[i].url + "' " +
+                '    class = "layui-btn" >跳转</a>' + "</td></tr>";
+        }
+        $('#TableBody').html(tbhtml);
+    }
+    //Demo
+    function getRadios() {
+        var radios = document.getElementsByName("type");
+        var checked = -1;
+        for ( var j = 0; j < radios.length; j++) {
+            if (radios[j].checked==true) {
+                checked = j;
+            }
+        }
+        return checked;
+    }
+
+    layui.use('form', function(){
+        var form = layui.form;
+
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+            console.log("submit");
+            console.log(data);
+            console.log("radios="+getRadios);
+            layer.msg(JSON.stringify(data.field));
+            mprint();
+            return false;
+        });
+        form.on('radio(type)', function(data){
+            console.log(data.elem); //得到radio原始DOM对象
+            console.log(data.value); //被点击的radio的value值
+        });
+        console.log("msg");
+    });
+
+    function selByStr(list,keyWord) {
+        //字符串方法indexOf
+        var len = list.length;
+        var arr = [];
+        for (var i = 0; i < len; i++) {
+            //如果字符串中不包含目标字符会返回-1
+            if (list[i].name.indexOf(keyWord) >= 0) {
+                arr.push(list[i]);
+            }
+        }
+        return arr;
+    }
+    function selByReg(list,keyWord) {
+        //正则表达式
+        var len = list.length;
+        var arr = [];
+        var reg = new RegExp(keyWord);
+        for (var i = 0; i < len; i++) {
+            //如果字符串中不包含目标字符会返回-1
+            if (list[i].name.match(reg)) {
+                arr.push(list[i]);
+            }
+        }
+        return arr;
+    }
+
+
+    console.log('load1');
+
+    var li = document.getElementsByTagName("li");
+
+    // for(let i=0;i<li.length;i++){
+    //     let span = document.createElement("span");
+    //     span.innerHTML="\u00D7";
+    //     span.className="close";
+    //     li[i].appendChild(span);
+    // }
+    // var butt = document.getElementById("addItem");
+    // var input = document.getElementById("input");
+    console.log('load2');
+
+    var butt = $("#addItem")[0];
+
+    var input = $("#myinput")[0];
+    console.log(butt);
+
+    var matchlist = document.getElementById("matchlist")
+    var arr=[];
+    input.addEventListener("input",(e)=>{
+        if(e.target.value){
+            let reg = new RegExp(e.target.value,"i");
+            removeall();
+            queryitem(reg,e.target.value);
+        }
+        else{
+            removeall();
+        }
+    });
+
+    var index;
+
+    function queryitem(reg,inputValue) {
+        for (let i = 0; i < gdatas.length; i++) {
+            index = gdatas[i].name.search(reg);
+            let matchContent = "";
+            if (index > -1) {
+                let content = gdatas[i].name;
+                // let content = li[i].textContent.replace(/\u00D7/g, "");
+                let contentlist = content.split("");
+                contentlist.map((item, i) => {
+                    if (i === index) {
+                        matchContent += "<strong>" + inputValue + "</strong>";
+                    } else if (i < index || i >= index + inputValue.length) {
+                        matchContent += item;
+                    }
+                })
+                arr.push(matchContent);
+            }
+        }
+        for (let i = 0; i < arr.length; i++) {
+            let matchitem = document.createElement("div");
+            matchitem.className = "matchitem";
+            matchitem.innerHTML = arr[i];
+            matchlist.appendChild(matchitem);
+            matchitem.onclick = (e) => {
+                input.value = e.target.textContent;
+                removeall();
+            }
+        }
+
+    }
+    function removeall(){
+        matchlist.innerHTML="";
+        arr=[];
+    }
+    getApps();
+
+
+</script>
 </html>

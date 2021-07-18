@@ -59,7 +59,7 @@
       //几个参数需要注意一下
       type: "get",//方法类型
       dataType: "json",//预期服务器返回的数据类型
-      url: "http://localhost:8080/money/getBalance",//url
+      url: "http://localhost:8080/money/getAllBalance",//url
       success: function (datas) {
         console.log(datas);//打印服务端返回的数据(调试用)
         console.log(datas.length);//打印服务端返回的数据(调试用)
@@ -95,21 +95,23 @@
         submitFlag =true;
 
         console.log(datas);//打印服务端返回的数据(调试用)
-        if(datas == true) {
-          var org = $('#waterBalanceBody')[0].innerText;
+        if(datas === true) {
+          var waterBalance = $('#waterBalanceBody')[0].innerText;
+          var gasBalance = $('#gasBalanceBody')[0].innerText;
+          var elecBalance = $('#electricBalanceBody')[0].innerText;
           var type = data.field.payType;
           var money = data.field.money;
-          console.log(org);
           console.log(type);
           console.log(money);
-          if( type == "水费"){
-          $('#waterBalanceBody').html(eval(org)+eval(money));
+          if( type === "水费"){
+          $('#waterBalanceBody').html(eval(waterBalance)+eval(money));
+          alert(eval(org));
           }
-          else if(type == "电费"){
-            $('#electricBalanceBody').html(eval(org)+eval(money));
+          else if(type === "电费"){
+            $('#electricBalanceBody').html(eval(elecBalance)+eval(money));
           }
-          else if(type == "燃气费"){
-            $('#gasBalanceBody').html(eval(org)+eval(money));
+          else if(type === "燃气费"){
+            $('#gasBalanceBody').html(eval(gasBalance)+eval(money));
           }
           layer.msg("SUCCESS");
 

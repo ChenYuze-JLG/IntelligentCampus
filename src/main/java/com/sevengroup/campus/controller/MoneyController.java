@@ -26,16 +26,22 @@ public class MoneyController {
     @Autowired
     private MoneyService moneyService;
 
-    private String currentUser = "20101106";
-
     private Tool tool = new Tool();
 
-    // 返回余额
-    @GetMapping("/getBalance")
-    public MoneyBean dealRequestGetBalance(HttpServletRequest request) {
+    // 返回校园卡余额
+    @GetMapping("/getCardBalance")
+    public MoneyBean dealRequestGetCardBalance(HttpServletRequest request) {
         String userID = tool.getUserID(request);
 
-        return moneyService.getBalance(userID);
+        return moneyService.getCardBalance(userID);
+    }
+
+    // 返回寝室余额
+    @GetMapping("/getAllBalance")
+    public MoneyBean dealRequestGetAllBalance(HttpServletRequest request) {
+        String userID = tool.getUserID(request);
+
+        return moneyService.getCAllBalance(userID);
     }
 
     @GetMapping("/addCredit")
@@ -43,7 +49,6 @@ public class MoneyController {
     public MoneyBean dealRequestAddCredit(@RequestParam(value = "money") Double money, HttpServletRequest request) {
 
         String userID = tool.getUserID(request);
-//        String userID = "20101106";
         return moneyService.addCredit(userID, money);
     }
 
@@ -61,7 +66,6 @@ public class MoneyController {
     public boolean dealRequestPayFromCard(@RequestParam(value = "payType") String payType,
                                           @RequestParam(value = "money") Double money, HttpServletRequest request){
         String userID = tool.getUserID(request);
-//        userID = "20213941";
         return moneyService.payFromCard(userID, payType, money);
     }
 }

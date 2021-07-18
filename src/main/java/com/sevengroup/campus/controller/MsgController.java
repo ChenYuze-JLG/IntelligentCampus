@@ -2,6 +2,7 @@ package com.sevengroup.campus.controller;
 
 import com.sevengroup.campus.bean.MsgBean;
 import com.sevengroup.campus.service.ActivityService;
+import com.sevengroup.campus.service.HeadService;
 import com.sevengroup.campus.service.MsgService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,12 +24,15 @@ public class MsgController {
     @Autowired
     ActivityService activityService;
     @Autowired
+    HeadService headService;
+    @Autowired
     HttpServletRequest request;
 
     @RequestMapping("/messageInfo")
     String showMessageInfo(Map<String, Object> map) {
         String username = (String) request.getSession().getAttribute("username");
         map.put("msgs", msgService.listMsgs(username));
+        headService.showHeadInfo(map);
         return "messageInfo";
     }
 
@@ -36,6 +40,7 @@ public class MsgController {
     String showMessageInfo1(Map<String, Object> map) {
         String username = (String) request.getSession().getAttribute("username");
         map.put("msgs", msgService.allMsgs(username));
+        headService.showHeadInfo(map);
         return "messageInfo";
     }
 

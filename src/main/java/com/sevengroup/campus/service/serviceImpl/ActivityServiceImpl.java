@@ -39,7 +39,7 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public void saveSignUp(String aID, String uID, String info) {
-        System.out.println("cyz cyz");
+//        System.out.println("cyz cyz");
         activityMapper.saveSignUp(aID, uID, info);
     }
 }

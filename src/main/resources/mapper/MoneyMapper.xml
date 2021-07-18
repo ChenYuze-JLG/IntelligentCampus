@@ -12,16 +12,24 @@
         <result property="cardBalance" column="balance"/>
     </resultMap>
 
-    <select id="findBalanceByID" parameterType="String" resultType="double">
+    <select id="getCardBalanceByID" parameterType="String" resultType="double">
         SELECT balance
         from card
         WHERE card.cardID = #{userID}
     </select>
 
-    <select id="getBalanceByID" parameterType="String" resultMap="resultMap">
+    <select id="getCardBalance" parameterType="String" resultMap="resultMap">
         SELECT *
-        from card
-        WHERE cardID = #{userID}
+        FROM user
+                 inner join card on user.username = card.cardID
+        WHERE user.username = #{userID};
+    </select>
+
+    <select id="getAllBalance" parameterType="String" resultMap="resultMap">
+        SELECT *
+        FROM dmtroom
+                 inner join user on user.roomID = dmtroom.DMTRoomID
+        WHERE user.username = #{userID};
     </select>
 
     <update id="addCreditRecord" parameterType="com.sevengroup.campus.bean.MoneyBean">
@@ -36,7 +44,7 @@
 
 
         update card
-        set balance = #{transactionMoney}+#{cardBalance}
+        set balance = #{transactionMoney} + #{cardBalance}
         where cardID = #{userID}
 
     </insert>
@@ -62,6 +70,10 @@
 
         insert into transrecord (money, type, username)
         values (#{money}, #{payType}, #{userID});
+
+        update dmtroom
+        set ${insertType} = ${insertType} + #{money}
+        where DMTRoomID in (select roomID from user where username = #{userID});
 
     </insert>
 

@@ -1,0 +1,307 @@
+<link rel="stylesheet" href="http://localhost:8080/static/layui/css/layui.css">
+<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+
+<script src="//unpkg.com/layui@2.6.8/dist/layui.js"></script>
+
+<div id="head">
+    <form class="layui-form" action="##" onsubmit="return false" >
+    <div class="layui-form-item">
+
+            <label class="layui-form-label">搜索</label>
+            <div class="layui-input-inline">
+                <input id="myinput" type="text" name="title" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-input-inline">
+                <button class="extend layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+<!--                <button type="reset" class="layui-btn layui-btn-primary">重置</button>-->
+            </div>
+        <button class ="body layui-btn"  onclick="javascript:$('.extend').css('display','block');
+    $('.body').css('display','none');">显示扩展</button>
+        <button class ="extend layui-btn" onclick="javascript:$('.extend').css('display','none');
+    $('.body').css('display','block');" style="display : none;">隐藏扩展</button>
+    </div>
+    </form>
+</div>
+<div class="extend" style="display: none">
+<form id = "typeForm" class="layui-form" action="##" onsubmit="return false" >
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">身份</label>
+                <input type="radio" lay-filter="type" name="type" value="0" title="游客" checked>
+                <input type="radio" lay-filter="type" name="type" value="1" title="教师" >
+                <input type="radio" lay-filter="type" name="type" value="2" title="学生" >
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn">立即提交</button>
+<!--            <button type="reset" class="layui-btn layui-btn-primary">重置</button>-->
+        </div>
+    </div>
+</form>
+
+<!--    <table class="layui-table" id="Table">-->
+<!--        <colgroup>-->
+<!--            <col>-->
+<!--        </colgroup>-->
+
+<!--        <thead>-->
+<!--        <tr>-->
+<!--            <th>应用编号</th>-->
+<!--            <th>应用名称</th>-->
+<!--            <th>应用类型</th>-->
+<!--            <th>链接</th>-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--        <tbody id="TableBody">-->
+
+<!--        </tbody>-->
+<!--    </table>-->
+    <table class="layui-table" id="bookInfoTable" lay-filter="bookInfoTableFilter"></table>
+
+
+</div>
+<div style="position: absolute;left: 95px;width: 200px;border-radius: 3px;background-color: #2D93CA">
+    <ul id="matchlist">
+
+    </ul>
+</div>
+<div id="wrapper">
+    <input id="input" placeholder="Title..."/>
+    </div>
+    <button id="addItem">Add</button>
+</div>
+<main>
+    <ul id="list">
+        <li>learn English</li>
+        <li>watch TV</li>
+        <li>keep coding</li>
+        <li>write article</li>
+        <li>run</li>
+    </ul>
+</main>
+<div id="Body" class="body" style="display: block">
+
+</div>
+<script type="text/html" id="barView">
+    <a class="layui-btn layui-btn-xs" lay-event="jump">跳转</a>
+</script>
+<script>
+    //Demo
+    function getRadios() {
+        var radios = document.getElementsByName("type");
+        var checked = -1;
+        for ( var j = 0; j < radios.length; j++) {
+            if (radios[j].checked==true) {
+                checked = j;
+            }
+        }
+        return checked;
+    }
+    $(document).ready(function () {
+        $('#Body').load("/login");
+    });
+    layui.use('form', function(){
+        var form = layui.form;
+
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+            console.log("submit");
+            console.log(data);
+            console.log("radios="+getRadios);
+            layer.msg(JSON.stringify(data.field));
+            return false;
+        });
+        form.on('radio(type)', function(data){
+            console.log(data.elem); //得到radio原始DOM对象
+            console.log(data.value); //被点击的radio的value值
+        });
+        console.log("msg");
+    });
+
+    function selByStr(list,keyWord) {
+        //字符串方法indexOf
+        var len = list.length;
+        var arr = [];
+        for (var i = 0; i < len; i++) {
+            //如果字符串中不包含目标字符会返回-1
+            if (list[i].indexOf(keyWord) >= 0) {
+                arr.push(list[i]);
+            }
+        }
+        return arr;
+    }
+    function selByReg(list,keyWord) {
+        //正则表达式
+        var len = list.length;
+        var arr = [];
+        var reg = new RegExp(keyWord);
+        for (var i = 0; i < len; i++) {
+            //如果字符串中不包含目标字符会返回-1
+            if (list[i].match(reg)) {
+                arr.push(list[i]);
+            }
+        }
+        return arr;
+    }
+
+    layui.use('table', function () {
+        var table = layui.table;
+        table.render({
+            elem: '#bookInfoTable'
+            , height: 'full'
+            , url: 'http://localhost:8080/appTable' //数据接口
+            , where: {  // 接口的其他参数（自己定义传递的参数）
+                // teacherID: teacherID
+            }
+            , title: '应用信息列表'
+            , page: false //开启分页
+            // , limit: 10  // 每页显示的条数
+            // , limits: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]  //每页显示条数的可选择数目
+            // ,autoSort: false //禁用前端自动排序
+            , initSort: {  //初始化排序方式
+                field: 'appID' //排序字段，对应 cols 设定的各字段名
+                , type: 'asc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
+            }
+            , cols: [
+                [   {field: 'appID', title: '应用编号', sort: true, align: 'center'}
+                    , {field: 'appName', title: '应用名称', sort: true, align: 'center'}
+                    , {field: 'appType', title: '应用类型', sort: true, align: 'center'}
+                    , {field: 'appUrl', title: '应用链接', sort: true, align: 'center'}
+                    , {fixed: 'right', title: '操作', toolbar: '#barView', width: 120, align: 'center'}
+
+                ]
+            ]
+        });
+        table.on('tool(bookInfoTableFilter)', function (obj) {
+            var data = obj.data; //获得当前行数据
+            console.log(data);
+            console.log(data.appUrl);
+            var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+            var tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
+            if(layEvent === 'jump'){ //查看
+                window.open(data.appUrl, '_blank').location;
+            }
+        });
+
+    });
+    function filterInit() {
+        var tableFilter = layui.tableFilter;
+        console.log("filter");
+        var tableFilterIns = tableFilter.render({
+            'elem': '#bookInfoTable',//table的选择器
+            'mode': 'local',//过滤模式
+            'filters': [
+                {field: 'appID', type: 'input'}
+                ,{field: 'appName', type: 'input'}
+                ,{field: 'appType', type: 'input'}
+                ,{field: 'appUrl', type: 'input'}
+            ],//过滤项配置
+            'done': function (filters) {
+                //结果回调
+            }
+        })
+    }
+
+    console.log('load1');
+
+    var li = document.getElementsByTagName("li");
+
+    for(let i=0;i<li.length;i++){
+        let span = document.createElement("span");
+        span.innerHTML="\u00D7";
+        span.className="close";
+        li[i].appendChild(span);
+    }
+        // var butt = document.getElementById("addItem");
+        // var input = document.getElementById("input");
+        console.log('load2');
+
+        var butt = $("#addItem")[0];
+
+        var input = $("#myinput")[0];
+        console.log(butt);
+        var close = document.getElementsByClassName("close");
+        butt.addEventListener("click",()=>{
+            if(!input.value.trim()){
+                alert("please write something")
+            }
+            else{
+                console.log("click")
+                var item = document.createElement("li");
+                item.innerHTML = input.value;
+                var ul = document.getElementById("list");
+                ul.appendChild(item);
+                let span = document.createElement("span");
+                span.innerHTML="\u00D7";
+                span.className="close";
+                item.appendChild(span);
+                input.value="";
+                removeall()
+                for(let i=0;i<close.length;i++){
+                    close[i].onclick=function(){
+                        let li = this.parentElement;
+                        li.style.display = "none";
+                    }
+                }
+            }
+        })
+
+        for(let i=0;i<close.length;i++){
+            close[i].onclick=function(){
+                let li = this.parentElement;
+                li.style.display = "none";
+            }
+        }
+        var matchlist = document.getElementById("matchlist")
+        var arr=[];
+        input.addEventListener("input",(e)=>{
+            if(e.target.value){
+                let reg = new RegExp(e.target.value,"i");
+                removeall();
+                queryitem(reg,e.target.value);
+            }
+            else{
+                removeall();
+            }
+        });
+
+        var index;
+
+        function queryitem(reg,inputValue) {
+            for (let i = 0; i < li.length; i++) {
+                index = li[i].textContent.search(reg);
+                let matchContent = "";
+                if (index > -1) {
+                    let content = li[i].textContent.replace(/\u00D7/g, "");
+                    let contentlist = content.split("");
+                    contentlist.map((item, i) => {
+                        if (i === index) {
+                            matchContent += "<strong>" + inputValue + "</strong>";
+                        } else if (i < index || i >= index + inputValue.length) {
+                            matchContent += item;
+                        }
+                    })
+                    arr.push(matchContent);
+                }
+            }
+            for (let i = 0; i < arr.length; i++) {
+                let matchitem = document.createElement("div");
+                matchitem.className = "matchitem";
+                matchitem.innerHTML = arr[i];
+                matchlist.appendChild(matchitem);
+                matchitem.onclick = (e) => {
+                    input.value = e.target.textContent;
+                    removeall();
+                }
+            }
+
+    }
+    function removeall(){
+        matchlist.innerHTML="";
+        arr=[];
+    }
+    filterInit();
+
+
+</script>

@@ -2,6 +2,7 @@ package com.sevengroup.campus.controller;
 
 import com.sevengroup.campus.bean.ActivityBean;
 import com.sevengroup.campus.service.ActivityService;
+import com.sevengroup.campus.service.HeadService;
 import com.sevengroup.campus.service.MsgService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -26,9 +27,11 @@ public class ActivityController {
     private String rootPath;
 
     @Autowired
-    ActivityService activityService;
-    @Autowired
     MsgService msgService;
+    @Autowired
+    HeadService headService;
+    @Autowired
+    ActivityService activityService;
     @Autowired
     HttpServletRequest request;
 
@@ -51,6 +54,7 @@ public class ActivityController {
 
     @RequestMapping(value = "/activity", method = RequestMethod.GET)
     String showActivities(Map<String, Object> map) {
+        headService.showHeadInfo(map);
         List<ActivityBean> activities = activityService.listActivities();
         map.put("activities", activities);
         for(ActivityBean activity : activities) {
@@ -63,7 +67,7 @@ public class ActivityController {
 
     @ResponseBody
     @RequestMapping(value = "/activity", method = RequestMethod.POST)
-    Map<String, Object> addImg(MultipartFile file) throws IOException {
+    Map<String, Object> addImg(MultipartFile file, Map<String, Object> map) throws IOException {
         System.out.println(file.getName());
         System.out.println(file.getOriginalFilename());
         System.out.println(file.getSize());
@@ -109,6 +113,9 @@ public class ActivityController {
         imgPath = imgPath.replace("\\", "/");
         System.out.println(imgPath);
         System.out.println("end");
+
+        headService.showHeadInfo(map);
+
         return new HashMap<>();
     }
 
@@ -120,7 +127,8 @@ public class ActivityController {
             @RequestParam("re") String re,
             @RequestParam("as") String as,
             @RequestParam("ae") String ae,
-            @RequestParam("text") String description) {
+            @RequestParam("text") String description,
+            Map<String, Object> map) {
         System.out.println(name);
         System.out.println(type);
         System.out.println(rs);
@@ -136,6 +144,9 @@ public class ActivityController {
         activityService.saveActivity(name, String.valueOf(activityID),
                 (String) request.getSession().getAttribute("username"),
                 description, rs, re, as, ae, imgPath);
+
+        headService.showHeadInfo(map);
+
         return "redirect:activity";
     }
 
@@ -170,7 +181,8 @@ public class ActivityController {
     String saveSignUp(
             @RequestParam("aID") String aID,
             @RequestParam("uID") String uID,
-            @RequestParam("info") String info) {
+            @RequestParam("info") String info,
+            Map<String, Object> map) {
         System.out.println("here");
         System.out.println(aID);
         System.out.println(uID);
@@ -178,7 +190,8 @@ public class ActivityController {
         msgService.saveMsg("activitySignUp", new Timestamp(System.currentTimeMillis()),
                 info, uID, activityService.getOrganizer(aID), "");
         activityService.saveSignUp(aID, uID, info);
-        return "activity";
+        headService.showHeadInfo(map);
+        return "redirect:activity";
     }
 
 }

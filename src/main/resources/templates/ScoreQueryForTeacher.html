@@ -4,13 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <title>layout 管理系统大布局 - Layui</title>
-  <!--    <link rel="stylesheet" href="../static/css/teachAffair.css">-->
   <link rel="stylesheet" href="//unpkg.com/layui@2.6.8/dist/css/layui.css">
-  <!--    <script src="../static/layui/layui.js"></script>-->
   <script src="https://unpkg.com//layui@2.6.8//dist//layui.js"></script>
+<!--  <link rel="stylesheet" href="../static/js/TAM/layui/src/css/layui.css">-->
+<!--  <script src="../static/js/TAM/layui/src/layui.js"></script>-->
 </head>
 <body>
   <!--数据表显示，居中排版-->
+  <div style="text-align: center">
+    学生成绩表
+  </div>
   <div style="text-align: center;">
     <div class="layui-inline">
       <table id="scoreTest" lay-filter="test" style="margin: 0 auto;"></table>
@@ -41,6 +44,13 @@
             field: 'studentID' //排序字段，对应 cols 设定的各字段名
             , type: 'asc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
           }
+          ,skin: 'line' //行边框风格
+          ,even: true //开启隔行背景
+          ,toolbar: ['filter', 'print', 'exports', {
+            title: '提示' //标题
+            ,layEvent: 'LAYTABLE_TIPS' //事件名，用于 toolbar 事件中使用
+            ,icon: 'layui-icon-tips' //图标类名
+          }]
           , cols: [
             [
                 {field: 'studentID', title: '学生ID', width: 120, sort: true, align: 'center'}

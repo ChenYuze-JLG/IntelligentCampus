@@ -37,7 +37,7 @@
   <script th:inline="javascript">
     layui.use('table', function () {
       var table = layui.table;
-      var teacherID = "20175686";
+      var teacherID = "20203035";
       table.render({
         elem: '#teachClassInfoTable'
         , height: 'full'
@@ -75,11 +75,11 @@
         var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
         var tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
         if(layEvent === 'detail'){ //查看
-          layer.open({
+          parent.layer.open({
             title: data.teachClassName + '成绩'
             ,type: 2   // 嵌入教学班级学生成绩表的iframe页面
-            ,content: 'ScoreQueryForTeacher?teachClassID=' + data.teachClassID
-            ,area: ['850px', '470px'] // 设置layer的宽高
+            ,content: '/teachAffairManagementForTeacher/ScoreQueryForTeacher?teachClassID=' + data.teachClassID
+            ,area: ['950px', '550px'] // 设置layer的宽高
           });
         }
       });
