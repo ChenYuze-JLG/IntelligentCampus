@@ -81,24 +81,26 @@
             AND m.majorid = ac.majorid AND l.teachClassID = tc.teachClassID AND ar.lessonID = l.lessonID
     </select>
 
-    <!--获取教室申请记录-->
-    <resultMap id="RMCRApplicationRecordBean" type="com.sevengroup.campus.bean.CRApplicationRecordBean">
+    <!--获取教师课程安排-->
+    <resultMap id="RMTeacherCourseScheduleBean" type="com.sevengroup.campus.bean.TeacherCourseScheduleBean">
         <!-- property 为实体， column 为数据库 -->
-        <result property="classroomID" column="classroomid"/>
-        <result property="date" column="date"/>
-        <result property="section" column="section"/>
-        <result property="capacity" column="capacity"/>
-        <result property="check" column="check"/>
-        <result property="role" column="role"/>
+        <result property="teachClassName" column="teachclassname"/>
+        <result property="courseName" column="coursename"/>
+        <result property="lessonDate" column="lessondate"/>
+        <result property="lessonSection" column="lessonsection"/>
+        <result property="TCStartDate" column="tcstartdate"/>
+        <result property="TCEndDate" column="tcenddate"/>
     </resultMap>
 
-    <select id="getCRApplicationRecord" parameterType="String" resultMap="RMCRApplicationRecordBean">
-        SELECT cr.classroomID AS classroomid, cr.date AS date, cr.section AS section,
-       c.capacity AS capacity, cr.`check` AS `check`, u.role AS role
-        FROM classroomrecord AS cr, classroom AS c, `user` AS u
-        WHERE cr.`user` = #{username} AND c.classroomID = cr.classroomID AND cr.`user` = u.username
+    <select id="getTeacherCourseSchedule" parameterType="String" resultMap="RMTeacherCourseScheduleBean">
+        SELECT tc.`name` AS teachclassname, c.`name` AS coursename,
+               l.date AS lessondate, l.section AS lessonsection,
+               tc.startDate AS tcstartdate, tc.endDate AS tcenddate
+        FROM teachclass AS tc, lesson AS l, course AS c
+        WHERE tc.teacherID = #{teacherID} AND tc.courseID = c.courseID
+              AND tc.teachClassID = l.teachClassID
+        order by l.date asc
     </select>
-
 
 <!--    <update id="borrowAgain" parameterType="com.sevengroup.campus.bean.BookBean">-->
 <!--        update borrowrecord-->

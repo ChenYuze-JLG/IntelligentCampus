@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <script src="../static/js/Timetables.min.js"></script>
+    <script src="../static/js/layer/layer.js"></script>
+    <link rel="stylesheet" href="//unpkg.com/layui@2.6.8/dist/css/layui.css">
+    <script src="https://unpkg.com//layui@2.6.8//dist//layui.js"></script>
+    <script src="../static/editor.md/examples/js/jquery.min.js"></script>
+    <title>大学课表</title>
+    <style>
+        #coursesTable {
+            padding: 15px 10px;
+        }
+
+        .Courses-head {
+            background-color: #edffff;
+        }
+
+        .Courses-head > div {
+            text-align: center;
+            font-size: 14px;
+            line-height: 28px;
+        }
+
+        .left-hand-TextDom, .Courses-head {
+            background-color: #f2f6f7;
+        }
+
+        .Courses-leftHand {
+            background-color: #f2f6f7;
+            font-size: 12px;
+        }
+
+        .Courses-leftHand .left-hand-index {
+            color: #9c9c9c;
+            margin-bottom: 4px !important;
+        }
+
+        .Courses-leftHand .left-hand-name {
+            color: #666;
+        }
+
+        .Courses-leftHand p {
+            text-align: center;
+            font-weight: 900;
+        }
+
+        .Courses-head > div {
+            border-left: none !important;
+        }
+
+        .Courses-leftHand > div {
+            padding-top: 5px;
+            border-bottom: 1px dashed rgb(219, 219, 219);
+        }
+
+        .Courses-leftHand > div:last-child {
+            border-bottom: none !important;
+        }
+
+        .left-hand-TextDom, .Courses-head {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+        }
+
+        .Courses-content > ul {
+            border-bottom: 1px dashed rgb(219, 219, 219);
+            box-sizing: border-box;
+        }
+
+        .Courses-content > ul:last-child {
+            border-bottom: none !important;
+        }
+
+        .highlight-week {
+            color: #02a9f5 !important;
+        }
+
+        .Courses-content li {
+            text-align: center;
+            color: #666666;
+            font-size: 14px;
+            line-height: 50px;
+        }
+
+        .Courses-content li span {
+            padding: 6px 2px;
+            box-sizing: border-box;
+            line-height: 18px;
+            border-radius: 4px;
+            white-space: normal;
+            word-break: break-all;
+            cursor: pointer;
+        }
+
+        .grid-active {
+            z-index: 9999;
+        }
+
+        .grid-active span {
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body onload="renderCourseSchedule()">
+    <div></div>
+    <div id="coursesTable"></div>
+    <div class="layui-input-block">
+        <!--    <button  onclick="onChange()"-->
+        <!--            style="background-color: #00a2ae; color: #fff; padding: 5px 10px; border-radius: 4px;border: none">-->
+        <!--        切换课表-->
+        <!--    </button>-->
+        <button onclick="lastWeek()" type="button" class="layui-btn" id="LAST-WEEK">上一周</button>
+        <button onclick="nextWeek()" type="button" class="layui-btn" id="NEXT-WEEK">下一周</button>
+        <!--    <button type="button" class="layui-btn" lay-filter="submitForm">立即提交</button>-->
+        <button onclick="returnCurrWeek()" type="button" class="layui-btn layui-btn-primary" id="RESET">回到当前周</button>
+    </div>
+    <script>
+        var courseScheduleAll, TCNameInfo, lessonDateInfo, TCStartDateInfo, TCEndDateInfo;
+        // var courseList, TCNameInfoList, lessonDateInfoList, TCStartDateList, TCEndDateList;
+        var week, day, courseType, Timetable;
+        var teacherID = "20175686";
+        page = 0;
+        function getCourseScheduleInfo() {
+            $.ajax({
+                type: "post",
+                url: '/teachAffairManagementForTeacher/getCourseScheduleJSON',
+                data: {
+                    'teacherID': teacherID
+                },
+                async: false,
+                traditional: true, //是否使用传统的方式浅层序列化,若有数组参数或对象参数需要设置true!!!!!!
+                dataType: "json",
+                success: function(returnData){
+                    obj = returnData;
+                    courseScheduleAll = obj['courseSchedule'];
+                    TCNameInfo = obj['TCNameInfo'];
+                    lessonDateInfo = obj['lessonDateInfo'];
+                    TCStartDateInfo = obj['TCStartDateInfo'];
+                    TCEndDateInfo = obj['TCEndDateInfo'];
+                    console.log(obj);
+                    console.log(typeof(lessonDateInfo.slice(0, 7)));
+                    if(obj['code'] === 1){
+                        layer.msg('获取成功', {
+                            icon: 6,
+                            time: 1000, //1s后自动关闭
+                            // btn: ['确定']
+                        }, function(){
+                            parent.layer.closeAll();
+                        });
+                    }else{
+                        layer.msg('获取失败', {icon: 5});
+                    }
+                },
+                error: function () {
+                    alert("false");
+                }
+            });
+        }
+
+        function selectWeekIndex(week) {
+            switch (week) {
+                case "周一":
+                    return 0;
+                case "周二":
+                    return 1;
+                case "周三":
+                    return 2;
+                case "周四":
+                    return 3;
+                case "周五":
+                    return 4;
+                case "周六":
+                    return 5;
+                case "周日":
+                    return 6;
+            }
+        }
+
+        function renderCourseSchedule() {
+            getCourseScheduleInfo();
+            var start = 0, end = 7;
+            courseList = courseScheduleAll.slice(start, end);
+            TCNameInfoList = TCNameInfo.slice(start, end);
+            lessonDateInfoList = lessonDateInfo.slice(start, end);
+            TCStartDateList = TCStartDateInfo.slice(start, end);
+            TCEndDateList = TCEndDateInfo.slice(start, end);
+            console.log(courseList);
+            week = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
+            day = new Date().getDay();
+            courseType = [
+                [{index: '1', name: '8:30'}, 1],
+                [{index: '2', name: '9:30'}, 1],
+                [{index: '3', name: '10:30'}, 1],
+                [{index: '4', name: '11:30'}, 1],
+                [{index: '5', name: '12:30'}, 1],
+                [{index: '6', name: '14:30'}, 1],
+                [{index: '7', name: '15:30'}, 1],
+                [{index: '8', name: '16:30'}, 1],
+                [{index: '9', name: '17:30'}, 1],
+                [{index: '10', name: '18:30'}, 1],
+                [{index: '11', name: '19:30'}, 1],
+                [{index: '12', name: '20:30'}, 1]
+            ];
+            // 实例化(初始化课表)
+            Timetable = new Timetables({
+                el: '#coursesTable',
+                timetables: courseList,
+                week: week,
+                timetableType: courseType,
+                highlightWeek: day,
+                gridOnClick: function (e) {
+                    const row = e.index - 1;
+                    const col = selectWeekIndex(e.week);
+                    const courseName = courseList[start + col][row];
+                    const teachClassName = TCNameInfoList[start + col][row];
+                    const lessonDate = lessonDateInfoList[start + col][row];
+                    const teachClassStartDate = TCStartDateList[start + col][row];
+                    const teachClassEndDate = TCEndDateList[start + col][row];
+                    // alert(e.name + '  ' + e.week + ', 第' + e.index + '节课, 课长' + e.length + '节');
+                    layer.alert("<br>课程名：" + courseName + "<br>"
+                        + "教学班名：" + teachClassName + "<br>"
+                        + "课程日期：" + lessonDate + "<br>"
+                        + "教学班开始时间：" + teachClassStartDate + "<br>"
+                        + "教学班结束时间：" + teachClassEndDate + "<br>", {
+                        icon: 1
+                        , skin: 'layui-layer-lan'
+                        // , skin: 'layui-layer-molv'
+                        , area: ['500px', '300px']
+                        , anim: 1
+                    });
+                    console.log(e);
+                    console.log(week.indexOf(e.week));
+                },
+                styles: {
+                    Gheight: 50
+                }
+            });
+        }
+        function lastWeek() {
+            page = Math.max(0, page - 1);
+            courseList = courseScheduleAll.slice(page * 7, 7 + page * 7);
+            Timetable.setOption({
+                timetables: courseList,
+                week: week,
+                // styles: {
+                //     palette: ['#dedcda', '#ff4081']
+                // },
+                timetableType: courseType,
+                gridOnClick: function (e) {
+                    alert(e.name + '  ' + e.week + ', 第' + e.index + '节课, 课长' + e.length + '节');
+                    console.log(e);
+                }
+            });
+        }
+
+        function nextWeek() {
+            page = Math.min(Math.ceil(courseScheduleAll.length / 7) - 1, page + 1);
+            courseList = courseScheduleAll.slice(page * 7, Math.min(7 + page * 7, courseScheduleAll.length));
+            Timetable.setOption({
+                timetables: courseList,
+                week: week,
+                // styles: {
+                //     palette: ['#dedcda', '#ff4081']
+                // },
+                timetableType: courseType,
+                gridOnClick: function (e) {
+                    alert(e.name + '  ' + e.week + ', 第' + e.index + '节课, 课长' + e.length + '节');
+                    console.log(e);
+                }
+            });
+        }
+
+        function returnCurrWeek() {
+            courseList = [
+                ['大学英语(Ⅳ)@10203', '大学英语(Ⅳ)@10203', '', '', '', '', '毛概@14208', '毛概@14208', '', '', '', '选修'],
+                ['', '', '信号与系统@11302', '信号与系统@11302', '模拟电子技术基础@16204', '模拟电子技术基础@16204', '', '', '', '', '', ''],
+                ['', '', '', '', '', '', '', '', '', '', '', ''],
+                ['', '', '', '', '电装实习@11301', '电装实习@11301', '', '', '', '大学体育', '大学体育', ''],
+                ['', '', '数据结构与算法分析', '数据结构与算法分析', '', '', '', '', '信号与系统', '信号与系统', '', ''],
+                ['大学体育(Ⅳ)', '大学体育(Ⅳ)', '形势与政策(Ⅳ)@15208', '形势与政策(Ⅳ)@15208', '', '', '电路、信号与系统实验', '电路、信号与系统实验', '', '', '', ''],
+                ['', '', '', '', '电装实习@11301', '电装实习@11301', '', '', '', '大学体育', '大学体育', ''],
+            ];
+            Timetable.setOption({
+                timetables: courseList,
+                week: week,
+                styles: {
+                    palette: ['#dedcda', '#ff4081']
+                },
+                timetableType: courseType,
+                gridOnClick: function (e) {
+                    console.log(e);
+                }
+            });
+        }
+
+        //切换课表
+        // function onChange() {
+        //     var courseListOther = [
+        //         ['', '', '', '', '毛概@14208', '毛概@14208', '', '', '', '选修', '', ''],
+        //         ['大学英语(Ⅳ)@10203', '大学英语(Ⅳ)@10203', '', '', '模拟电子技术基础@16204', '模拟电子技术基础@16204', '', '', '', '', '', ''],
+        //         ['', '', '信号与系统@11302', '信号与系统@11302', '', '', '电路、信号与系统实验', '电路、信号与系统实验', '', '', '', ''],
+        //         ['形势与政策(Ⅳ)@15208', '形势与政策(Ⅳ)@15208', '', '', '电装实习@11301', '电装实习@11301', '', '', '', '大学体育', '大学体育', ''],
+        //         ['大学体育(Ⅳ)', '大学体育(Ⅳ)', '', '', '数据结构与算法分析', '数据结构与算法分析', '', '', '信号与系统', '信号与系统', '', ''],
+        //     ];
+        //
+        //     Timetable.setOption({
+        //         timetables: courseListOther,
+        //         week: ['一', '二', '三', '四', '五', '六', '日'],
+        //         styles: {
+        //             palette: ['#dedcda', '#ff4081']
+        //         },
+        //         timetableType: courseType,
+        //         gridOnClick: function (e) {
+        //             console.log(e);
+        //         }
+        //     });
+        // }
+    </script>
+</body>
+</html>

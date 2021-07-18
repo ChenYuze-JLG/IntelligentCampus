@@ -1,9 +1,6 @@
 package com.sevengroup.campus.mapper;
 
-import com.sevengroup.campus.bean.CRApplicationRecordBean;
-import com.sevengroup.campus.bean.TeachClassAbsenceRecordBean;
-import com.sevengroup.campus.bean.TeachClassScoreRecordBean;
-import com.sevengroup.campus.bean.TeachClassInfoBean;
+import com.sevengroup.campus.bean.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -21,4 +18,7 @@ public interface TeachAffairManageMapper {
 
     // 获取某user的教室申请记录
     List<CRApplicationRecordBean> getCRApplicationRecord(String username);
+
+    // 查询教师课表
+    List<TeacherCourseScheduleBean> getTeacherCourseSchedule(String teacherID);
 }
