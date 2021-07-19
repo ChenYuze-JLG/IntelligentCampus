@@ -55,7 +55,39 @@ public class mod3Controller {
         for(NewsBean _new : news) {
             System.out.println(_new.getTitle());
         }
+        return "mod3/index3copy";
+    }
+    @RequestMapping("/index3")
+    public String index3(Map<String, Object> map) {
+
+        activities = activityService.listActivities();
+        map.put("activities", activities);
+        news = newsService.listNews();
+        map.put("news", news);
+        headService.showHeadInfo(map);
+        for(ActivityBean activity : activities) {
+            System.out.println(activity.getImgUrl());
+        }
+        for(NewsBean _new : news) {
+            System.out.println(_new.getTitle());
+        }
         return "mod3/index3";
+    }
+    @RequestMapping("/index4")
+    public String index4(Map<String, Object> map) {
+
+        activities = activityService.listActivities();
+        map.put("activities", activities);
+        news = newsService.listNews();
+        map.put("news", news);
+        headService.showHeadInfo(map);
+        for(ActivityBean activity : activities) {
+            System.out.println(activity.getImgUrl());
+        }
+        for(NewsBean _new : news) {
+            System.out.println(_new.getTitle());
+        }
+        return "mod3/index4";
     }
 
 
