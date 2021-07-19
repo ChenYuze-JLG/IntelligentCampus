@@ -36,6 +36,9 @@ public class IndexController {
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String index(Map<String, Object> map) {
+        if(request.getSession().getAttribute("username") == null) {
+            request.getSession().setAttribute("username", "");
+        }
         activities = activityService.listActivities();
         map.put("activities", activities);
         news = newsService.listNews();
