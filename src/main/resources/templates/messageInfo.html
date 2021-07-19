@@ -31,7 +31,7 @@
                 &nbsp;&nbsp;
                 <span style="font-size: 15px; font-weight: bold;
                             padding-left: 30px" th:if="${msg.getType()} eq 'activitySignUp'">
-                叮！有新的同学报名了你发布的活动！
+                叮！报名申请！
                 </span>
                 <span style="font-size: 15px; font-weight: bold;
                             padding-left: 30px" th:if="${msg.getType()} eq 'admission'">
@@ -58,7 +58,7 @@
 
 <script src="../static/layui/layui.js"></script>
 <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-<script>
+<script th:inline="javascript">
     function deal(id, info, sender, type) {
 
         if (type === 'GotLendBook' || type === 'lenRes') {
@@ -101,13 +101,13 @@
                     });
                 });
             }
-        } else {
+        } else if(type === 'activitySignUp') {
             layui.use('layer', function () {
                 var layer = layui.layer;
                 layer.open({
-                    type: 2,
-                    content: "verify",
-                    btn: ['yes', 'no'],
+                    type: 1,
+                    content: info,
+                    btn: ['同意', '拒绝'],
                     yes: function (index, layero) {
                         $.ajax({
                             type: 'post',
@@ -132,6 +132,40 @@
                     },
                     btn2: function (index, layero) {
                         layer.msg("已拒绝该用户的请求");
+                    }
+                });
+            });
+        } else if(type === 'admission') {
+            layui.use('layer', function () {
+                var layer = layui.layer;
+                layer.open({
+                    type: 0,
+                    content: "是否置为已读",
+                    btn: ['yes', 'no'],
+                    yes: function (index, layero) {
+                        $.ajax({
+                            type: 'post',
+                            url: 'setRead',
+                            data: {
+                                'id': id,
+                                // 'info': info,
+                                // 'receiver': sender
+                            },
+                            traditional: true,
+                            async: false,
+                            dataType: 'json',
+                            success: function (data) {//成功的事件
+                                layer.closeAll();
+                                layer.msg("已置为已读");
+                            },
+                            error: function (data) {//失败的事件
+                                layer.close();
+                            }
+                        });
+
+                    },
+                    btn2: function (index, layero) {
+                        // layer.msg("已拒绝该用户的请求");
                     }
                 });
             });
