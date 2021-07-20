@@ -98,23 +98,23 @@
                l.date         AS `date`,
                l.section      AS `section`,
                ar.type        AS `type`
-        FROM student AS s,
-             college AS cg,
-             teachclass AS tc,
-             major AS m,
-             scorerecord AS sc,
+        FROM teachclass AS tc,
              tcsnamelist AS tl,
+             student AS s,
              adminclass AS ac,
+             acsnamelist AS al,
+             major AS m,
+             college AS cg,
              absencerecord AS ar,
              lesson AS l
         WHERE tc.teachClassID = #{teachClassID}
-          AND s.studentID = tl.studentID
           AND tc.teachClassID = tl.teachClassID
-          AND sc.teachClassID = tc.teachClassID
-          AND sc.collegeID = cg.collegeID
-          AND m.collegeID = cg.collegeID
+          AND s.studentID = tl.studentID
+          AND s.studentID = al.studentid
+          AND al.adminclassid = ac.adminClassid
           AND m.majorid = ac.majorid
-          AND l.teachClassID = tc.teachClassID
+          AND m.collegeID = cg.collegeID
+          AND ar.studentID = s.studentID
           AND ar.lessonID = l.lessonID
     </select>
 
@@ -171,4 +171,101 @@
         order by l.date asc
     </select>
 
+    <!--获取教学班学生请假信息-->
+    <resultMap id="RMTeachClassLeaveRecordBean" type="com.sevengroup.campus.bean.TeachClassLeaveRecordBean">
+        <!-- property 为实体， column 为数据库 -->
+        <result property="studentID" column="studentid"/>
+        <result property="studentName" column="studentname"/>
+        <result property="collegeName" column="collegename"/>
+        <result property="majorName" column="majorname"/>
+        <result property="grade" column="grade"/>
+        <result property="classNumber" column="classnumber"/>
+        <result property="lessonID" column="lessonid"/>
+        <result property="date" column="date"/>
+        <result property="section" column="section"/>
+        <result property="state" column="state"/>
+        <result property="reason" column="reason"/>
+    </resultMap>
+
+    <select id="getTeachClassLeaveRecord" parameterType="String" resultMap="RMTeachClassLeaveRecordBean">
+        SELECT s.studentID    AS studentid,
+               s.`name`       AS studentname,
+               cg.collegeName AS collegename,
+               m.`name`       AS majorname,
+               ac.grade       AS grade,
+               ac.classnumber AS classnumber,
+               l.lessonID     AS lessonid,
+               l.date         AS `date`,
+               l.section      AS `section`,
+               lr.state       AS state,
+               lr.reason      AS reason
+        FROM teachclass AS tc,
+             tcsnamelist AS tl,
+             student AS s,
+             adminclass AS ac,
+             acsnamelist AS al,
+             major AS m,
+             college AS cg,
+             leaverecord AS lr,
+             lesson AS l
+        WHERE tc.teachClassID = #{teachClassID}
+          AND tc.teachClassID = tl.teachClassID
+          AND s.studentID = tl.studentID
+          AND s.studentID = al.studentid
+          AND al.adminclassid = ac.adminClassid
+          AND m.majorid = ac.majorid
+          AND m.collegeID = cg.collegeID
+          AND lr.studentID = s.studentID
+          AND lr.lessonID = l.lessonID;
+    </select>
+
+    <!--获取学生请假信息，用于假条审核-->
+    <resultMap id="RMTeachClassStudentLeaveInfoBean" type="com.sevengroup.campus.bean.TeachClassStudentLeaveInfoBean">
+        <!-- property 为实体， column 为数据库 -->
+        <result property="studentName" column="studentname"/>
+        <result property="collegeName" column="collegename"/>
+        <result property="majorName" column="majorname"/>
+        <result property="grade" column="grade"/>
+        <result property="classNumber" column="classnumber"/>
+        <result property="date" column="date"/>
+        <result property="section" column="section"/>
+        <result property="state" column="state"/>
+        <result property="reason" column="reason"/>
+    </resultMap>
+
+    <select id="getTeachClassStudentLeaveInfo" parameterType="String" resultMap="RMTeachClassStudentLeaveInfoBean">
+        SELECT s.studentID    AS studentid,
+               s.`name`       AS studentname,
+               cg.collegeName AS collegename,
+               m.`name`       AS majorname,
+               ac.grade       AS grade,
+               ac.classnumber AS classnumber,
+               l.lessonID     AS lessonid,
+               l.date         AS `date`,
+               l.section      AS `section`,
+               lr.state       AS state,
+               lr.reason      AS reason
+        FROM student AS s,
+             acsnamelist AS al,
+             adminclass AS ac,
+             major AS m,
+             college AS cg,
+             leaverecord AS lr,
+             lesson AS l
+        WHERE s.studentID = al.studentid
+          AND al.adminClassid = ac.adminclassid
+          AND ac.majorid = m.majorid
+          AND m.collegeID = cg.collegeID
+          AND l.lessonID = lr.lessonid
+          AND lr.studentid = s.studentID
+          AND lr.studentid = #{studentID}
+          AND lr.lessonid = #{lessonID}
+    </select>
+
+    <update id="setStudentLeaveState" parameterType="Map">
+        UPDATE leaverecord
+        SET `state` = #{state}
+        WHERE studentid = #{studentID}
+          AND lessonid = #{lessonID}
+    </update>
 </mapper>

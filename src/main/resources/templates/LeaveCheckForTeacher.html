@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../static/editor.md/examples/js/jquery.min.js"></script>
+    <link rel="stylesheet" href="//unpkg.com/layui@2.6.8/dist/css/layui.css">
+    <script src="https://unpkg.com//layui@2.6.8//dist//layui.js"></script>
+</head>
+<body>
+<div>
+    <form class="layui-form"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label">假条信息</label>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">学号</label>
+                <div class="layui-input-block">
+                    <input id="studentID" readonly type="text" name="" placeholder="请输入" autocomplete="off"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">姓名</label>
+                <div class="layui-input-block">
+                    <input id="studentName" readonly type="text" name="" placeholder="请输入" autocomplete="off"
+                           class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">学院</label>
+                <div class="layui-input-block">
+                    <input id="collegeName" readonly type="text" name="" placeholder="请输入" autocomplete="off"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">年级</label>
+                <div class="layui-input-block">
+                    <input id="grade" readonly type="text" name="" placeholder="请输入" autocomplete="off"
+                           class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">专业</label>
+                <div class="layui-input-block">
+                    <input id="majorName" readonly type="text" name="" placeholder="请输入" autocomplete="off"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">班级</label>
+                <div class="layui-input-block">
+                    <input id="classNumber" readonly type="text" name="" placeholder="请输入" autocomplete="off"
+                           class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">请假日期</label>
+                <div class="layui-input-block">
+                    <input id="date" readonly type="text" name="" placeholder="请输入" autocomplete="off"
+                           class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">请假节次</label>
+            <div class="layui-input-block">
+                <input id="section" readonly type="text" name="" placeholder="请输入" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">请假原因</label>
+            <div id="reason" class="layui-input-block">
+                <textarea placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item"></div>
+        <div class="layui-form-item"></div>
+        <!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
+        <div class="layui-form-item">
+            <div class="layui-inline"></div>
+            <div class="layui-inline"></div>
+            <div class="layui-inline"></div>
+            <div class="layui-inline"></div>
+            <div class="layui-inline"></div>
+            <div class="layui-inline"></div>
+            <div class="layui-inline"></div>
+            <div class="layui-inline"></div>
+            <div class="layui-inline">
+                <button type="button" class="layui-btn" id="pass">通过审核</button>
+            </div>
+            <div class="layui-inline"></div>
+            <div class="layui-inline"></div>
+            <div class="layui-inline"></div>
+            <div class="layui-inline"></div>
+            <div class="layui-inline"></div>
+            <div class="layui-inline"></div>
+            <div class="layui-inline"></div>
+            <div class="layui-inline"></div>
+            <div class="layui-inline"></div>
+            <div class="layui-inline"></div>
+            <div class="layui-inline"></div>
+            <div class="layui-inline"></div>
+            <div class="layui-inline"></div>
+            <div class="layui-inline"></div>
+            <div class="layui-inline"></div>
+            <div class="layui-inline">
+                <button type="button" class="layui-btn layui-btn-danger" id="reject">不予请假</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+<script>
+    // 从URL中获取参数
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+        var r = window.location.search.substr(1).match(reg); //匹配目标参数
+        if (r != null) return unescape(r[2]);//返回参数值
+        return null;
+    }
+</script>
+<script>
+    layui.use('form', function () {
+        var form = layui.form;
+        //监听提交
+        layui.$('#pass').on('click', function () {
+            //询问框
+            layer.confirm('确定要通过该申请吗？', {
+                btn: ['确认', '取消'] //按钮
+            }, function () {
+                setStudentLeaveState(studentID, lessonID, '申请成功');
+            }, function () {
+            });
+            return false;
+        });
+        layui.$('#reject').on('click', function () {
+            //询问框
+            layer.confirm('确定要拒绝该申请吗？', {
+                btn: ['确认', '取消'] //按钮
+            }, function () {
+                setStudentLeaveState(studentID, lessonID, '申请失败');
+            }, function () {
+            });
+            return false;
+        });
+    });
+</script>
+<script>
+    document.getElementById("pass").disabled = true;
+    document.getElementById("reject").disabled = true;
+    // 获取假条信息
+    function getStudentLeaveInfo(studentID, lessonID) {
+        $.ajax({
+            type: "post",
+            url: '/teachAffairManagementForTeacher/getTeachClassStudentLeaveInfoJSON',
+            data: {
+                'studentID': studentID,
+                'lessonID': lessonID
+            },
+            async: false,
+            traditional: true, //是否使用传统的方式浅层序列化,若有数组参数或对象参数需要设置true!!!!!!
+            dataType: "json",
+            success: function (returnData) {
+                console.log("returnData: ", returnData);
+                let data = returnData['data'][0];
+                document.getElementById("studentID").value = studentID;
+                document.getElementById("studentName").value = data['studentName'];
+                document.getElementById("collegeName").value = data['collegeName'];
+                document.getElementById("grade").value = data['grade'];
+                document.getElementById("majorName").value = data['majorName'];
+                document.getElementById("classNumber").value = data['classNumber'];
+                document.getElementById("date").value = data['date'];
+                document.getElementById("section").value = data['section'];
+                document.getElementById("reason").innerText = data['reason'];
+                document.getElementById("pass").removeAttribute("disabled");
+                document.getElementById("reject").removeAttribute("disabled");
+                layer.closeAll('loading');  // 关闭加载层
+                if (returnData['code'] === 1) {
+                    layer.msg('获取成功', {
+                        icon: 6,
+                        time: 1000, //1s后自动关闭
+                        // btn: ['确定']
+                    }, function () {
+                        layer.close();
+                    });
+                } else {
+                    layer.msg('获取失败', {icon: 5});
+                }
+            },
+            error: function () {
+                layer.closeAll('loading');  // 关闭加载层
+                layer.msg('error', {icon: 5});
+            }
+        });
+    }
+
+    // 设置请假结果，state='待审核'、'申请失败'、'申请成功'
+    function setStudentLeaveState(studentID, lessonID, state) {
+        $.ajax({
+            type: "post",
+            url: '/teachAffairManagementForTeacher/setStudentLeaveState',
+            data: {
+                'studentID': studentID,
+                'lessonID': lessonID,
+                'state': state
+            },
+            async: false,
+            traditional: true, //是否使用传统的方式浅层序列化,若有数组参数或对象参数需要设置true!!!!!!
+            dataType: "json",
+            success: function (returnData) {
+                console.log("returnData: ", returnData);
+                let data = returnData['data'];
+                layer.closeAll('loading');  // 关闭加载层
+                if (returnData['code'] === 1) {
+                    layer.msg('审核成功', {
+                        icon: 6,
+                        time: 1000, //1s后自动关闭
+                        // btn: ['确定']
+                    }, function () {
+                        layer.close();
+                    });
+                } else {
+                    layer.msg('审核失败', {icon: 5});
+                }
+            },
+            error: function () {
+                layer.closeAll('loading');  // 关闭加载层
+                layer.msg('error', {icon: 5});
+            }
+        });
+    }
+
+    var studentID = getUrlParam('studentID');
+    var lessonID = getUrlParam('lessonID');
+    console.log(studentID);
+    console.log(lessonID);
+    var studentName, collegeName, grade, majorName, classNumber, date, section, reason;
+    getStudentLeaveInfo(studentID, lessonID);
+</script>
+</html>

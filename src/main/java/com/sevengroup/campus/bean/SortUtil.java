@@ -150,5 +150,10 @@ public class SortUtil {
         return list;
     }
 
+    public static List<TeachClassLeaveRecordBean> SortTeachClassLeaveRecordBean(List<TeachClassLeaveRecordBean> list, String properName, boolean flag) {
+        AnyProperComparator comparator = new AnyProperComparator(properName, flag);
+        Collections.sort(list, comparator);
+        return list;
+    }
 
 }

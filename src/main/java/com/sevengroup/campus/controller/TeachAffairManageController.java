@@ -40,10 +40,10 @@ public class TeachAffairManageController {
     @RequestMapping(value = "/teachAffairManagementForTeacher/getTeachClassInfoJson")
     @ResponseBody
     public String getTeachClassInfoForTeacher(@RequestParam(value = "page") Integer currPage, // 当前数据表格的页数
-                                     @RequestParam(value = "limit") Integer currPageSize, // 当前数据表格每页的容量大小
-                                     @RequestParam(value = "field", defaultValue = "teachClassName") String sortField, // 当前选择排序的字段名称
-                                     @RequestParam(value = "order", defaultValue = "asc") String sortOrder, // 当前对已选字段的排序方式
-                                     @RequestParam(value = "teacherID") String teacherID
+                                              @RequestParam(value = "limit") Integer currPageSize, // 当前数据表格每页的容量大小
+                                              @RequestParam(value = "field", defaultValue = "teachClassName") String sortField, // 当前选择排序的字段名称
+                                              @RequestParam(value = "order", defaultValue = "asc") String sortOrder, // 当前对已选字段的排序方式
+                                              @RequestParam(value = "teacherID") String teacherID
     ) throws JSONException {
         // 从用户登录信息中获取ID
         List<TeachClassInfoBean> teachClassInfo = teachAffairManageService.getTeachClassInfo(teacherID);
@@ -66,6 +66,13 @@ public class TeachAffairManageController {
     @RequestMapping("/teachAffairManagementForTeacher/ScoreQueryForTeacher")
     public String showScoreQueryForTeacher(@RequestParam(value = "teachClassID") String teachClassID) {
         return "ScoreQueryForTeacher";
+    }
+
+    // layer层内iFrame内教师查询教学班成绩图表
+    @RequestMapping("/teachAffairManagementForTeacher/ScoreChartForTeacher")
+    public String showScoreChartForTeacher(@RequestParam(value = "teachClassID") String teachClassID) {
+        System.out.println(teachClassID);
+        return "ScoreDistributionForTeacher";
     }
 
     // 获取教学班所有学生成绩信息JSON
@@ -91,6 +98,32 @@ public class TeachAffairManageController {
         int toIndex = Math.min(currPage * currPageSize, teachClassScoreRecord.size());
         List<TeachClassScoreRecordBean> teachClassScoreRecordBPerPage = teachClassScoreRecord.subList(fromIndex, toIndex);
         jsonResult.put("data", teachClassScoreRecordBPerPage);
+        return jsonResult.toJSONString();
+    }
+
+    // 获取教学班所有学生成绩用于绘图，JSON格式
+    @RequestMapping("/teachAffairManagementForTeacher/getTeachClassScoreChartDataJSON")
+    @ResponseBody
+    public String getTeachClassScoreChartDataJSON(@RequestParam(value = "teachClassID") String teachClassID) {
+        // 从用户登录信息中获取ID
+        List<TeachClassScoreRecordBean> teachClassScoreRecord = teachAffairManageService.getTeachClassScoreRecord(teachClassID);
+        // 向前端传回格式为json
+        JSONObject jsonResult = new JSONObject();
+        jsonResult.put("code", 1);
+        jsonResult.put("msg", "");
+        List<Integer> data = new ArrayList<Integer>(Arrays.asList(0, 0, 0, 0, 0));
+        for (TeachClassScoreRecordBean teachClassScoreRecordBean : teachClassScoreRecord) {
+            Double score = teachClassScoreRecordBean.getCourseScore();
+            if (score < 60) data.set(0, data.get(0) + 1);
+            else {
+                int index = (int) Math.ceil((score - 60) / 10);
+                data.set(index, data.get(index) + 1);
+            }
+        }
+        jsonResult.put("data", data);
+        for (int i = 0; i < data.size(); i++) {
+            System.out.println(data.get(i));
+        }
         return jsonResult.toJSONString();
     }
 
@@ -123,24 +156,24 @@ public class TeachAffairManageController {
             long currDateTime = currDate.getTime();
             long readDateTime = readDate.getTime();
             int days = (int) ((readDateTime - currDateTime) / (1000 * 60 * 60 * 24));
-            if(days < 0) continue;
+            if (days < 0) continue;
             if (days == 0) {
                 switchLessonSection(courseSchedule, TCNameInfo, lessonDateInfo,
-                                    TCStartDateInfo, TCEndDateInfo, teacherCourseScheduleBean);
+                        TCStartDateInfo, TCEndDateInfo, teacherCourseScheduleBean);
                 continue;
             }
-            while(days > 0) {
+            while (days > 0) {
                 addEmptyList(courseSchedule, TCNameInfo, lessonDateInfo, TCStartDateInfo, TCEndDateInfo);
                 Calendar calendar = new GregorianCalendar();
                 calendar.setTime(currDate);
-                calendar.add(Calendar.DATE,1); //把日期往后增加一天,整数  往后推,负数往前移动
+                calendar.add(Calendar.DATE, 1); //把日期往后增加一天,整数  往后推,负数往前移动
                 currDate = calendar.getTime();
                 currDateTime = currDate.getTime();
                 days = (int) (Math.ceil(readDateTime - currDateTime) / (1000 * 60 * 60 * 24));
             }
             addEmptyList(courseSchedule, TCNameInfo, lessonDateInfo, TCStartDateInfo, TCEndDateInfo);
             switchLessonSection(courseSchedule, TCNameInfo, lessonDateInfo,
-                                TCStartDateInfo, TCEndDateInfo, teacherCourseScheduleBean);
+                    TCStartDateInfo, TCEndDateInfo, teacherCourseScheduleBean);
         }
         JSONObject jsonResult = new JSONObject();
         jsonResult.put("code", 1);
@@ -228,7 +261,7 @@ public class TeachAffairManageController {
         int currYear = currDate.getYear();
         int currMonth = currDate.getMonth();
         int newMonth;
-        if(currMonth >= 8 || currMonth <= 1) {
+        if (currMonth >= 8 || currMonth <= 1) {
             newMonth = 7;
         } else {
             newMonth = 1;
@@ -277,10 +310,10 @@ public class TeachAffairManageController {
     @RequestMapping("/teachAffairManagementForTeacher/getTeachClassAbsenceInfoJson")
     @ResponseBody
     public String getTeachClassAbsenceInfoJson(@RequestParam(value = "page") Integer currPage, // 当前数据表格的页数
-                                             @RequestParam(value = "limit") Integer currPageSize, // 当前数据表格每页的容量大小
-                                             @RequestParam(value = "field", defaultValue = "studentID") String sortField, // 当前选择排序的字段名称
-                                             @RequestParam(value = "order", defaultValue = "asc") String sortOrder, // 当前对已选字段的排序方式
-                                             @RequestParam(value = "teachClassID") String teachClassID
+                                               @RequestParam(value = "limit") Integer currPageSize, // 当前数据表格每页的容量大小
+                                               @RequestParam(value = "field", defaultValue = "studentID") String sortField, // 当前选择排序的字段名称
+                                               @RequestParam(value = "order", defaultValue = "asc") String sortOrder, // 当前对已选字段的排序方式
+                                               @RequestParam(value = "teachClassID") String teachClassID
     ) throws JSONException {
         // 从用户登录信息中获取ID
         List<TeachClassAbsenceRecordBean> teachClassAbsenceRecord = teachAffairManageService.getTeachClassAbsenceRecord(teachClassID);
@@ -305,11 +338,90 @@ public class TeachAffairManageController {
         return "AbsenceRecordQueryForTeacher";
     }
 
+    /*
+        请假管理
+     */
 
-    // 教师批准请假
-    @RequestMapping("/teachAffairManagementForTeacher/CourseLeaveCheck")
-    public String showCourseLeaveCheck() {
-        return "CourseLeaveCheckForTeacher";
+    // layer层教师审核请假
+    @RequestMapping("/teachAffairManagementForTeacher/LeaveCheckForTeacher")
+    public String showLeaveCheck() {
+        return "LeaveCheckForTeacher";
+    }
+
+    // 获取学生假条数据（假条审核）
+    @RequestMapping("/teachAffairManagementForTeacher/getTeachClassStudentLeaveInfoJSON")
+    @ResponseBody
+    public String getTeachClassStudentLeaveInfoJSON(@RequestParam(value = "studentID") String studentID,
+                                                    @RequestParam(value = "lessonID") String lessonID) {
+        // 从用户登录信息中获取ID
+        List<TeachClassStudentLeaveInfoBean> teachClassStudentLeaveInfo = teachAffairManageService.getTeachClassStudentLeaveInfo(studentID, lessonID);
+        // 向前端传回格式为json
+        JSONObject jsonResult = new JSONObject();
+        jsonResult.put("code", 1);
+        jsonResult.put("msg", "");
+        jsonResult.put("count", teachClassStudentLeaveInfo.size());
+        jsonResult.put("data", teachClassStudentLeaveInfo);
+        return jsonResult.toJSONString();
+    }
+
+    // 设置学生请假状态
+    @RequestMapping("/teachAffairManagementForTeacher/setStudentLeaveState")
+    @ResponseBody
+    public String setStudentLeaveState(@RequestParam(value = "studentID") String studentID,
+                                       @RequestParam(value = "lessonID") String lessonID,
+                                       @RequestParam(value = "state") String state) {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("studentID", studentID);
+        map.put("lessonID", lessonID);
+        map.put("state", state);
+        int res = teachAffairManageService.setStudentLeaveState(map);
+        // 向前端传回格式为json
+        JSONObject jsonResult = new JSONObject();
+        if(res != -1) {
+            jsonResult.put("code", 1);
+        } else {
+            jsonResult.put("code", 0);
+        }
+        jsonResult.put("msg", "");
+        return jsonResult.toJSONString();
+    }
+
+    // 教学班请假记录查询
+    @RequestMapping("/teachAffairManagementForTeacher/LeaveRecordQuery")
+    public String showViewLeaveRecord() {
+        return "TeachClassLeaveQueryForTeacher";
+    }
+
+    // 获取教学班所有学生请假信息JSON
+    @RequestMapping("/teachAffairManagementForTeacher/getTeachClassLeaveInfoJSON")
+    @ResponseBody
+    public String getTeachClassLeaveInfoJson(@RequestParam(value = "page") Integer currPage, // 当前数据表格的页数
+                                             @RequestParam(value = "limit") Integer currPageSize, // 当前数据表格每页的容量大小
+                                             @RequestParam(value = "field", defaultValue = "state") String sortField, // 当前选择排序的字段名称
+                                             @RequestParam(value = "order", defaultValue = "asc") String sortOrder, // 当前对已选字段的排序方式
+                                             @RequestParam(value = "teachClassID") String teachClassID
+    ) throws JSONException {
+        // 从用户登录信息中获取ID
+        List<TeachClassLeaveRecordBean> teachClassLeaveRecord = teachAffairManageService.getTeachClassLeaveRecord(teachClassID);
+        // 向前端传回格式为json
+        JSONObject jsonResult = new JSONObject();
+        jsonResult.put("code", 0);
+        jsonResult.put("msg", "");
+        jsonResult.put("count", teachClassLeaveRecord.size());
+        // 根据前端传回的排序参数对数据列表排序
+        SortUtil.SortTeachClassLeaveRecordBean(teachClassLeaveRecord, sortField, sortOrder.equals("asc"));
+        // 计算传回的数据表格的页数和内容，并截取相应列表内容传回前端
+        int fromIndex = (currPage - 1) * currPageSize;
+        int toIndex = Math.min(currPage * currPageSize, teachClassLeaveRecord.size());
+        List<TeachClassLeaveRecordBean> teachClassLeaveRecordPerPage = teachClassLeaveRecord.subList(fromIndex, toIndex);
+        jsonResult.put("data", teachClassLeaveRecordPerPage);
+        return jsonResult.toJSONString();
+    }
+
+    // layer层内iFrame内教师查询教学班请假记录
+    @RequestMapping("/teachAffairManagementForTeacher/LeaveRecordQueryForTeacher")
+    public String showLeaveQueryForTeacher() {
+        return "LeaveRecordQueryForTeacher";
     }
 
     /*

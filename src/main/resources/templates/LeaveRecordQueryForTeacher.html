@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>layout 管理系统大布局 - Layui</title>
+    <!--    <link rel="stylesheet" href="../static/css/teachAffair.css">-->
+    <link rel="stylesheet" href="//unpkg.com/layui@2.6.8/dist/css/layui.css">
+    <!--    <script src="../static/layui/layui.js"></script>-->
+    <script src="https://unpkg.com//layui@2.6.8//dist//layui.js"></script>
+</head>
+<body>
+<!--数据表显示，居中排版-->
+<div style="text-align: center;">
+    <div class="layui-inline">
+        <table id="leaveTable" lay-filter="leaveTableFilter" style="margin: 0 auto;"></table>
+    </div>
+</div>
+<script type="text/html" id="barView">
+    {{#  if(d.state == '待审核'){ }}
+    <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="check">待审核</a>
+    {{# } }}
+    {{#  if(d.state == '申请成功'){ }}
+    <a class="layui-btn layui-btn-xs" lay-event="">申请通过</a>
+    {{# } }}
+    {{#  if(d.state == '申请失败'){ }}
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="">不予请假</a>
+    {{# } }}
+</script>
+<script th:inline="javascript" charset="UTF-8">
+    layui.use('table', function () {
+        var teachClassID = getUrlParam("teachClassID");
+        // alert(teachClassID);
+        var table = layui.table;
+        table.render({
+            elem: '#leaveTable'
+            , height: 'full'
+            , url: '/teachAffairManagementForTeacher/getTeachClassLeaveInfoJSON' //数据接口
+            , where: {  // 接口的其他参数（自己定义传递的参数）
+                teachClassID: teachClassID
+            }
+            , title: '教学班级请假信息表'
+            , page: true //开启分页
+            , limit: 10  // 每页显示的条数
+            , limits: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]  //每页显示条数的可选择数目
+            // ,autoSort: false //禁用前端自动排序
+            , initSort: {  //初始化排序方式
+                field: 'state' //排序字段，对应 cols 设定的各字段名
+                , type: 'asc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
+            }
+            , cols: [
+                [
+                    {field: 'studentID', title: '学生ID', width: 100, sort: true, align: 'center'}
+                    , {field: 'studentName', title: '姓名', width: 100, sort: true, align: 'center'}
+                    , {field: 'collegeName', title: '学院', width: 100, sort: true, align: 'center'}
+                    , {field: 'grade', title: '年级', width: 100, sort: true, align: 'center'}
+                    , {field: 'majorName', title: '专业', width: 100, sort: true, align: 'center'}
+                    , {field: 'classNumber', title: '班级', width: 80, sort: true, align: 'center'}
+                    , {field: 'lessonID', title: '课程节次ID', width: 100, sort: true, align: 'center', hide: true}
+                    , {field: 'date', title: '日期', width: 120, sort: true, align: 'center'}
+                    , {field: 'section', title: '节次', width: 80, sort: true, align: 'center'}
+                    , {field: 'state', title: '状态', width: 100, sort: true, align: 'center'}
+                    , {field: 'reason', title: '原因', width: 100, sort: true, align: 'center'}
+                    , {fixed: 'right', title: '操作', toolbar: '#barView', width: 100, align: 'center'}
+                ]
+            ]
+        });
+
+        //触发排序事件
+        table.on('sort(leaveTableFilter)', function (obj) { //注：sort 是工具条事件名，leaveTableFilter 是 table 原始容器的属性 lay-filter="对应的值"
+            console.log(obj.field); //当前排序的字段名
+            console.log(obj.type); //当前排序类型：desc（降序）、asc（升序）、null（空对象，默认排序）
+            console.log(this); //当前排序的 th 对象
+
+            //尽管我们的 table 自带排序功能，但并没有请求服务端。
+            //有些时候，你可能需要根据当前排序的字段，重新向服务端发送请求，从而实现服务端排序，如：
+            table.reload('leaveTable', {
+                initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+                , where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                    field: obj.field //排序字段
+                    , order: obj.type //排序方式
+                    , teachClassID: teachClassID
+                }
+            });
+            layer.msg('服务端排序。order by ' + obj.field + ' ' + obj.type);
+        });
+
+        //监听行工具事件
+        table.on('tool(leaveTableFilter)', function (obj) {
+            var data = obj.data; //获得当前行数据
+            var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+            var tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
+            console.log(data);
+            console.log(layEvent);
+            console.log(obj);
+            if (layEvent === 'check') { //审核
+                top.layer.open({
+                    title: '学生' + data.studentName + '的假条申请'
+                    ,
+                    type: 2   // 嵌入iframe页面
+                    ,
+                    content: '/teachAffairManagementForTeacher/LeaveCheckForTeacher?studentID='
+                        + data.studentID + "&lessonID=" + data.lessonID
+                    ,
+                    area: ['640px', '540px'] // 设置layer的宽高
+                    ,
+                    end: function () {
+                        table.reload('leaveTable', {
+                            initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+                            , where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                                field: obj.field //排序字段
+                                , order: obj.type //排序方式
+                                , teachClassID: teachClassID
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+<script>
+    // 从URL中获取参数
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+        var r = window.location.search.substr(1).match(reg); //匹配目标参数
+        if (r != null) return unescape(r[2]);//返回参数值
+        return null;
+    }
+</script>
+<!--  </div>-->
+</body>
