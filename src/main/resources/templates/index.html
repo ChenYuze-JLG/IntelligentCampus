@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../static/layui/css/layui.css" media="all">
 
 
+    <!--    <link href="../static/indexSearch/css/bootstrap.min.css" rel="stylesheet">-->
     <link href="../static/indexSearch/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="static/indexSearch/css/zzsc.css">
     <link rel="stylesheet" type="text/css" href="../static/indexSearch/css/xxx.css">
@@ -72,6 +73,7 @@
 
     .searchBtn {
         background-color: rgba(234, 255, 203, 0.91);
+        margin-bottom: 15px;
     }
 
     .searchBtn,
@@ -96,13 +98,18 @@
     }
 </style>
 
-<div id="head" class="extend head" style="display: none">
+<button class="body floatButton" onclick="$('.extend').css('display','block');
+                    $('#head').css('display','block');
+                    $('.body').css('display','none');
+                    $(body).css('background-color','#dcf5e6');">
+</button>
+<div id="head" style="display:none;">
     <form class="layui-form" action="##" onsubmit="return false">
         <div class="layui-form-item">
 
             <div>
                 <button class="extend layui-input-inline searchBtn" onclick="$('.extend').css('display','none');
-                    $('.body').css('display','block');$(body).css('background-color','#F8F8F8');"
+                    $('.body').css('display','block');$('#head').css('display','none');$(body).css('background-color','#F8F8F8');"
                         style="display : none; width:auto;padding: 0 10px 0 10px">
                     隐藏扩展
                 </button>
@@ -117,21 +124,18 @@
                 </button>
 
             </div>
+            <button class="body floatButton" onclick="$('.extend').css('display','block');
+                    $('.body').css('display','none');$(body).css('background-color','#dcf5e6');">
+            </button>
 
         </div>
     </form>
 </div>
-
-<button class="body floatButton" onclick="$('.extend').css('display','block');
-                    $('.body').css('display','none');$(body).css('background-color','#dcf5e6');">
-</button>
-
 <div style="font-family: myFont;z-index: 999999;position: absolute;left: 45%;width: 200px;border-radius: 3px;background-color: rgba(255,255,255,0);cursor: pointer;padding-left: 10px;margin-top: 50px;">
     <ul id="matchlist">
 
     </ul>
 </div>
-
 <div class="extend " style="display: none">
     <div class="demo">
         <div class="container" style="width: 200px">
@@ -139,18 +143,18 @@
                 <div class="col-md-12" style="width: 200px">
 
                     <div class="navbar" id="navbar1">
-                        <img id="img1" src="static/img/searchIcon/ziyuan.svg"
-                             style="width: 150px;height:150px;border-radius:150px;">
+                        <img id="img1" src="static/img/searchIcon/base.svg"
+                             style="width: 150px;height:150px;;">
                         <ul class="menu">
                             <li class="li1">
                                 <button id='img1_1'
-                                        style="background-image: url('static/img/searchIcon/xinwen.svg');background-position: center center; background-repeat: no-repeat; background-size: 80% 80%">
+                                        style="background-image: url('static/img/searchIcon/news.svg');background-position: center center; background-repeat: no-repeat; background-size: 80% 80%">
                                 </button>
 
                             </li>
                             <li class="li1">
                                 <button id='img1_2'
-                                        style="background-image: url('static/img/searchIcon/ziyuan.svg');background-position: center center; background-repeat: no-repeat; background-size: 80% 80%">
+                                        style="background-image: url('static/img/searchIcon/activity.svg');background-position: center center; background-repeat: no-repeat; background-size: 80% 80%">
                                 </button>
                             </li>
                         </ul>
@@ -171,37 +175,37 @@
                 <div class="col-md-12" style="width: 200px;">
                     <div class="navbar" id="navbar2">
 
-                        <img id="img2" src="static/img/searchIcon/ziyuan.svg"
-                             style="width: 150px;height:150px;border-radius:150px;">
+                        <img id="img2" src="static/img/searchIcon/teachAff.svg"
+                             style="width: 150px;height:150px;;">
                         <ul class="menu">
                             <li class="li2">
                                 <button id='img2_1'
-                                        style="background-image: url('static/img/searchIcon/chengji.svg');background-position: center center; background-repeat: no-repeat; background-size: 80% 80%">
+                                        style="background-image: url('static/img/searchIcon/grade.svg');background-position: center center; background-repeat: no-repeat; background-size: 80% 80%">
                                 </button>
                             </li>
                             <li class="li2">
                                 <button id='img2_2'
-                                        style="background-image: url('static/img/searchIcon/kaoshi.svg');background-position: center center; background-repeat: no-repeat; background-size: 80% 80%">
+                                        style="background-image: url('static/img/searchIcon/exam.svg');background-position: center center; background-repeat: no-repeat; background-size: 80% 80%">
                                 </button>
                             </li>
                             <li class="li2">
                                 <button id='img2_3'
-                                        style="background-image: url('static/img/searchIcon/qingjiashenqing.svg');background-position: center center; background-repeat: no-repeat; background-size: 80% 80%">
+                                        style="background-image: url('static/img/searchIcon/absence.svg');background-position: center center; background-repeat: no-repeat; background-size: 80% 80%">
                                 </button>
                             </li>
                             <li class="li2">
                                 <button id='img2_4'
-                                        style="background-image: url('static/img/searchIcon/zhuce.svg');background-position: center center; background-repeat: no-repeat; background-size: 80% 80%">
+                                        style="background-image: url('static/img/searchIcon/register.svg');background-position: center center; background-repeat: no-repeat; background-size: 80% 80%">
                                 </button>
                             </li>
                             <li class="li2">
                                 <button id='img2_5'
-                                        style="background-image: url('static/img/searchIcon/kebiao.svg');background-position: center center; background-repeat: no-repeat; background-size: 80% 80%">
+                                        style="background-image: url('static/img/searchIcon/courses.svg');background-position: center center; background-repeat: no-repeat; background-size: 80% 80%">
                                 </button>
                             </li>
                             <li class="li2">
                                 <button id='img2_6'
-                                        style="background-image: url('static/img/searchIcon/shenqing.svg');background-position: center center; background-repeat: no-repeat; background-size: 80% 80%">
+                                        style="background-image: url('static/img/searchIcon/classroom.svg');background-position: center center; background-repeat: no-repeat; background-size: 80% 80%">
                                 </button>
                             </li>
                         </ul>
@@ -223,22 +227,22 @@
                 <div class="col-md-12" style="width: 200px;">
                     <div class="navbar" id="navbar3">
 
-                        <img id="img3" src="static/img/searchIcon/ziyuan.svg"
-                             style="width: 150px;height:150px;border-radius:150px;">
+                        <img id="img3" src="static/img/searchIcon/dormitory.svg"
+                             style="width: 150px;height:150px;;">
                         <ul class="menu">
                             <li class="li3">
                                 <button id='img3_1'
-                                        style="background-image: url('static/img/searchIcon/shenghuojiaofei.svg');background-position: center center; background-repeat: no-repeat; background-size: 80% 80%">
+                                        style="background-image: url('static/img/searchIcon/livingPay.svg');background-position: center center; background-repeat: no-repeat; background-size: 80% 80%">
                                 </button>
                             </li>
                             <li class="li3">
                                 <button id='img3_2'
-                                        style="background-image: url('static/img/searchIcon/xiaoyuanqia.svg');background-position: center center; background-repeat: no-repeat; background-size: 80% 80%">
+                                        style="background-image: url('static/img/searchIcon/card.svg');background-position: center center; background-repeat: no-repeat; background-size: 80% 80%">
                                 </button>
                             </li>
                             <li class="li3">
                                 <button id='img3_3'
-                                        style="background-image: url('static/img/searchIcon/qinshiguanli.svg');background-position: center center; background-repeat: no-repeat; background-size: 80% 80%">
+                                        style="background-image: url('static/img/searchIcon/sleep.svg');background-position: center center; background-repeat: no-repeat; background-size: 80% 80%">
                                 </button>
                             </li>
                         </ul>
@@ -260,26 +264,26 @@
                 <div class="col-md-12" style="width: 200px;">
                     <div class="navbar" id="navbar4">
 
-                        <img id="img4" src="static/img/searchIcon/kebiao.svg"
-                             style="width: 150px;height:150px;border-radius:150px;">
+                        <img id="img4" src="static/img/searchIcon/campus.svg"
+                             style="width: 150px;height:150px;;">
                         <ul class="menu">
                             <li class="li4">
-                                <button id='img4_1' style="background-image: url('static/img/searchIcon/xiaoche.svg');
+                                <button id='img4_1' style="background-image: url('static/img/searchIcon/bus.svg');
                             background-position: center center; background-repeat: no-repeat; background-size: 80% 80%">
                                 </button>
                             </li>
                             <li class="li4">
-                                <button id='img4_2' style="background-image: url('static/img/searchIcon/shiwuzhaoling.svg');
+                                <button id='img4_2' style="background-image: url('static/img/searchIcon/lostandfound.svg');
                             background-position: center center; background-repeat: no-repeat; background-size: 80% 80%">
                                 </button>
                             </li>
                             <li class="li4">
-                                <button id='img4_3' style="background-image: url('static/img/searchIcon/xiaoche.svg');
+                                <button id='img4_3' style="background-image: url('static/img/searchIcon/books.svg');
                             background-position: center center; background-repeat: no-repeat; background-size: 80% 80%">
                                 </button>
                             </li>
                             <li class="li4">
-                                <button id='img4_4' style="background-image: url('static/img/searchIcon/ditu.svg');
+                                <button id='img4_4' style="background-image: url('static/img/searchIcon/map.svg');
                             background-position: center center; background-repeat: no-repeat; background-size: 80% 80%; font-size: 12px;">
                                 </button>
                             </li>
@@ -297,7 +301,6 @@
     </div>
 
 </div>
-
 <div id="Body" class="body" style="display: block">
 
     <ul class="mylayui-nav" style="z-index:1000;margin-left: 20px">
@@ -427,7 +430,7 @@ margin-left: 150px;">
     $().ready(function () {
         layui.use('layer', function () {
             layer = layui.layer;
-            tips_list = ['新闻', '活动', '成绩管理', '考试安排', '考勤管理', '报道注册', '课表查询', '教室申请', '缴纳水电费', '校园卡充值', '舍区管理', '校车时刻表', '失物招领', '图书借阅', '地图'];
+            tips_list = ['新闻查看', '活动', '成绩管理', '考试安排', '考勤管理', '报道注册', '课表查询', '教室申请', '缴纳水电费', '校园卡充值', '舍区管理', '校车时刻表', '失物招领', '图书借阅', '地图'];
             index_list = ['1_1', '1_2', '2_1', '2_2', '2_3', '2_4', '2_5', '2_6', '3_1', '3_2', '3_3', '4_1', '4_2', '4_3', '4_4'];
 
             for (let i = 0; i < tips_list.length; i++) {
@@ -450,7 +453,7 @@ margin-left: 150px;">
             }, function () {
                 $(label).fadeIn(500);
             });
-        };
+        }
 
         $('button').click(function () {
             let id = this.id.slice(3,);
@@ -485,55 +488,21 @@ margin-left: 150px;">
         });
     }
 
-    function mprint() {
-        var tbhtml = "";
-        let subArr = selByStr(gdatas, input.value);
-        console.log(subArr);
-        subArr = selByType(subArr, curtype);
-        console.log("subArr");
-        console.log(subArr);
-        for (let i = 0; i < subArr.length; i++) {
-            tbhtml += "<tr><td>" + subArr[i].id +
-                "</td><td>" + subArr[i].name +
-                "</td><td>" + subArr[i].type +
-                "</td><td style='padding: 0'>"
-                + "<a href='" + subArr[i].url + "' " +
-                '    class = "layui-btn" >跳转</a>' + "</td></tr>";
-        }
-        $('#TableBody').html(tbhtml);
-    }
-
-    //Demo
-    function getRadios() {
-        var radios = document.getElementsByName("type");
-        var checked = -1;
-        for (var j = 0; j < radios.length; j++) {
-            if (radios[j].checked == true) {
-                checked = j;
-            }
-        }
-        return checked;
-    }
 
     layui.use('form', function () {
         var form = layui.form;
 
         //监听提交
         form.on('submit(formDemo)', function (data) {
-            console.log("submit");
-            console.log(data);
-            console.log("radios=" + getRadios);
-            layer.msg(JSON.stringify(data.field));
-            mprint();
+            let text = data.field.title;
+            gdatas.forEach(function (item) {
+                if (item.name === text) {
+                    window.location.replace(item.url);
+                }
+            })
             return false;
         });
-        form.on('radio(type)', function (data) {
-            console.log(data.elem); //得到radio原始DOM对象
-            console.log(data.value); //被点击的radio的value值
-            curtype = data.value;
-            mprint();
-        });
-        console.log("msg");
+
     });
 
     function selByStr(list, keyWord) {
@@ -584,14 +553,6 @@ margin-left: 150px;">
 
     var li = document.getElementsByTagName("li");
 
-    // for(let i=0;i<li.length;i++){
-    //     let span = document.createElement("span");
-    //     span.innerHTML="\u00D7";
-    //     span.className="close";
-    //     li[i].appendChild(span);
-    // }
-    // var butt = document.getElementById("addItem");
-    // var input = document.getElementById("input");
     console.log('load2');
 
     var butt = $("#addItem")[0];
