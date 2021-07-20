@@ -3,6 +3,15 @@
 <mapper namespace="com.sevengroup.campus.mapper.UserMapper">
 
     <select id="getInfo" parameterType="String" resultType="com.sevengroup.campus.bean.UserBean">
-        SELECT * FROM user WHERE username = #{username} AND password = #{password}
+        SELECT *
+        FROM user
+        WHERE username = #{username}
+          AND password = #{password}
+    </select>
+
+    <select id="checkUserID" parameterType="String" resultType="Boolean">
+        SELECT count(*)
+        FROM user
+        WHERE username = #{userID}
     </select>
 </mapper>

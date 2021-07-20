@@ -18,4 +18,9 @@ public class UserServiceImpl implements UserService {
         return userMapper.getInfo(username, password);
     }
 
+    @Override
+    public boolean checkUserID(String userID) {
+        return userMapper.checkUserID(userID);
+    }
+
 }
