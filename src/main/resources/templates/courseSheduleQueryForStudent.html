@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>课表查询</title>
+    <link rel="stylesheet" href="../static/layui/css/layui.css" media="all">
+    <link src="../static/layui/layui.js" charset="utf-8">
+    <script type="text/javascript" src="../static/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+    <!--左侧导航栏-->
+    <div class="layui-bg-gray" style="padding: 30px;">
+        <span style="font-size: 20px; color: black">我的课表: </span>
+        <div class="layui-bg-gray" style="padding: 30px;">
+            <form onsubmit="return false" >
+                <el-row>
+                    <el-col span="8">
+                        切换周次:&nbsp;
+                        <select name="week" id="selectWeek" lay-verify="required" style="height: 25px; width: 100px">
+                            <option value=""></option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                            <option value="18">18</option>
+                            <option value="19">19</option>
+                            <option value="20">20</option>
+                            <option value="21">21</option>
+                            <option value="22">22</option>
+                            <option value="23">23</option>
+                            <option value="24">24</option>
+                            <option value="25">25</option>
+                        </select>
+                    </el-col>
+                    <button onclick="requestData()"  style="text-align: center">检索</button>
+                </el-row>
+            </form>
+<!--            <form class="layui-form" onsubmit="return false">-->
+<!--                <div class="layui-form-item">-->
+<!--                    <div class="layui-inline">-->
+<!--                        <label class="layui-form-label">切换周次:&nbsp;</label>-->
+<!--                        <select name="week" id="selectWeek" lay-verify="required" style="height: 25px; width: 100px">-->
+<!--                            <option value=""></option>-->
+<!--                            <option value="1">1</option>-->
+<!--                            <option value="2">2</option>-->
+<!--                            <option value="3">3</option>-->
+<!--                            <option value="4">4</option>-->
+<!--                            <option value="5">5</option>-->
+<!--                            <option value="6">6</option>-->
+<!--                            <option value="7">7</option>-->
+<!--                            <option value="8">8</option>-->
+<!--                            <option value="9">9</option>-->
+<!--                            <option value="10">10</option>-->
+<!--                            <option value="11">11</option>-->
+<!--                            <option value="12">12</option>-->
+<!--                            <option value="13">13</option>-->
+<!--                            <option value="14">14</option>-->
+<!--                            <option value="15">15</option>-->
+<!--                            <option value="16">16</option>-->
+<!--                            <option value="17">17</option>-->
+<!--                            <option value="18">18</option>-->
+<!--                            <option value="19">19</option>-->
+<!--                            <option value="20">20</option>-->
+<!--                            <option value="21">21</option>-->
+<!--                            <option value="22">22</option>-->
+<!--                            <option value="23">23</option>-->
+<!--                            <option value="24">24</option>-->
+<!--                            <option value="25">25</option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                    <button onclick="requestData()" style="text-align: center">检索</button>-->
+<!--                </div>-->
+<!--            </form>-->
+            <table id="courseSchedule" class="layui-table" lay-skin="">
+                <colgroup>
+                    <col width="100">
+                    <col width="150">
+                    <col width="150">
+                    <col width="150">
+                    <col width="150">
+                    <col width="150">
+                    <col width="150">
+                    <col width="150">
+                </colgroup>
+                <thead>
+                    <tr>
+<!--                        <th>&nbsp;&nbsp;</th>-->
+                        <th>周一</th>
+                        <th>周二</th>
+                        <th>周三</th>
+                        <th>周四</th>
+                        <th>周五</th>
+                        <th>周六</th>
+                        <th>周日</th>
+                    </tr>
+                </thead>
+                <tbody id="scoreScheduleBody">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<script th:inline="none">
+    //课程数据
+    var gdata;
+    //当前时间所在学期的开学日期
+    var begin_date;
+    //当前时间所在周次
+    var nowWeek;
+    //切换周次时所选择的周次
+    var selectedWeek;
+    //开学日期为一周中的第几天
+    var _days;
+    //节次对应
+    var sections = ["第一节","第二节","第三节","第四节","第五节","第六节","第七节","第八节","第九节","第十节","第十一节","第十二节"]
+
+    window.onload = function (){
+        var date;
+        //获取当前时间
+        var date_now = new Date();
+        console.log(date_now);
+        //获取当前时间的年份
+        var year = date_now.getFullYear();
+        //获取当前时间所在的学期，并确定此学期的开学和结束年月日
+        var month = date_now.getMonth();
+        if (month>=2&&month<=8){
+            begin_date = new Date(year, 1, 1 );//使用new Date()时月份参数值要比实际需要的值小1
+            date = year+"-8-1";
+        }else {
+            begin_date = new Date(year, 7, 1 );
+            year=(+year)+1;
+            date=year+"-2-1";
+        }
+        //获得开学时间为周几{0（周日）-- 6（周六）}
+        _days = begin_date.getDay();
+        if (_days === 0){
+            _days = 7;
+        }
+        var days = (date_now - begin_date)/(1000 * 60 * 60 * 24);
+        nowWeek = parseInt(days/7)+1;
+        //设置当前周为切换周次的默认值
+        // layui.use('form', function(){
+        //     var form = layui.form
+        //     $ = layui.$;
+        //
+        //     $("#selectWeek").val(nowWeek);
+        //     form.render('select');
+        // });
+        console.log(date);
+        $.ajax({
+            url:"http://localhost:8080/courseSheduleQueryForStudent/queryCourseInfoForStudent/"+date,
+            type:"post",
+            dataType:"json",
+            success:function (data) {
+                /*这个方法里是ajax发送请求成功后执行的代码*/
+                //alert("成功了吗？");
+                console.log(data);
+                gdata = data;
+                // requestData();
+            },
+            error:function (msg) {
+                alert("ajax连接异常："+msg);
+            }
+        })
+
+    }
+
+    // layui.use('form', function (){
+    //    var form = layui.form;
+    //    form.render();
+    // });
+
+    function requestData(){
+        //获取选择的周次
+        var selectWeek_option = $("#selectWeek option:selected");
+        selectedWeek = selectWeek_option.val();
+        console.log(selectedWeek);
+        //计算所选周的第一天的年月日
+        var days = selectedWeek * 7 - _days;//所选周的第一天与开学时间的天数差
+        var params = {};
+        params.oldDate = begin_date.getFullYear() + "-" + begin_date.getMonth() + "-" + begin_date.getDate();
+        params.days = days;
+        //var milliseconds = begin_date.getTime();
+        //date为所选周的第一天的年月日
+        var date = addDate(params);
+        // var date = begin_date.getFullYear().toString() + "-" + begin_date.getMonth() + "-" + begin_date.getDate();
+        // var date = new Date(begin_date.getFullYear(), begin_date.getMonth(), begin_date.getDate());
+
+
+
+        // var date = new Date(parseInt(milliseconds + days * 24 * 60 * 60 * 1000) * 1000);
+        console.log(date);
+        //date.setDate(date.getDate() + days);//如果增加天数会改变月份或者年份，那么日期对象会自动完成这种转换
+        // addDate(date, days);
+        console.log("增加天数以后的日期：" + date);
+        //每天十二节课
+        for (var sectionNumber = 0; sectionNumber < 12; sectionNumber++){
+            //一周七天
+            //向课程表添加的课程信息
+            var str = "<tr>";
+            for (var weekDay = 0; weekDay < 7; weekDay++){
+                //一周中每天的日期信息
+                var p = {};
+                p.oldDate = date.getFullYear().toString() + "-" + date.getMonth() + "-" + date.getDate();
+                p.days = weekDay;
+                var oneDayDate = addDate(p);
+                // var oneDayDate = new Date(parseInt(date.getTime() + weekDay * 24 * 60 * 60 * 1000) * 1000);
+                console.log("一周中每天的日期信息" + oneDayDate);
+                //一天中每节课的课程数据----由于数据问题，暂时考虑一节课可能有多门课程
+                str += "<td>";
+                for (var i = 0; i < gdata.length; i++){
+                    if (gdata[i].lessonDate === oneDayDate.toString() && gdata[i].section === sections[sectionNumber]){
+                        str += "[" + gdata[i].courseID + "]" + gdata[i].courseName + "</br>"
+                            + gdata[i].teacherName + "</br>"
+                            + gdata[i].classroomID + "</br>";
+                    }
+                }
+                str += "</td>";
+            }
+            str += "</tr>";
+        }
+
+    }
+
+    //日期加减法  date参数为计算开始的日期，days为需要加的天数
+    //格式:addDate('2017-1-11',20)
+    function addDate(params){
+        var date;
+        $.ajax({
+            url: 'http://localhost:8080/courseSheduleQueryForStudent/addDate/' + params,
+            type:"post",
+            dataType:"json",
+            success:function (data) {
+                /*这个方法里是ajax发送请求成功后执行的代码*/
+                //alert("成功了吗？");
+                console.log("本周第一天" + data);
+                date = new Date(data[0], data[1], data[2]);
+                console.log(date);
+            },
+            error:function (msg) {
+                alert("计算日期ajax连接异常："+msg);
+            }
+        });
+        return date;
+    }
+
+</script>
+</body>
+</html>

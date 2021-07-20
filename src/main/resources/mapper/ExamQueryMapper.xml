@@ -8,7 +8,7 @@
             left join teachclass as tc on tl.teachClassID = tc.teachClassID
             left join examschedule as e on tc.teachClassID = e.teachClassID
             left join course as c on tc.courseID=c.courseID
-        where tl.studentID = #{studentID} and tc.startDate > #{startDate} and #{endDate} > tc.endDate and e.startTime > 0
+        where tl.studentID = #{studentID} and tc.startDate >= #{startDate} and #{endDate} > tc.endDate and e.startTime > 0
     </select>
 
 </mapper>

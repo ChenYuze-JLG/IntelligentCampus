@@ -2,15 +2,15 @@ package com.sevengroup.campus.bean.map;
 
 import java.sql.Date;
 
-public class ScoreQueryForStudentMap {
+public class QueryForStudentMap {
     private String studentID;
     private Date startDate;
     private Date endDate;
 
-    public ScoreQueryForStudentMap() {
+    public QueryForStudentMap() {
     }
 
-    public ScoreQueryForStudentMap(String studentID, Date startDate, Date endDate) {
+    public QueryForStudentMap(String studentID, Date startDate, Date endDate) {
         this.studentID = studentID;
         this.startDate = startDate;
         this.endDate = endDate;

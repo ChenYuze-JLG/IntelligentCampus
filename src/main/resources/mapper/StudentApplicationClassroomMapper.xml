@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sevengroup.campus.mapper.StudentApplicationClassroomMapper">
+
+    <select id="getClassroomID" resultType="String">
+        select classroomID from classroom
+    </select>
+
+    <select id="insertApplicationClassroom" parameterType="com.sevengroup.campus.bean.StudentApplicationClassroomBean">
+        insert into classroomrecord(classroomID, date, section, user, checkApplication )
+        values(#{classroomID}, #{date}, #{section}, #{user}, '待审核' )
+    </select>
+
+</mapper>

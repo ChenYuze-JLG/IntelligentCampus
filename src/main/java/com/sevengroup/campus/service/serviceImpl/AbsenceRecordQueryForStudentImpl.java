@@ -1,9 +1,9 @@
 package com.sevengroup.campus.service.serviceImpl;
 
-import com.sevengroup.campus.bean.ScoreForStudentBean;
+import com.sevengroup.campus.bean.AbsenceRecordForStudentBean;
 import com.sevengroup.campus.bean.map.QueryForStudentMap;
-import com.sevengroup.campus.mapper.ScoreMapper;
-import com.sevengroup.campus.service.ScoreService;
+import com.sevengroup.campus.mapper.AbsenceRecordQueryForStudentMapper;
+import com.sevengroup.campus.service.AbsenceRecordQueryForStudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,15 +13,13 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Service
-public class ScoreServiceImpl implements ScoreService {
-
+public class AbsenceRecordQueryForStudentImpl implements AbsenceRecordQueryForStudentService {
     //将DAO注入Service层
     @Autowired
-    private ScoreMapper scoreMapper;
-
+    private AbsenceRecordQueryForStudentMapper absenceRecordQueryForStudentMapper;
 
     @Override
-    public List<ScoreForStudentBean> scoreSelect(String studentID, String date) {
+    public List<AbsenceRecordForStudentBean> queryAbsenceForStudent(String studentID, String date){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 //        System.out.println(date);
         Date startDate = null;
@@ -40,11 +38,6 @@ public class ScoreServiceImpl implements ScoreService {
 //        System.out.println(startDate);
 //        System.out.println(endDate);
         QueryForStudentMap queryForStudentMap = new QueryForStudentMap(studentID,startDate,endDate);
-        return scoreMapper.getScore(queryForStudentMap);
+        return absenceRecordQueryForStudentMapper.getAbsenceForStudent(queryForStudentMap);
     }
-
-//    @Override
-//    public List<ScoreBean> scoreSelect(String studentID){
-//        return scoreMapper.getScore(studentID);
-//    }
 }

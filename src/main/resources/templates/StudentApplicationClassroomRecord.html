@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>教室申请记录</title>
+    <link rel="stylesheet" href="../static/layui/css/layui.css" media="all">
+    <script type="text/javascript" src="../static/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../static/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+  <div class="layui-bg-gray" style="padding: 30px;">
+    <form onsubmit="return false">
+      <el-row>
+        <el-col span="8">
+          年份:&nbsp;
+          <select id="year"></select>
+        </el-col>
+        <el-col span="8">
+          学期:&nbsp;
+          <select id="semester">
+            <option value="春">春季学期</option>
+            <option value="秋">秋季学期</option>
+          </select>
+        </el-col>
+        <button onclick="requestData()" style="text-align: center">检索</button>
+      </el-row>
+    </form>
+    <br/>
+    <table id="studentApplicationClassroomRecord" class="layui-table">
+
+    </table>
+  </div>
+</div>
+
+<script th:inline="none">
+  window.onload= function (){
+    //获取当前年份
+    var year = new Date().getFullYear();
+    //获取下拉列表
+    var sel = document.getElementById("year");
+    //循环添加2006年至当前年份的每个年份到下拉列表
+    for (var i = year; i > 2006;i--){
+      var option = document.createElement('option');
+      option.value = i;
+      var txt = document.createTextNode(i);
+      option.appendChild(txt);
+      sel.appendChild(option);
+    }
+  }
+
+  function requestData(){
+    //获取选择的年份
+    var options_year = $("#year option:selected");
+    var year = options_year.val();
+    //获取选择的学期
+    var options_semester = $("#semester option:selected");
+    var semester = options_semester.val();
+    //确定查询的成绩所在的时间范围
+    var date;
+    if (semester == "春"){
+      date=year+"-8-1";//月份参数值要比实际需要的值小1
+    }else if (semester == "秋"){
+      year=(+year)+1;
+      date=year+"-2-1";
+    }else {
+      alert("日期选择异常");
+    }
+    layui.use('table', function (){
+      var table = layui.table;
+
+      table.render({
+        elem: '#studentApplicationClassroomRecord'
+        ,url: 'http://localhost:8080/studentApplicationRecord/queryStudentApplicationRecord'
+        ,where: {date:date } //如果无需传递额外参数，可不加该参数
+        // ,method: 'post' //如果无需自定义HTTP类型，可不加该参数
+        ,cellMinWidth: 80
+        ,page: true
+        ,cols: [[
+          {field: 'capacity', title: '教室容量', width: 120, align: 'center'}
+          , {field: 'date', title: '使用日期', width: 120, sort: true, align: 'center'}
+          , {field: 'section', title: '申请节次', width: 120, align: 'center'}
+          , {field: 'username', width: 100, title: '申请人'}
+          , {field: 'role', title: '申请人身份', width: 120, align: 'center'}
+          , {field: 'check', title: '审核状态', width: 120, align: 'center'}
+          // {field: 'user', width: 100, title: '申请人身份'}
+          // ,{field: 'classroomID', width: 150, title: '教室编号'}
+          // ,{field: 'usedDate', width: 120, title: '使用日期', sort: true}
+          // ,{field: 'applicationSection', width: 100, title: '课程节次'}
+          // ,{field: 'applicationCheck', width: 150, title: '考勤结果'}
+        ]]
+      });
+    });
+  }
+</script>
+</body>
+</html>

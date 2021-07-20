@@ -1,9 +1,9 @@
 package com.sevengroup.campus.service.serviceImpl;
 
-import com.sevengroup.campus.bean.ScoreForStudentBean;
+import com.sevengroup.campus.bean.CourseForStudentBean;
 import com.sevengroup.campus.bean.map.QueryForStudentMap;
-import com.sevengroup.campus.mapper.ScoreMapper;
-import com.sevengroup.campus.service.ScoreService;
+import com.sevengroup.campus.mapper.CourseScheduleQueryForStudentMapper;
+import com.sevengroup.campus.service.CourseScheduleQueryForStudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,15 +13,14 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Service
-public class ScoreServiceImpl implements ScoreService {
+public class CourseScheduleQueryForStudentImpl implements CourseScheduleQueryForStudentService {
 
     //将DAO注入Service层
     @Autowired
-    private ScoreMapper scoreMapper;
-
+    private CourseScheduleQueryForStudentMapper courseScheduleQueryForStudentMapper;
 
     @Override
-    public List<ScoreForStudentBean> scoreSelect(String studentID, String date) {
+    public List<CourseForStudentBean> queryCourseInfoForStudent(String studentID, String date){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 //        System.out.println(date);
         Date startDate = null;
@@ -37,14 +36,9 @@ public class ScoreServiceImpl implements ScoreService {
         }else if (endDate.getMonth() == 7){
             startDate = new Date(endDate.getYear(), 2-1, endDate.getDate());
         }
-//        System.out.println(startDate);
-//        System.out.println(endDate);
-        QueryForStudentMap queryForStudentMap = new QueryForStudentMap(studentID,startDate,endDate);
-        return scoreMapper.getScore(queryForStudentMap);
+
+        QueryForStudentMap queryForStudentMap = new QueryForStudentMap(studentID, startDate, endDate);
+        return courseScheduleQueryForStudentMapper.getCourseInfoForStudent(queryForStudentMap);
     }
 
-//    @Override
-//    public List<ScoreBean> scoreSelect(String studentID){
-//        return scoreMapper.getScore(studentID);
-//    }
 }

@@ -3,21 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <title>layout 管理系统大布局 - Layui</title>
+  <title>教务管理</title>
   <!--    <link rel="stylesheet" href="../static/css/teachAffair.css">-->
   <link rel="stylesheet" href="//unpkg.com/layui@2.6.8/dist/css/layui.css">
   <!--    <script src="../static/layui/layui.js"></script>-->
   <script src="https://unpkg.com//layui@2.6.8//dist//layui.js"></script>
+  <script type="text/javascript" src="../static/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 
 <div class="layui-layout layui-layout-admin">
   <!--引入head.html-->
   <div>
-    <iframe name="toppage" width=100% height=100%
-            marginwidth=0 marginheight=0 frameborder="no" border="0"
-            src="../static/head.html">
-    </iframe>
+    <div class="top" style="margin-bottom: 20px"></div>
   </div>
   <!--左侧导航栏-->
   <div class="layui-side layui-bg-black">
@@ -29,26 +27,23 @@
           <dl class="layui-nav-child">
             <dd><a class="layui-this ScoreTest" href="scoreQueryForStudent">成绩查询</a></dd>
             <dd><a class="layui-this ScoreTest" href="examScheduleQueryForStudent">考试查询</a></dd>
-            <dd><a href="javascript:;">未定</a></dd>
           </dl>
         </li>
         <li class="layui-nav-item">
           <a href="javascript:;">课程管理</a>
           <dl class="layui-nav-child">
-            <dd><a href="ViewLessonSchedule">课表查询</a></dd>
-            <dd><a href="ViewAbsenceRecord">考勤记录查询</a></dd>
-            <dd><a href="AskForLeave">课程请假</a></dd>
-            <dd><a href="">超链接</a></dd>
+            <dd><a href="/teachAffairManagementForTeacher/CourseScheduleQuery">课表查询</a></dd>
+            <dd><a href="absenceRecordQueryForStudent">考勤记录查询</a></dd>
+            <dd><a href="StudentAskForLeave">课程请假</a></dd>
           </dl>
         </li>
         <li class="layui-nav-item">
           <a href="javascript:;">教室申请管理</a>
           <dl class="layui-nav-child">
-            <dd><a href="ApplicationForm">申请表填写</a></dd>
-            <dd><a href="ApplicationRecord">申请记录查询</a></dd>
+            <dd><a href="studentApplicationClassroom">申请表填写</a></dd>
+            <dd><a href="studentApplicationRecord">申请记录查询</a></dd>
           </dl>
         </li>
-        <li class="layui-nav-item"><a href="">the links</a></li>
       </ul>
     </div>
     <script>
@@ -74,5 +69,18 @@
     </div>
   </div>
 </div>
+
+<script type="text/javascript" src="../static/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+  //在js中引入
+  $(document).ready(function () {
+    $('.top').load('head');
+  });
+
+  //为防止studentApplicationClassroom.html使用selectM模块出现被占用问题，所以将extend配置在主入口文件内
+  layui.extend({
+    selectM : './layui_extends/selectM',
+  })
+</script>
 </body>
 </html>

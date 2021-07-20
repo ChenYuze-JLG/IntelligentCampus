@@ -1,6 +1,7 @@
 package com.sevengroup.campus.controller;
 
 import com.sevengroup.campus.bean.ExamForStudentBean;
+import com.sevengroup.campus.controller.tool.Tool;
 import com.sevengroup.campus.service.ExamQueryService;
 import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.util.Collections;
@@ -26,9 +28,13 @@ public class ExamQueryController {
     }
 
     @RequestMapping(value = "/examScheduleQuery/{date}")
-    public void query(@PathVariable("date") String date, HttpServletResponse resp){
+    public void query(@PathVariable("date") String date, HttpServletResponse resp, HttpServletRequest request){
         try {
-            List<ExamForStudentBean> examForStudentBeanList = examQueryService.examQuery("20219834", date);
+            //调取系统用户的username即为studentID
+            String studentID = new Tool().getUserID(request);
+//            System.out.println("username" + studentID);
+            //
+            List<ExamForStudentBean> examForStudentBeanList = examQueryService.examQuery(studentID, date);
             /*将list集合转换成json对象*/
             Collections.sort(examForStudentBeanList, Comparator.comparing(ExamForStudentBean::getStartExamTime));//对list按照考试开始时间排序
 //            for (int i = 0; i< examForStudentBeanList.size(); i++){

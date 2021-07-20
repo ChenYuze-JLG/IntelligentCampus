@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sevengroup.campus.mapper.CourseScheduleQueryForStudentMapper">
+
+    <select id="getCourseInfoForStudent" resultType="com.sevengroup.campus.bean.CourseForStudentBean">
+        select tc.courseID, c.name as courseName, t.name as teacherName, l.classroomID, l.section, l.date as lessonDate
+        from tcsnamelist as tcl
+                 left join teachclass as tc on tcl.teachclassID = tc.teachclassID
+                 left join lesson as l on tc.teachclassID = l.teachclassID
+                 left join teacher as t on tc.teacherID = t.teacherID
+                 left join course as c on tc.courseID = c.courseID
+        where tcl.studentID = #{studentID} and tc.startDate >= #{startDate} and #{endDate} > tc.endDate and l.date > 0
+    </select>
+
+</mapper>

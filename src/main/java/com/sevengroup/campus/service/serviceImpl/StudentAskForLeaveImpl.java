@@ -1,9 +1,9 @@
 package com.sevengroup.campus.service.serviceImpl;
 
-import com.sevengroup.campus.bean.ExamForStudentBean;
+import com.sevengroup.campus.bean.AskForLeave.*;
 import com.sevengroup.campus.bean.map.QueryForStudentMap;
-import com.sevengroup.campus.mapper.ExamQueryMapper;
-import com.sevengroup.campus.service.ExamQueryService;
+import com.sevengroup.campus.mapper.StudentAskForLeaveMapper;
+import com.sevengroup.campus.service.StudentAskForLeaveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,14 +13,15 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Service
-public class ExamQueryServiceImpl implements ExamQueryService {
+public class StudentAskForLeaveImpl implements StudentAskForLeaveService {
 
     //将DAO注入Service层
     @Autowired
-    private ExamQueryMapper examQueryMapper;
+    private StudentAskForLeaveMapper studentAskForLeaveMapper;
+
 
     @Override
-    public List<ExamForStudentBean> examQuery(String studentID, String date) {
+    public List<TeachClassLessonInfoBean> queryTeachClassLessonInfoForStudent(String studentID, String date) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 //        System.out.println(date);
         Date startDate = null;
@@ -36,9 +37,17 @@ public class ExamQueryServiceImpl implements ExamQueryService {
         }else if (endDate.getMonth() == 7){
             startDate = new Date(endDate.getYear(), 2-1, endDate.getDate());
         }
-        System.out.println(startDate);
-        System.out.println(endDate);
         QueryForStudentMap queryForStudentMap = new QueryForStudentMap(studentID, startDate, endDate);
-        return examQueryMapper.getExamSchedule(queryForStudentMap);
+        return studentAskForLeaveMapper.getTeachClassLessonInfo(queryForStudentMap);
+    }
+
+    @Override
+    public void insertStudentAskForLeaveInfo(StudentAskForLeaveInfoBean studentAskForLeaveInfoBean){
+        studentAskForLeaveMapper.insertStudentAskForLeaveInfo(studentAskForLeaveInfoBean);
+    }
+
+    @Override
+    public void insertLeaveApplicationMsg(LeaveApplicationMsg leaveApplicationMsg) {
+        studentAskForLeaveMapper.insertLeaveApplicationMessage(leaveApplicationMsg);
     }
 }
