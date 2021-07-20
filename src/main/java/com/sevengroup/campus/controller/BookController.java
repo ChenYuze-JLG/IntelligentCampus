@@ -4,6 +4,7 @@ import com.sevengroup.campus.bean.BookBean;
 import com.sevengroup.campus.controller.tool.Tool;
 import com.sevengroup.campus.service.BookService;
 import com.sevengroup.campus.service.MsgService;
+import com.sevengroup.campus.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +36,9 @@ public class BookController {
 
     @Autowired
     MsgService msgService;
+
+    @Autowired
+    UserService userService;
 
 
     @GetMapping("/info")
@@ -112,12 +116,13 @@ public class BookController {
         System.out.println(userID);
         System.out.println(toUserID);
 
-        msgService.saveMsg("GotLendBook", new Timestamp(System.currentTimeMillis()),
-                userID + " 向你转借了一本书： " + bookID + " ，点击查看", userID, toUserID, "http://localhost:8080/mod3/test?page=selfBookList");
-
-
-        return true;
-
+        if (userService.checkUserID(toUserID) && !userID.equals(toUserID)) {
+            msgService.saveMsg("GotLendBook", new Timestamp(System.currentTimeMillis()),
+                    userID + " 向你转借了一本书： " + bookID + " ，点击查看", userID, toUserID, "http://localhost:8080/mod3/test?page=selfBookList");
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @GetMapping("/gotLend")
