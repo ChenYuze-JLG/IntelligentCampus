@@ -131,8 +131,8 @@
         form.on('submit(confirm)', function(data){
             insertApplicationForLeave(data.field);
             console.log(data.field);
-            layer.alert(JSON.stringify(data.field), {
-                title: '最终的提交信息'
+            layer.alert("请假申请发送成功。", {
+                title: ''
             })
             return false;
         });
@@ -153,8 +153,8 @@
             traditional: true, //是否使用传统的方式浅层序列化,若有数组参数或对象参数需要设置true!!!!!!
             dataType: "json",
             success: function (returnDate){
-                console.log(returnDate);
-                alert("ajax链接成功");
+                // console.log(returnDate);
+                // alert("ajax链接成功");
             },
             error: function (){
                 alert("ajax链接异常")
