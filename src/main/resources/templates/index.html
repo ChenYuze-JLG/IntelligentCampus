@@ -305,7 +305,9 @@
 
     <ul class="mylayui-nav" style="z-index:1000;margin-left: 20px">
         <li class="mylayui-nav-item"><a href="/index">首页</a></li>
-        <li class="mylayui-nav-item"><a href="/teachAffairManagement">教务管理</a></li>
+        <li class="mylayui-nav-item">
+            <a id="teachAffairJump" href="#" th:onclick="teachAffairJump([[${role}]])">教务管理</a>
+        </li>
         <li class="mylayui-nav-item"><a href="/mod3/index3">舍区管理</a></li>
         <li class="mylayui-nav-item"><a href="/mod3/index4">校园服务</a></li>
         <li class="mylayui-nav-item"><a href="">
@@ -612,5 +614,15 @@ margin-left: 150px;">
 
     getApps();
 
+</script>
+<script>
+    function teachAffairJump(role) {
+        console.log("role: " + role);
+        if (role === '教师') {
+            $('#teachAffairJump').attr('href', '/teachAffairManagementForTeacher');
+        } else {
+            $('#teachAffairJump').attr('href', '/studentAffairManagement');
+        }
+    }
 </script>
 </html>

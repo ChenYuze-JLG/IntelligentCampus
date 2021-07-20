@@ -2,6 +2,8 @@ package com.sevengroup.campus.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.sevengroup.campus.bean.*;
+import com.sevengroup.campus.controller.tool.Tool;
+import com.sevengroup.campus.service.HeadService;
 import com.sevengroup.campus.service.TeachAffairManageService;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -20,9 +23,30 @@ public class TeachAffairManageController {
     @Autowired
     TeachAffairManageService teachAffairManageService;
 
+    @Autowired
+    Tool tool;
+
+    @Autowired
+    HttpServletRequest request;
+
+    @Autowired
+    HeadService headService;
+
+//    private String teacherID = "20203035";
+//    private String teacherID = "20178127";
+    private String teacherID;
+
+    // 获取登录用户ID
+    public void getTeacherID() {
+        teacherID = tool.getUserID(request);
+        System.out.println("teacherID: " + teacherID);
+    }
+
     // 教师教务管理主页面
     @RequestMapping("/teachAffairManagementForTeacher")
-    public String showTeachAffairManagement() {
+    public String showTeachAffairManagement(Map<String, Object> map) {
+        headService.showHeadInfo(map);
+        getTeacherID();
         return "teachAffairManagementForTeacher";
     }
 
@@ -42,8 +66,8 @@ public class TeachAffairManageController {
     public String getTeachClassInfoForTeacher(@RequestParam(value = "page") Integer currPage, // 当前数据表格的页数
                                               @RequestParam(value = "limit") Integer currPageSize, // 当前数据表格每页的容量大小
                                               @RequestParam(value = "field", defaultValue = "teachClassName") String sortField, // 当前选择排序的字段名称
-                                              @RequestParam(value = "order", defaultValue = "asc") String sortOrder, // 当前对已选字段的排序方式
-                                              @RequestParam(value = "teacherID") String teacherID
+                                              @RequestParam(value = "order", defaultValue = "asc") String sortOrder // 当前对已选字段的排序方式
+//                                              @RequestParam(value = "teacherID") String teacherID
     ) throws JSONException {
         // 从用户登录信息中获取ID
         List<TeachClassInfoBean> teachClassInfo = teachAffairManageService.getTeachClassInfo(teacherID);
@@ -139,7 +163,8 @@ public class TeachAffairManageController {
     // 教师查询课表
     @RequestMapping(value = "/teachAffairManagementForTeacher/getCourseScheduleJSON", method = RequestMethod.POST)
     @ResponseBody
-    public String getCourseScheduleForTeacher(@RequestParam(value = "teacherID") String teacherID // 当前数据表格的页数
+    public String getCourseScheduleForTeacher(
+//            @RequestParam(value = "teacherID") String teacherID // 当前数据表格的页数
     ) throws ParseException {
         List<TeacherCourseScheduleBean> teacherCourseSchedule = teachAffairManageService.getTeacherCourseSchedule(teacherID);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -431,7 +456,8 @@ public class TeachAffairManageController {
     // 使用iframe插入的教室申请表页面
     @RequestMapping("/teachAffairManagement/ApplicationFormFill")
     public String showApplicationForm() {
-        return "CRApplicationFormFill";
+//        return "CRApplicationFormFill";
+        return "studentApplicationClassroom";
     }
 
     // 使用iframe插入的教室申请记录安排页面

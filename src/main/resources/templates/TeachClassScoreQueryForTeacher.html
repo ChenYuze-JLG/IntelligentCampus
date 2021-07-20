@@ -38,14 +38,15 @@
   <script th:inline="javascript">
     layui.use('table', function () {
       var table = layui.table;
+
       var teacherID = "20203035";
       table.render({
         elem: '#teachClassInfoTable'
         , height: 'full'
         , url: '/teachAffairManagementForTeacher/getTeachClassInfoJson' //数据接口
-        , where: {  // 接口的其他参数（自己定义传递的参数）
-          teacherID: teacherID
-        }
+        // , where: {  // 接口的其他参数（自己定义传递的参数）
+        //   teacherID: teacherID
+        // }
         , title: '教学班级信息表'
         , page: true //开启分页
         , limit: 10  // 每页显示的条数
@@ -111,6 +112,42 @@
         layer.msg('服务端排序。order by ' + obj.field + ' ' + obj.type);
       });
     });
+  </script>
+  <script>
+    function getTeacherID() {
+      $.ajax({
+        type: "post",
+        url: '/teachAffairManagementForTeacher/setStudentLeaveState',
+        data: {
+          'studentID': studentID,
+          'lessonID': lessonID,
+          'state': state
+        },
+        async: false,
+        traditional: true, //是否使用传统的方式浅层序列化,若有数组参数或对象参数需要设置true!!!!!!
+        dataType: "json",
+        success: function (returnData) {
+          console.log("returnData: ", returnData);
+          let data = returnData['data'];
+          layer.closeAll('loading');  // 关闭加载层
+          if (returnData['code'] === 1) {
+            layer.msg('审核成功', {
+              icon: 6,
+              time: 1000, //1s后自动关闭
+              // btn: ['确定']
+            }, function () {
+              layer.close();
+            });
+          } else {
+            layer.msg('审核失败', {icon: 5});
+          }
+        },
+        error: function () {
+          layer.closeAll('loading');  // 关闭加载层
+          layer.msg('error', {icon: 5});
+        }
+      });
+    }
   </script>
 </div>
 </body>
