@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="../static/layui/css/layui.css" media="all">
+    <title>失物招领信息发布</title>
+</head>
+<body>
+<br><br>
+<div class="top" style="margin-bottom: 20px"></div>
+
+<div style="width:100%;text-align:center">
+<form class="layui-form" action="/saveGoods" method="post" >
+    <fieldset>
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 750px"><h2>物品信息详情</h2></label>
+        </div>
+        <br>
+<!--        <input type="hidden" name="id" th:value="${id}">-->
+        <div class="layui-form-item" >
+        <label class="layui-form-label" >物品名称</label>
+        <div class="layui-input-block" nowrap>
+            <input type="text" name="name" required lay-verify="required" placeholder="
+物品名称" autocomplete="off" class="layui-input" style="width: 240px;">
+        </div>
+        </div>
+        <br>
+        <div class="layui-form-item">
+            <label class="layui-form-label" >联系方式</label>
+            <div class="layui-input-inline" style="width: 240px">
+                <input type="text" name="contact" required lay-verify="required"
+                placeholder="联系方式" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <br>
+        <div class="layui-form-item">
+            <label class="layui-form-label">图片</label>
+            <div class="layui-upload">
+
+                <button type="button" name="imgButton" class="layui-btn" id="uploadPic" style="float: left">
+                    <i class="layui-icon">&#xe67c;</i>上传图片
+                </button>
+
+                <img class="layui-upload-img" id="img1" width="60px" name="img"
+                     height="40px" alt="" style="float: left; margin-left: 20px">
+                <div style="width: 95px; float: left; margin-left: 20px; margin-top: 10px">
+                    <div class="layui-progress layui-progress-big" lay-showpercent="yes" lay-filter="bar">
+                        <div class="layui-progress-bar" lay-percent=""></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <br>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label" >描述</label>
+            <div class="layui-input-block">
+                <textarea name="description" placeholder="请输入内容" class="layui-textarea"
+                style="width: 100%;height: 200px"></textarea>
+            </div>
+        </div>
+        <br>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="formDemo" style="background-color: #FFB800">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+        </fieldset>
+</form>
+</div>
+<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+<script type="text/javascript">
+    //在js中引入
+    $(document).ready(function () {
+        $('.top').load('head');
+    });
+</script>
+<script src="../static/layui/layui.js"></script>
+<script>
+    layui.use(['upload', 'element', 'layer'], function(){
+        var $ = layui.jquery
+            ,upload = layui.upload
+            ,element = layui.element
+            ,layer = layui.layer;
+        //常规使用 - 普通图片上传
+        var uploadInst = upload.render({
+            elem: '#uploadPic'
+            ,url: 'http://localhost:8080/release' //改成您自己的上传接口
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#img1').attr('src', result); //图片链接（base64）
+                });
+
+                element.progress('bar', '0%'); //进度条复位
+                layer.msg('上传中', {icon: 16, time: 0});
+            }
+            ,done: function(res){
+
+            }
+            ,error: function(){
+
+            }
+            //进度条
+            ,progress: function(n, elem, e){
+                element.progress('bar', n + '%'); //可配合 layui 进度条元素使用
+                if(n === 100){
+                    layer.msg('上传完毕', {icon: 1});
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>

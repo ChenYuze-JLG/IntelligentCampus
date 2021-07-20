@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>失物招领</title>
+    <link rel="stylesheet" href="//unpkg.com/layui@2.6.8/dist/css/layui.css">
+    <script src="https://unpkg.com//layui@2.6.8//dist//layui.js"></script>
+    <link rel="stylesheet" href="http://localhost:8080/static/layui_extends/tableFilter.css">
+</head>
+<body >
+<br><br>
+<div >
+<span class="layui-breadcrumb">
+  <a href="/release" style="width:400px; margin: 0 50px; float: right">
+    <img src="../static/edit.png" width="20px" height="20px" alt="">
+    发布信息
+  </a>
+</span>
+</div>
+    <div >
+    <form class="layui-form" action="##" onsubmit="return false" >
+        <div class="layui-form-item">
+            <button class="layui-btn " lay-submit lay-filter="formDemo" style="width: 80px;height: 40px">搜索</button>
+            <div class="layui-inline">
+                <input class="layui-input" name="keyWord" id="name" autocomplete="off" >
+            </div>
+
+        </div>
+    </form>
+    </div>
+<div class="layui-tab layui-tab-brief" lay-filter="tab-all" >
+    <ul class="layui-tab-title" >
+        <li data-status=""   class="layui-this" ><h2>失物招领物品信息列表</h2></li>
+    </ul>
+    <div   class="layui-tab-content">
+        <div   class="layui-tab-item layui-show">
+            <!--数据表放在对应标签里面显示-->
+            <table  class="layui-table" id="goodsTest" lay-filter="test"></table>
+        </div>
+    </div>
+
+
+    <script src="http://localhost:8080/static/layui_extends/tableFilter.js"></script>
+
+    <script>
+        layui.use('element', function () {
+            var $ = layui.jquery, element = layui.element;
+            element.on('tab(tab-all)', function (data) {
+                var status = $(this).attr('data-status')
+                console.log(status);
+            })
+        })
+    </script>
+    <!--<script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    </script>-->
+    <script type="text/html" id="toolbarDemo">
+        <i class="layui-icon" data-type="add">&#xe654;</i>
+    </script>
+
+</div>
+</div>
+</body>
+
+</html>
+<script th:inline="none">
+    function printImg() {
+        var datas = document.querySelectorAll("td[data-field=imgurl]");
+        console.log(datas.length);
+        for(var i=0;i<datas.length;i++){
+            datas[i].innerHTML="<img src='"+datas[i].innerText+"'>";
+        }
+    }
+    layui.use('form', function() {
+        var form = layui.form;
+
+        //监听提交
+        form.on('submit(formDemo)', function (data) {
+            console.log("submit");
+            console.log(data);
+            layer.msg(JSON.stringify(data.field));
+
+            selectBookByName(data.field.keyWord);
+            return false;
+        })
+    })
+    layui.use('table', function(){
+        var table = layui.table;
+
+        //渲染
+        table.render({
+            elem: '#goodsTest'  //绑定table表格
+            ,height: 450
+            ,url: 'http://localhost:8080/information' //后台springmvc接收路径
+            ,page:true    //true表示分页
+            ,limit: 10
+            ,title:'物品列表'
+            ,cols: [[
+                {field:'id', title:'id', width:120}
+                ,{field:'name', title:'name', width:120, sort: true}
+                ,{field:'description', title:'description', width:1000}
+                ,{field:'contact', title:'contact', width:120}
+                ,{field: 'imgurl',title: '图片',width: 240}
+                // , {fixed: 'right', title: '图片', toolbar: '#barDemo', width: 120}
+            ]]
+            , done: function (res, curr, count) {
+                console.log(res);
+                printImg();
+            }
+
+        });
+        //监听表格行点击
+        table.on('tr', function(obj){
+            console.log(obj)
+        });
+
+        //监听工具条
+        table.on('tool(test)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'del'){
+                layer.confirm('真的删除行么', function(index){
+                    obj.del();
+                    layer.close(index);
+                });
+            } else if(obj.event === 'edit'){
+                layer.prompt({
+                    formType: 2
+                    ,value: data.username
+                }, function(value, index){
+                    obj.update({
+                        username: value
+                    });
+                    layer.close(index);
+                });
+            }
+        });
+
+    });
+    printImg();
+
+    function filterInit() {
+        var tableFilter = layui.tableFilter;
+        console.log("filter");
+        var tableFilterIns = tableFilter.render({
+            'elem': '#goodsTest',//table的选择器
+            'mode': 'local',//过滤模式
+            'filters': [
+                {field: 'id', type: 'input'}
+                , {field: 'name', type: 'input'}
+                , {field: 'description', type: 'input'}
+                , {field: 'contact', type: 'input'}
+            ],//过滤项配置
+            'done': function (filters) {
+                //结果回调
+            }
+        })
+    }
+    filterInit();
+    function selectBookByName(name){
+        var table = layui.table;
+        console.log("goodsTest");
+        table.reload('goodsTest', {
+            page: {
+                curr: 1 //重新从第 1 页开始
+            },
+            where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                name:  name  //
+            }
+        });
+        filterInit();
+    }
+    printImg();
+
+</script>
