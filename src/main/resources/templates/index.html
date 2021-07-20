@@ -75,7 +75,7 @@
                         </div>
                     </form>
                 </div>
-                <div style="z-index: 999999;position: absolute;left: 100px;width: 200px;border-radius: 3px;background-color: #ffffff;cursor: pointer;padding-left: 10px;">
+                <div style="z-index: 999999;position: absolute;left: 10px;width: 200px;border-radius: 3px;background-color: #ffffff;cursor: pointer;padding-left: 10px;">
                     <ul id="matchlist">
 
                     </ul>
@@ -84,10 +84,12 @@
                     <form id = "typeForm" class="layui-form" action="##" onsubmit="return false" >
 
                         <div class="layui-form-item">
-                            <label class="layui-form-label">身份</label>
-                            <input type="radio" lay-filter="type" name="type" value="0" title="游客" checked>
-                            <input type="radio" lay-filter="type" name="type" value="1" title="教师" >
-                            <input type="radio" lay-filter="type" name="type" value="2" title="学生" >
+                            <label class="layui-form-label">类型</label>
+                            <input type="radio" lay-filter="type" name="type" value="all" title="全部" checked>
+                            <input type="radio" lay-filter="type" name="type" value="basic" title="基础" >
+                            <input type="radio" lay-filter="type" name="type" value="education" title="教育" >
+                            <input type="radio" lay-filter="type" name="type" value="dmtService" title="宿舍" >
+                            <input type="radio" lay-filter="type" name="type" value="campusService" title="校园" >
                         </div>
 
                     </form>
@@ -123,8 +125,8 @@
     <ul class="mylayui-nav" style="z-index:1000;margin-left: 20px">
         <li class="mylayui-nav-item"><a href="/index">首页</a></li>
         <li class="mylayui-nav-item"><a href="/teachAffairManagement">教务管理</a></li>
-        <li class="mylayui-nav-item"><a href="/mod3/test">舍区管理</a></li>
-        <li class="mylayui-nav-item"><a href="">校园服务</a></li>
+        <li class="mylayui-nav-item"><a href="/mod3/index3">舍区管理</a></li>
+        <li class="mylayui-nav-item"><a href="/mod3/index4">校园服务</a></li>
         <li class="mylayui-nav-item"><a href="">
 
             <img th:src="${headPic}" class="mylayui-nav-img" id="headPic">
@@ -239,6 +241,7 @@ margin-left: 150px;">
     var gdatas;
     var gcount;
     var keyword="";
+    var curtype='all';
 
     function getApps() {
         $.ajax({
@@ -262,6 +265,8 @@ margin-left: 150px;">
     function mprint() {
         var tbhtml = "";
         let  subArr = selByStr(gdatas,input.value);
+        console.log(subArr);
+        subArr = selByType(subArr,curtype);
         console.log("subArr");
         console.log(subArr);
         for (let i = 0; i < subArr.length; i++) {
@@ -301,6 +306,8 @@ margin-left: 150px;">
         form.on('radio(type)', function(data){
             console.log(data.elem); //得到radio原始DOM对象
             console.log(data.value); //被点击的radio的value值
+            curtype = data.value;
+            mprint();
         });
         console.log("msg");
     });
@@ -312,6 +319,21 @@ margin-left: 150px;">
         for (var i = 0; i < len; i++) {
             //如果字符串中不包含目标字符会返回-1
             if (list[i].name.indexOf(keyWord) >= 0) {
+                arr.push(list[i]);
+            }
+        }
+        return arr;
+    }
+    function selByType(list,keyType) {
+        //字符串方法indexOf
+        if( keyType == 'all'){
+            return list;
+        }
+        var len = list.length;
+        var arr = [];
+        for (var i = 0; i < len; i++) {
+            //如果字符串中不包含目标字符会返回-1
+            if (list[i].type.indexOf(keyType) >= 0) {
                 arr.push(list[i]);
             }
         }
@@ -401,7 +423,6 @@ margin-left: 150px;">
         arr=[];
     }
     getApps();
-
 
 </script>
 </html>

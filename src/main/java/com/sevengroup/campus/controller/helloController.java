@@ -1,6 +1,7 @@
 package com.sevengroup.campus.controller;
 
 import com.sevengroup.campus.bean.UserBean;
+import com.sevengroup.campus.controller.tool.Tool;
 import com.sevengroup.campus.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,6 +32,7 @@ public class helloController {
     @RequestMapping(value = "/loginIn", method = RequestMethod.POST)
     public boolean login(HttpServletRequest request, @RequestParam("name") String username,
                          @RequestParam("password") String password){
+        password = Tool.getMD5Str(password);
         UserBean userBean = userService.loginIn(username, password);
         System.out.println(username);
         System.out.println(password);

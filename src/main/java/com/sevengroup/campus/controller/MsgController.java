@@ -28,6 +28,9 @@ public class MsgController {
     @Autowired
     HttpServletRequest request;
 
+    private String applicant;
+    private String applicationInfo;
+
     @RequestMapping("/messageInfo")
     String showMessageInfo(Map<String, Object> map) {
         String username = (String) request.getSession().getAttribute("username");
@@ -38,20 +41,25 @@ public class MsgController {
 
     @RequestMapping("/messageInfo1")
     String showMessageInfo1(Map<String, Object> map) {
+        headService.showHeadInfo(map);
         String username = (String) request.getSession().getAttribute("username");
         map.put("msgs", msgService.allMsgs(username));
-        headService.showHeadInfo(map);
         return "messageInfo";
     }
 
     @RequestMapping("/verify")
-    String verify() {
+    String verify(Map<String, Object> map) {
+        map.put("name", applicant);
+        map.put("info", applicationInfo);
+        System.out.println("name = " + applicant);
+        System.out.println("info = " + applicationInfo);
         return "verify";
     }
 
     @ResponseBody
     @RequestMapping(value = "/verify", method = RequestMethod.POST)
-    Map<String, Object> check(@RequestParam Map<String, Object> x) {
+    Map<String, Object> check(@RequestParam Map<String, Object> x,
+                              Map<String, Object> map) {
 //        int id = Integer.parseInt((String) x.get("id"));
         String id = (String) x.get("id");
         System.out.println(id);
@@ -68,6 +76,19 @@ public class MsgController {
                 username,
                 (String) x.get("receiver"),
                 "");
+        applicant = (String) x.get("receiver");
+        applicationInfo = (String) x.get("info");
+        map.put("name", applicant);
+        map.put("info", applicationInfo);
+        return new HashMap<>();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/setRead", method = RequestMethod.POST)
+    Map<String, Object> setRead(@RequestParam Map<String, Object> x) {
+        String id = (String) x.get("id");
+        msgService.setHandled(id);
+        System.out.println("are you ok?");
         return new HashMap<>();
     }
 

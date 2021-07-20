@@ -10,6 +10,9 @@ import java.util.List;
 // 排序类，根据类字段名，对类对象的列表进行排序
 public class SortUtil {
 
+    public static void anyProperSort(boolean asc) {
+    }
+
     // 按任意属性进行排序
     static class AnyProperComparator implements Comparator<Object> {
 

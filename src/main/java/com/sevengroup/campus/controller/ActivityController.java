@@ -187,6 +187,7 @@ public class ActivityController {
         System.out.println(aID);
         System.out.println(uID);
         System.out.println(info);
+        info = uID + "报名了你的活动，报名信息为：" + info;
         msgService.saveMsg("activitySignUp", new Timestamp(System.currentTimeMillis()),
                 info, uID, activityService.getOrganizer(aID), "");
         activityService.saveSignUp(aID, uID, info);

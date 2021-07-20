@@ -131,7 +131,7 @@ public class mod3RestController {
     @RequestMapping("/selfBookTable")
     public BookTableBean selfBookTableTest(@RequestParam(value = "page") Integer currPage, // 当前数据表格的页数
                                                   @RequestParam(value = "limit") Integer currPageSize, // 当前数据表格每页的容量大小
-                                                  @RequestParam(value = "field", defaultValue = "inTime") String sortField, // 当前选择排序的字段名称
+                                                  @RequestParam(value = "field", defaultValue = "bookID") String sortField, // 当前选择排序的字段名称
                                                   @RequestParam(value = "order", defaultValue = "asc") String sortOrder, // 当前对已选字段的排序方式
                                                   @RequestParam(value = "bookName", defaultValue = "") String bookName,
                                                   HttpServletRequest request
