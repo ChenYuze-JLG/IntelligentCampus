@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="../static/layui/css/layui.css" media="all">
 
 
-    <link href="../static/indexSearch/css/bootstrap.min.css" rel="stylesheet">
     <link href="../static/indexSearch/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="static/indexSearch/css/zzsc.css">
     <link rel="stylesheet" type="text/css" href="../static/indexSearch/css/xxx.css">
@@ -96,7 +95,8 @@
         background-color: rgba(33, 150, 243, .1);
     }
 </style>
-<div id="head">
+
+<div id="head" class="extend head" style="display: none">
     <form class="layui-form" action="##" onsubmit="return false">
         <div class="layui-form-item">
 
@@ -117,18 +117,21 @@
                 </button>
 
             </div>
-            <button class="body floatButton" onclick="$('.extend').css('display','block');
-                    $('.body').css('display','none');$(body).css('background-color','#dcf5e6');">
-            </button>
 
         </div>
     </form>
 </div>
+
+<button class="body floatButton" onclick="$('.extend').css('display','block');
+                    $('.body').css('display','none');$(body).css('background-color','#dcf5e6');">
+</button>
+
 <div style="font-family: myFont;z-index: 999999;position: absolute;left: 45%;width: 200px;border-radius: 3px;background-color: rgba(255,255,255,0);cursor: pointer;padding-left: 10px;margin-top: 50px;">
     <ul id="matchlist">
 
     </ul>
 </div>
+
 <div class="extend " style="display: none">
     <div class="demo">
         <div class="container" style="width: 200px">
@@ -294,6 +297,7 @@
     </div>
 
 </div>
+
 <div id="Body" class="body" style="display: block">
 
     <ul class="mylayui-nav" style="z-index:1000;margin-left: 20px">
