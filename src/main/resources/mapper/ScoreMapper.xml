@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sevengroup.campus.mapper.ScoreMapper">
+
+    <select id="getScore" resultType="com.sevengroup.campus.bean.ScoreForStudentBean">
+        select s.score, s.credit, c.name as courseName, t.name as teacher, tc.name as teachClassName
+            from scorerecord as s
+            left join course as c on s.courseID=c.courseID
+            left join teachclass as tc on s.teachClassID=tc.teachClassID
+            left join teacher as t on s.teacherID = t.teacherID
+            where s.studentID = #{studentID} and tc.startDate >= #{startDate} and #{endDate} > tc.endDate
+    </select>
+
+</mapper>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sevengroup.campus.mapper.AbsenceRecordQueryForStudentMapper">
+
+    <select id="getAbsenceForStudent" resultType="com.sevengroup.campus.bean.AbsenceRecordForStudentBean">
+        select s.studentID, s.name as studentName, c.name as courseName, t.name as teachClassName
+             , l.date as absenceDate, l.section as absenceSection, a.type as absenceCondition
+        from absencerecord as a
+                 left join student as s on a.studentID = s.studentID
+                 left join lesson as l on a.lessonID = l.lessonID
+                 left join teachclass as t on l.teachClassID = t.teachClassID
+                 left join course as c on t.courseID = c.courseID
+        where a.studentID = #{studentID} and t.startDate >= #{startDate} and #{endDate} > t.endDate
+    </select>
+
+</mapper>
