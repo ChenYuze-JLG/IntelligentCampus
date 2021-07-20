@@ -79,8 +79,7 @@
         form.on('submit(formDemo)', function (data) {
             console.log("submit");
             console.log(data);
-            layer.msg(JSON.stringify(data.field));
-
+            // layer.msg(JSON.stringify(data.field));
             selectBookByName(data.field.keyWord);
             return false;
         })
@@ -97,10 +96,10 @@
             ,limit: 10
             ,title:'物品列表'
             ,cols: [[
-                {field:'id', title:'id', width:120}
-                ,{field:'name', title:'name', width:120, sort: true}
-                ,{field:'description', title:'description', width:1000}
-                ,{field:'contact', title:'contact', width:120}
+                {field:'id', title:'编号', width:120}
+                ,{field:'name', title:'物品名', width:120, sort: true}
+                ,{field:'description', title:'详细描述'}
+                ,{field:'contact', title:'联系方式', width:120}
                 ,{field: 'imgurl',title: '图片',width: 240}
                 // , {fixed: 'right', title: '图片', toolbar: '#barDemo', width: 120}
             ]]
@@ -137,8 +136,6 @@
         });
 
     });
-    printImg();
-
     function filterInit() {
         var tableFilter = layui.tableFilter;
         console.log("filter");
@@ -153,6 +150,7 @@
             ],//过滤项配置
             'done': function (filters) {
                 //结果回调
+                printImg();
             }
         })
     }
@@ -170,6 +168,5 @@
         });
         filterInit();
     }
-    printImg();
 
 </script>

@@ -24,6 +24,6 @@ public class HeadServiceImpl implements HeadService {
         map.put("username", username);
         map.put("msgs", msgMapper.listMsgs(username));
         map.put("role", role);
-        map.put("headPic", username.equals("") ? "#" : "../static/yln.jpg");
+        map.put("headPic",username==null || username.equals("") ? "#" : "../static/yln.jpg");
     }
 }
