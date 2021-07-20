@@ -62,6 +62,25 @@
     function deal(id, info, sender, type) {
 
         if (type === 'GotLendBook' || type === 'lenRes') {
+            $.ajax({
+                type: 'post',
+                url: 'verify',
+                data: {
+                    'id': id,
+                    'info': info,
+                    'receiver': sender
+                },
+                traditional: true,
+                async: false,
+                dataType: 'json',
+                success: function (data) {//成功的事件
+                    layer.closeAll();
+                    layer.msg("已阅");
+                },
+                error: function (data) {//失败的事件
+                    layer.close();
+                }
+            });
             if (type !== 'lenRes') {
                 layui.use('layer', function () {
                     var layer = layui.layer;
@@ -96,6 +115,7 @@
 
                         },
                         btn2: function (index, layero) {
+
                             layer.msg("已拒绝转借");
                         }
                     });
