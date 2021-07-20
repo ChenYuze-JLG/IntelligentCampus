@@ -13,7 +13,7 @@
     width: 150px;
     height: 150px;
     line-height: 150px;
-    border-radius: 50%;
+    /*border-radius: 50%;*/
     background: #fff;
     margin: 40px auto;
     position: relative;
@@ -26,7 +26,7 @@
     transition: 0.24s 0.2s;
 }
 .navbar:hover{
-    background: rgba(255, 255, 255, 0.75);
+    background: rgba(178, 224, 192, 0.5);
 }
 .navbar .menu{
     list-style: none;
