@@ -620,7 +620,7 @@ margin-left: 150px;">
         console.log("role: " + role);
         if (role === '教师') {
             $('#teachAffairJump').attr('href', '/teachAffairManagementForTeacher');
-        } else {
+        } else if(role === '学生') {
             $('#teachAffairJump').attr('href', '/studentAffairManagement');
         }
     }
