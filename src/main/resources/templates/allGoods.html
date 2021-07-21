@@ -65,11 +65,12 @@
 
 </html>
 <script th:inline="none">
+    var datas;
     function printImg() {
-        var datas = document.querySelectorAll("td[data-field=imgurl]");
-        console.log(datas.length);
-        for(var i=0;i<datas.length;i++){
-            datas[i].innerHTML="<img src='"+datas[i].innerText+"'>";
+        elems = document.querySelectorAll("td[data-field=imgurl]");
+        console.log(elems.length);
+        for(var i=0;i<elems.length;i++){
+            elems[i].innerHTML="<img src='"+datas[i].imgurl+"'>";
         }
     }
     layui.use('form', function() {
@@ -90,13 +91,13 @@
         //渲染
         table.render({
             elem: '#goodsTest'  //绑定table表格
-            ,height: 450
+            // ,height: 450
             ,url: 'http://localhost:8080/information' //后台springmvc接收路径
             ,page:true    //true表示分页
             ,limit: 10
             ,title:'物品列表'
             ,cols: [[
-                {field:'id', title:'编号', width:120}
+                {field:'id', title:'编号', width:120, sort: true}
                 ,{field:'name', title:'物品名', width:120, sort: true}
                 ,{field:'description', title:'详细描述'}
                 ,{field:'contact', title:'联系方式', width:120}
@@ -104,6 +105,10 @@
                 // , {fixed: 'right', title: '图片', toolbar: '#barDemo', width: 120}
             ]]
             , done: function (res, curr, count) {
+                console.log(res);
+                console.log(curr);
+                console.log(count);
+                datas = res.data;
                 console.log(res);
                 printImg();
             }
@@ -113,7 +118,12 @@
         table.on('tr', function(obj){
             console.log(obj)
         });
-
+        table.on('sort(test)', function(obj) { //注：sort 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            console.log(obj.field); //当前排序的字段名
+            console.log(obj.type); //当前排序类型：desc（降序）、asc（升序）、null（空对象，默认排序）
+            console.log(this); //当前排序的 th 对象
+            printImg();
+        });
         //监听工具条
         table.on('tool(test)', function(obj){
             var data = obj.data;
@@ -150,6 +160,7 @@
             ],//过滤项配置
             'done': function (filters) {
                 //结果回调
+                console.log(filters);
                 printImg();
             }
         })
