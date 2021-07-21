@@ -9,4 +9,5 @@ public interface UserMapper {
 
     UserBean getInfo(String username, String password);
 
+    boolean checkUserID(String userID);
 }

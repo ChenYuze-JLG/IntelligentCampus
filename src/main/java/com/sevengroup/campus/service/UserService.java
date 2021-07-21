@@ -7,4 +7,5 @@ public interface UserService {
 
     UserBean loginIn(String username, String password);
 
+    boolean checkUserID(String userID);
 }

@@ -42,9 +42,9 @@
         elem: '#teachClassInfoTable'
         , height: 'full'
         , url: '/teachAffairManagementForTeacher/getTeachClassInfoJson' //数据接口
-        , where: {  // 接口的其他参数（自己定义传递的参数）
-          teacherID: teacherID
-        }
+        // , where: {  // 接口的其他参数（自己定义传递的参数）
+        //   teacherID: teacherID
+        // }
         , title: '教学班级信息表'
         , page: true //开启分页
         , limit: 10  // 每页显示的条数
@@ -75,11 +75,11 @@
         var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
         var tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
         if(layEvent === 'detail'){ //查看
-          layer.open({
-            title: data.teachClassName + '成绩'
+          parent.layer.open({
+            title: data.teachClassName + '考勤记录'
             ,type: 2   // 嵌入教学班级学生成绩表的iframe页面
-            ,content: 'AbsenceRecordQueryForTeacher?teachClassID=' + data.teachClassID
-            ,area: ['1010px', '470px'] // 设置layer的宽高
+            ,content: '/teachAffairManagementForTeacher/AbsenceRecordQueryForTeacher?teachClassID=' + data.teachClassID
+            ,area: ['1050px', '530px'] // 设置layer的宽高
           });
         }
       });

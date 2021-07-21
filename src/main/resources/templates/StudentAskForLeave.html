@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>课程请假</title>
+    <link rel="stylesheet" href="../static/layui/css/layui.css" media="all">
+    <script src="../static/layui/layui.js" charset="utf-8"></script>
+    <script src="../static/layui_extends/selectN.js" type="text/javascript"></script>
+    <script src="../static/layui_extends/selectM.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../static/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-bg-gray" style="padding: 30px;">
+        <span style="font-size: 20px; color: black">课程请假:&nbsp;</span>
+        <div class="layui-bg-gray" style="padding: 30px;">
+            <form class="layui-form">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">请假日期:&nbsp;</label>
+                        <div class="layui-inline" id="dateRange">
+                            <div class="layui-input-inline">
+                                <input type="text" name="startDate" autocomplete="off" id="dateRange-startDate" class="layui-input" placeholder="开始日期">
+                            </div>
+                            <div class="layui-form-mid">-</div>
+                            <div class="layui-input-inline">
+                                <input type="text" name="endDate" autocomplete="off" id="dateRange-endDate" class="layui-input" placeholder="结束日期">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">联系电话:&nbsp;</label>
+                    <div class="layui-input-block">
+                        <input type="tel" name="telephone" lay-verify="required|phone" autocomplete="off" placeholder="请输入联系电话" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">请假原因:&nbsp;</label>
+                    <div class="layui-input-block">
+                        <textarea placeholder="请输入内容" class="layui-textarea" lay-verify="required" name="description"></textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item" style="text-align:center;">
+                    <div class="layui-input-block">
+                        <div class="layui-inline">
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                        <div class="layui-inline">
+                            <button type="button" class="layui-btn" lay-submit="" lay-filter="confirm">确认</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    var gData;
+    var date;
+
+    window.onload = function (){
+        var date_now = new Date();
+        //获取当前时间的年份
+        var year = date_now.getFullYear();
+        //获取当前时间所在的学期
+        var semester;
+        var month = date_now.getMonth();
+        if (month>=2&&month<=8){
+            semester = "春";
+        }else {
+            semester = "秋";
+        }
+        //确定查询的成绩所在的时间范围
+        if (semester == "春"){
+            date=year+"-8-1";//月份参数值要比实际需要的值小1
+        }else if (semester == "秋"){
+            year=(+year)+1;
+            date=year+"-2-1";
+        }else {
+            console.log("日期选择异常");
+        }
+        $.ajax({
+            url: 'http://localhost:8080/queryTeachClassLessonInfo/' + date,
+            type: 'post',
+            dataType: 'json',
+            success: function (data){
+                gData = data;
+                console.log(data);
+                // alert("课程信息提取成功");
+            },
+            error: function (msg){
+                alert("教学班选择 ajax连接异常："+msg);
+            }
+        })
+    }
+
+    //构建日期选择
+    layui.use(['form', 'layedit', 'laydate'], function(){
+        var form = layui.form
+            ,layer = layui.layer
+            ,layedit = layui.layedit
+            ,laydate = layui.laydate;
+
+        //日期
+        laydate.render({
+            elem: '#date'
+        });
+
+        //日期范围
+        laydate.render({
+            elem: '#dateRange'
+            //设置开始日期、日期日期的 input 选择器
+            //数组格式为 2.6.6 开始新增，之前版本直接配置 true 或任意分割字符即可
+            ,range: ['#dateRange-startDate', '#dateRange-endDate']
+        });
+
+        form.verify({
+            date: function (value) {
+                s = value.replace(/-/g,"/");
+                var d = new Date(s);
+                if(d < Date.now()) {
+                    return '您不能选择当前时间及之前的日期，请选择正确日期！';
+                }
+            }
+        });
+
+        //监听提交
+        form.on('submit(confirm)', function(data){
+            insertApplicationForLeave(data.field);
+            console.log(data.field);
+            layer.alert("请假申请发送成功。", {
+                title: ''
+            })
+            return false;
+        });
+
+    });
+
+    function insertApplicationForLeave(data) {
+        $.ajax({
+            type: "post",
+            url: '/insertStudentAskForLeave',
+            data: {
+                'startDate': data.startDate,
+                'endDate': data.endDate,
+                'reason': data.description,
+                'date': date
+            },
+            async: false,
+            traditional: true, //是否使用传统的方式浅层序列化,若有数组参数或对象参数需要设置true!!!!!!
+            dataType: "json",
+            success: function (returnDate){
+                // console.log(returnDate);
+                // alert("ajax链接成功");
+            },
+            error: function (){
+                alert("ajax链接异常")
+            }
+        });
+
+    }
+
+</script>
+
+</body>
+</html>

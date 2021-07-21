@@ -16,9 +16,13 @@
         <table id="absenceTable" lay-filter="absenceTableFilter" style="margin: 0 auto;"></table>
     </div>
 </div>
-<script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+<script type="text/html" id="barView">
+    {{#  if(d.type == '请假'){ }}
+    <a class="layui-btn layui-btn-xs" lay-event="">请假</a>
+    {{# } }}
+    {{#  if(d.type == '缺席'){ }}
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="">缺席</a>
+    {{# } }}
 </script>
 <script th:inline="javascript" charset="UTF-8">
     layui.use('table', function () {
@@ -32,7 +36,7 @@
             , where: {  // 接口的其他参数（自己定义传递的参数）
                 teachClassID: teachClassID
             }
-            , title: '学生成绩表'
+            , title: '学生考勤表'
             , page: true //开启分页
             , limit: 10  // 每页显示的条数
             , limits: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]  //每页显示条数的可选择数目
@@ -51,7 +55,9 @@
                     , {field: 'classNumber', title: '班级', width: 100, sort: true, align: 'center'}
                     , {field: 'date', title: '日期', width: 100, sort: true, align: 'center'}
                     , {field: 'section', title: '节次', width: 100, sort: true, align: 'center'}
-                    , {field: 'type', title: '状态', width: 100, sort: true, align: 'center'}
+                    , {field: 'type', title: '状态', width: 100, sort: true, align: 'center', hide: true}
+                    , {fixed: 'right', title: '状态', toolbar: '#barView', width: 100, align: 'center'}
+
                 ]
             ]
         });

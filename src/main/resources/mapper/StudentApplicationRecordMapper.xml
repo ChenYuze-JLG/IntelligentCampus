@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sevengroup.campus.mapper.StudentApplicationRecordMapper">
+
+    <select id="getStudentApplicationRecord" parameterType="com.sevengroup.campus.bean.map.QueryForStudentMap" resultType="com.sevengroup.campus.bean.StudentApplicationRecordBean">
+        select cr.classroomID, c.capacity, cr.date, cr.section, cr.user as username, u.role, cr.checkApplication
+        from classroomrecord as cr
+            left join classroom as c on cr.classroomID = c.classroomID
+            left join user as u on cr.user = u.username
+        where username = #{studentID} and cr.date >= #{startDate} and #{endDate} > cr.date
+    </select>
+
+</mapper>

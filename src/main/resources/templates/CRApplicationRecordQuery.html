@@ -32,7 +32,12 @@
         })
     </script>
     <script type="text/html" id="barView">
-        <a class="layui-btn layui-btn-xs" lay-event="detail">查看成绩</a>
+        {{#  if(d.check == '申请成功'){ }}
+        <a class="layui-btn layui-btn-xs" lay-event="">申请成功</a>
+        {{# } }}
+        {{#  if(d.check == '申请失败'){ }}
+        <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="">申请失败</a>
+        {{# } }}
     </script>
     <script th:inline="javascript">
         layui.use('table', function () {
@@ -61,8 +66,8 @@
                         , {field: 'date', title: '使用日期', width: 120, sort: true, align: 'center'}
                         , {field: 'section', title: '申请节次', width: 120, sort: true, align: 'center'}
                         , {field: 'role', title: '申请人身份', width: 120, sort: true, align: 'center'}
-                        , {field: 'check', title: '审核状态', width: 120, sort: true, align: 'center'}
-                        , {fixed: 'right', title: '操作', toolbar: '#barView', width: 120, align: 'center', hide: true}
+                        , {field: 'check', title: '审核状态', width: 120, sort: true, align: 'center', hide:true}
+                        , {fixed: 'right', title: '审核状态', toolbar: '#barView', width: 120, align: 'center'}
                     ]
                 ]
             });

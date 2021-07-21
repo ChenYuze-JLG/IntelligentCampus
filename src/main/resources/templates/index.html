@@ -2,10 +2,19 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Passing Paraments</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
     <link rel="stylesheet" href="../static/layui/css/layui.css" media="all">
+
+
+    <!--    <link href="../static/indexSearch/css/bootstrap.min.css" rel="stylesheet">-->
+    <link href="../static/indexSearch/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="static/indexSearch/css/zzsc.css">
+    <link rel="stylesheet" type="text/css" href="../static/indexSearch/css/xxx.css">
+
+
     <style>
-        a.more{
+        a.more {
             font-size: 14px;
             color: cornflowerblue;
             font-weight: normal;
@@ -19,8 +28,13 @@
             float: right;
             text-align: center;
         }
-        a.more:hover{
+
+        a.more:hover {
             background: #4579EA;
+        }
+
+        body {
+            background-color: #F8F8F8;
         }
     </style>
 
@@ -38,93 +52,262 @@
         border: none;
         cursor: pointer;
     }
-    .matchitem{
+
+    .matchitem {
         margin-top: 9px;
         border-bottom-width: 9px;
         margin-bottom: 9px;
         font-size: 18px;
     }
-    #matchlist>div:hover {
-        background-color: rgba(33,150,243,.1);
+
+    @font-face {
+        font-family: myFont;
+        src: url("static/fonts/字体视界-小南同学.ttf")
+    }
+
+    .searchBox {
+        background-color: rgba(227, 246, 235, 0.77);
+        border-color: #0d6490ad;
+        color: black;
+    }
+
+    .searchBtn {
+        background-color: rgba(234, 255, 203, 0.91);
+        margin-bottom: 15px;
+    }
+
+    .searchBtn,
+    .searchBox {
+        left: 25%;
+        top: 35px;
+        height: 36px;
+        border-radius: 20px;
+        text-align: center;
+        font-family: myFont;
+    }
+
+    .fontStyle {
+        font-family: 隶书;
+        font-weight: 100;
+        font-size: 30px;
+    }
+
+
+    #matchlist > div:hover {
+        background-color: rgba(33, 150, 243, .1);
     }
 </style>
-<div id="head">
-    <form class="layui-form" action="##" onsubmit="return false" >
+
+<button class="body floatButton" onclick="$('.extend').css('display','block');
+                    $('#head').css('display','block');
+                    $('.body').css('display','none');
+                    $(body).css('background-color','#dcf5e6');">
+</button>
+<div id="head" style="display:none;">
+    <form class="layui-form" action="##" onsubmit="return false">
         <div class="layui-form-item">
 
-<!--            <label class="layui-form-label">搜索</label>-->
-<!--            <div class="layui-input-inline">-->
-<!--                <input id="myinput" type="text" name="title" placeholder="请输入应用名称" autocomplete="off" class="layui-input">-->
-<!--            </div>-->
-            <div class="layui-input-inline">
-                <input id="myinput" type="text" name="title" placeholder="请输入应用名称"
-                       autocomplete="off" class="extend layui-input" style="display: none">
-            </div>
-            <div class="layui-input-inline">
-                <button class="extend layui-btn" style="display: none" lay-submit lay-filter="formDemo">立即搜索</button>
-                <!--                <button type="reset" class="layui-btn layui-btn-primary">重置</button>-->
-            </div>
-<!--            <button class ="body layui-btn"  onclick="$('.extend').css('display','block');-->
-<!--    $('.body').css('display','none');">显示扩展</button>-->
-                <button class="body floatButton" onclick="$('.extend').css('display','block');
-                    $('.body').css('display','none');">
+            <div>
+                <button class="extend layui-input-inline searchBtn" onclick="$('.extend').css('display','none');
+                    $('.body').css('display','block');$('#head').css('display','none');$(body).css('background-color','#F8F8F8');"
+                        style="display : none; width:auto;padding: 0 10px 0 10px">
+                    隐藏扩展
                 </button>
 
-                <button class ="extend layui-btn" onclick="$('.extend').css('display','none');
-                    $('.body').css('display','block');" style="display : none;">隐藏扩展</button>
-                        </div>
-                    </form>
+                <input id="myinput" type="text" name="title" placeholder="请输入应用名称"
+                       autocomplete="off" class="extend layui-input-inline searchBox" style="display: none;width:30%">
+
+                <button class="extend layui-input-inline searchBtn"
+                        style="display: none;; width:auto;padding: 0 10px 0 10px;"
+                        lay-submit lay-filter="formDemo">
+                    立即跳转
+                </button>
+
+            </div>
+            <button class="body floatButton" onclick="$('.extend').css('display','block');
+                    $('.body').css('display','none');$(body).css('background-color','#dcf5e6');">
+            </button>
+
+        </div>
+    </form>
+</div>
+<div style="font-family: myFont;z-index: 999999;position: absolute;left: 45%;width: 200px;border-radius: 3px;background-color: rgba(255,255,255,0);cursor: pointer;padding-left: 10px;margin-top: 50px;">
+    <ul id="matchlist">
+
+    </ul>
+</div>
+<div class="extend " style="display: none">
+    <div class="demo">
+        <div class="container" style="width: 200px">
+            <div class="row" style="width: 200px">
+                <div class="col-md-12" style="width: 200px">
+
+                    <div class="navbar" id="navbar1">
+                        <img id="img1" src="static/img/searchIcon/base.svg"
+                             style="width: 150px;height:150px;;">
+                        <ul class="menu">
+                            <li class="li1">
+                                <button id='img1_1'
+                                        style="background-image: url('static/img/searchIcon/news.svg');background-position: center center; background-repeat: no-repeat; background-size: 80% 80%">
+                                </button>
+
+                            </li>
+                            <li class="li1">
+                                <button id='img1_2'
+                                        style="background-image: url('static/img/searchIcon/activity.svg');background-position: center center; background-repeat: no-repeat; background-size: 80% 80%">
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div style="position: relative;top: -40px; text-align: center;">
+                        <label class="fontStyle" id="label1">
+                            基础功能
+                        </label>
+                    </div>
                 </div>
-                <div style="z-index: 999999;position: absolute;left: 10px;width: 200px;border-radius: 3px;background-color: #ffffff;cursor: pointer;padding-left: 10px;">
-                    <ul id="matchlist">
+            </div>
+        </div>
+    </div>
 
-                    </ul>
+    <div class="demo">
+        <div class="container" style="width: 200px">
+            <div class="row" style="width: 200px">
+                <div class="col-md-12" style="width: 200px;">
+                    <div class="navbar" id="navbar2">
+
+                        <img id="img2" src="static/img/searchIcon/teachAff.svg"
+                             style="width: 150px;height:150px;;">
+                        <ul class="menu">
+                            <li class="li2">
+                                <button id='img2_1'
+                                        style="background-image: url('static/img/searchIcon/grade.svg');background-position: center center; background-repeat: no-repeat; background-size: 80% 80%">
+                                </button>
+                            </li>
+                            <li class="li2">
+                                <button id='img2_2'
+                                        style="background-image: url('static/img/searchIcon/exam.svg');background-position: center center; background-repeat: no-repeat; background-size: 80% 80%">
+                                </button>
+                            </li>
+                            <li class="li2">
+                                <button id='img2_3'
+                                        style="background-image: url('static/img/searchIcon/absence.svg');background-position: center center; background-repeat: no-repeat; background-size: 80% 80%">
+                                </button>
+                            </li>
+                            <li class="li2">
+                                <button id='img2_4'
+                                        style="background-image: url('static/img/searchIcon/register.svg');background-position: center center; background-repeat: no-repeat; background-size: 80% 80%">
+                                </button>
+                            </li>
+                            <li class="li2">
+                                <button id='img2_5'
+                                        style="background-image: url('static/img/searchIcon/courses.svg');background-position: center center; background-repeat: no-repeat; background-size: 80% 80%">
+                                </button>
+                            </li>
+                            <li class="li2">
+                                <button id='img2_6'
+                                        style="background-image: url('static/img/searchIcon/classroom.svg');background-position: center center; background-repeat: no-repeat; background-size: 80% 80%">
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div style="position: relative;top: -40px; text-align: center;">
+                        <label class="fontStyle" id="label2">
+                            教务管理
+                        </label>
+                    </div>
                 </div>
-                <div class="extend" style="display: none">
-                    <form id = "typeForm" class="layui-form" action="##" onsubmit="return false" >
+            </div>
+        </div>
+    </div>
 
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">类型</label>
-                            <input type="radio" lay-filter="type" name="type" value="all" title="全部" checked>
-                            <input type="radio" lay-filter="type" name="type" value="basic" title="基础" >
-                            <input type="radio" lay-filter="type" name="type" value="education" title="教育" >
-                            <input type="radio" lay-filter="type" name="type" value="dmtService" title="宿舍" >
-                            <input type="radio" lay-filter="type" name="type" value="campusService" title="校园" >
-                        </div>
+    <div class="demo">
+        <div class="container" style="width: 200px">
+            <div class="row" style="width: 200px">
+                <div class="col-md-12" style="width: 200px;">
+                    <div class="navbar" id="navbar3">
 
-                    </form>
+                        <img id="img3" src="static/img/searchIcon/dormitory.svg"
+                             style="width: 150px;height:150px;;">
+                        <ul class="menu">
+                            <li class="li3">
+                                <button id='img3_1'
+                                        style="background-image: url('static/img/searchIcon/livingPay.svg');background-position: center center; background-repeat: no-repeat; background-size: 80% 80%">
+                                </button>
+                            </li>
+                            <li class="li3">
+                                <button id='img3_2'
+                                        style="background-image: url('static/img/searchIcon/card.svg');background-position: center center; background-repeat: no-repeat; background-size: 80% 80%">
+                                </button>
+                            </li>
+                            <li class="li3">
+                                <button id='img3_3'
+                                        style="background-image: url('static/img/searchIcon/sleep.svg');background-position: center center; background-repeat: no-repeat; background-size: 80% 80%">
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
 
-                    <table class="layui-table" id="Table">
-                        <colgroup>
-                            <col>
-                        </colgroup>
+                    <div style="position: relative;top: -40px; text-align: center;">
+                        <label class="fontStyle" id="label3">
+                            舍区管理
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                        <thead>
-                        <tr>
-                            <th>应用编号</th>
-                            <th>应用名称</th>
-                            <th>应用类型</th>
-                            <th>操作</th>
-                        </tr>
-                        </thead>
-                        <tbody id="TableBody">
+    <div class="demo">
+        <div class="container" style="width: 200px">
+            <div class="row" style="width: 200px">
+                <div class="col-md-12" style="width: 200px;">
+                    <div class="navbar" id="navbar4">
 
-                        </tbody>
-                    </table>
+                        <img id="img4" src="static/img/searchIcon/campus.svg"
+                             style="width: 150px;height:150px;;">
+                        <ul class="menu">
+                            <li class="li4">
+                                <button id='img4_1' style="background-image: url('static/img/searchIcon/bus.svg');
+                            background-position: center center; background-repeat: no-repeat; background-size: 80% 80%">
+                                </button>
+                            </li>
+                            <li class="li4">
+                                <button id='img4_2' style="background-image: url('static/img/searchIcon/lostandfound.svg');
+                            background-position: center center; background-repeat: no-repeat; background-size: 80% 80%">
+                                </button>
+                            </li>
+                            <li class="li4">
+                                <button id='img4_3' style="background-image: url('static/img/searchIcon/books.svg');
+                            background-position: center center; background-repeat: no-repeat; background-size: 80% 80%">
+                                </button>
+                            </li>
+                            <li class="li4">
+                                <button id='img4_4' style="background-image: url('static/img/searchIcon/map.svg');
+                            background-position: center center; background-repeat: no-repeat; background-size: 80% 80%; font-size: 12px;">
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
 
-                    <!--    </table>-->
-    <!--    <ul id = "content">-->
-    <!--        <li><a href="/1" class="layui-btn">learn English</a></li>-->
-    <!--    </ul>-->
-    <table class="layui-table" id="bookInfoTable" lay-filter="bookInfoTableFilter"></table>
-
+                    <div style="position: relative;top: -40px; text-align: center;">
+                        <label class="fontStyle" id="label4">
+                            校园服务
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
 <div id="Body" class="body" style="display: block">
 
     <ul class="mylayui-nav" style="z-index:1000;margin-left: 20px">
         <li class="mylayui-nav-item"><a href="/index">首页</a></li>
-        <li class="mylayui-nav-item"><a href="/teachAffairManagement">教务管理</a></li>
+        <li class="mylayui-nav-item">
+            <a id="teachAffairJump" href="#" th:onclick="teachAffairJump([[${role}]])">教务管理</a>
+        </li>
         <li class="mylayui-nav-item"><a href="/mod3/index3">舍区管理</a></li>
         <li class="mylayui-nav-item"><a href="/mod3/index4">校园服务</a></li>
         <li class="mylayui-nav-item"><a href="">
@@ -183,7 +366,7 @@ margin-left: 150px;">
             </thead>
             <tbody th:each="_new, loopStatus:${news}">
             <tr th:if="${loopStatus.index} lt 6">
-                <td><a target="_blank" th:href="${_new.getUrl()}"  th:text="${_new.getTitle()}" class="linkNewsTopBold"
+                <td><a target="_blank" th:href="${_new.getUrl()}" th:text="${_new.getTitle()}" class="linkNewsTopBold"
                        style="color: blue; text-decoration:underline">
                 </a></td>
             </tr>
@@ -219,14 +402,14 @@ margin-left: 150px;">
 
     <script src="../static/layui/layui.js"></script>
     <script>
-        layui.use('carousel', function(){
+        layui.use('carousel', function () {
             var carousel = layui.carousel;
             //建造实例
             carousel.render({
                 elem: '#test1'
-                ,width: '40%' //设置容器宽度
-                ,arrow: 'hover' //始终显示箭头
-                ,autoplay: true
+                , width: '40%' //设置容器宽度
+                , arrow: 'hover' //始终显示箭头
+                , autoplay: true
             });
         });
     </script>
@@ -240,8 +423,52 @@ margin-left: 150px;">
 <script>
     var gdatas;
     var gcount;
-    var keyword="";
-    var curtype='all';
+    var keyword = "";
+    var curtype = 'all';
+    var layer;
+    var tips_list;
+    var index_list;
+
+    $().ready(function () {
+        layui.use('layer', function () {
+            layer = layui.layer;
+            tips_list = ['新闻查看', '活动', '成绩管理', '考试安排', '考勤管理', '报道注册', '课表查询', '教室申请', '缴纳水电费', '校园卡充值', '舍区管理', '校车时刻表', '失物招领', '图书借阅', '地图'];
+            index_list = ['1_1', '1_2', '2_1', '2_2', '2_3', '2_4', '2_5', '2_6', '3_1', '3_2', '3_3', '4_1', '4_2', '4_3', '4_4'];
+
+            for (let i = 0; i < tips_list.length; i++) {
+                let id = '#img' + index_list[i];
+                let tip = tips_list[i];
+                let label = index_list[i].split("_")[0];
+                console.log(id, tip);
+                $(id).hover(function () {
+                    layer.tips(tip, id);
+                }, function () {
+                    layer.closeAll('tips');
+                });
+            }
+        });
+        for (let i = 0; i < 4; i++) {
+            let id = '#navbar' + (i + 1);
+            let label = '#label' + (i + 1);
+            $(id).hover(function () {
+                $(label).fadeOut(500);
+            }, function () {
+                $(label).fadeIn(500);
+            });
+        }
+
+        $('button').click(function () {
+            let id = this.id.slice(3,);
+            let index = index_list.indexOf(id);
+            let name = tips_list[index];
+            gdatas.forEach(function (item) {
+                if (item.name === name) {
+                    window.location.replace(item.url);
+                }
+            })
+
+        })
+    })
 
     function getApps() {
         $.ajax({
@@ -254,7 +481,7 @@ margin-left: 150px;">
                 gcount = datas.length;
                 gdatas = datas;
                 console.log('datas.length');//打印服务端返回的数据(调试用)
-                mprint();
+                // mprint();
             },
             error: function () {
                 layer.msg("异常！");
@@ -262,57 +489,25 @@ margin-left: 150px;">
 
         });
     }
-    function mprint() {
-        var tbhtml = "";
-        let  subArr = selByStr(gdatas,input.value);
-        console.log(subArr);
-        subArr = selByType(subArr,curtype);
-        console.log("subArr");
-        console.log(subArr);
-        for (let i = 0; i < subArr.length; i++) {
-            tbhtml += "<tr><td>" + subArr[i].id +
-                "</td><td>" + subArr[i].name +
-                "</td><td>" +  subArr[i].type +
-                "</td><td style='padding: 0'>"
-                + "<a href='" + subArr[i].url + "' " +
-                '    class = "layui-btn" >跳转</a>' + "</td></tr>";
-        }
-        $('#TableBody').html(tbhtml);
-    }
-    //Demo
-    function getRadios() {
-        var radios = document.getElementsByName("type");
-        var checked = -1;
-        for ( var j = 0; j < radios.length; j++) {
-            if (radios[j].checked==true) {
-                checked = j;
-            }
-        }
-        return checked;
-    }
 
-    layui.use('form', function(){
+
+    layui.use('form', function () {
         var form = layui.form;
 
         //监听提交
-        form.on('submit(formDemo)', function(data){
-            console.log("submit");
-            console.log(data);
-            console.log("radios="+getRadios);
-            layer.msg(JSON.stringify(data.field));
-            mprint();
+        form.on('submit(formDemo)', function (data) {
+            let text = data.field.title;
+            gdatas.forEach(function (item) {
+                if (item.name === text) {
+                    window.location.replace(item.url);
+                }
+            })
             return false;
         });
-        form.on('radio(type)', function(data){
-            console.log(data.elem); //得到radio原始DOM对象
-            console.log(data.value); //被点击的radio的value值
-            curtype = data.value;
-            mprint();
-        });
-        console.log("msg");
+
     });
 
-    function selByStr(list,keyWord) {
+    function selByStr(list, keyWord) {
         //字符串方法indexOf
         var len = list.length;
         var arr = [];
@@ -324,9 +519,10 @@ margin-left: 150px;">
         }
         return arr;
     }
-    function selByType(list,keyType) {
+
+    function selByType(list, keyType) {
         //字符串方法indexOf
-        if( keyType == 'all'){
+        if (keyType == 'all') {
             return list;
         }
         var len = list.length;
@@ -339,7 +535,8 @@ margin-left: 150px;">
         }
         return arr;
     }
-    function selByReg(list,keyWord) {
+
+    function selByReg(list, keyWord) {
         //正则表达式
         var len = list.length;
         var arr = [];
@@ -358,14 +555,6 @@ margin-left: 150px;">
 
     var li = document.getElementsByTagName("li");
 
-    // for(let i=0;i<li.length;i++){
-    //     let span = document.createElement("span");
-    //     span.innerHTML="\u00D7";
-    //     span.className="close";
-    //     li[i].appendChild(span);
-    // }
-    // var butt = document.getElementById("addItem");
-    // var input = document.getElementById("input");
     console.log('load2');
 
     var butt = $("#addItem")[0];
@@ -374,21 +563,20 @@ margin-left: 150px;">
     console.log(butt);
 
     var matchlist = document.getElementById("matchlist")
-    var arr=[];
-    input.addEventListener("input",(e)=>{
-        if(e.target.value){
-            let reg = new RegExp(e.target.value,"i");
+    var arr = [];
+    input.addEventListener("input", (e) => {
+        if (e.target.value) {
+            let reg = new RegExp(e.target.value, "i");
             removeall();
-            queryitem(reg,e.target.value);
-        }
-        else{
+            queryitem(reg, e.target.value);
+        } else {
             removeall();
         }
     });
 
     var index;
 
-    function queryitem(reg,inputValue) {
+    function queryitem(reg, inputValue) {
         for (let i = 0; i < gdatas.length; i++) {
             index = gdatas[i].name.search(reg);
             let matchContent = "";
@@ -418,11 +606,23 @@ margin-left: 150px;">
         }
 
     }
-    function removeall(){
-        matchlist.innerHTML="";
-        arr=[];
+
+    function removeall() {
+        matchlist.innerHTML = "";
+        arr = [];
     }
+
     getApps();
 
+</script>
+<script>
+    function teachAffairJump(role) {
+        console.log("role: " + role);
+        if (role === '教师') {
+            $('#teachAffairJump').attr('href', '/teachAffairManagementForTeacher');
+        } else if(role === '学生') {
+            $('#teachAffairJump').attr('href', '/studentAffairManagement');
+        }
+    }
 </script>
 </html>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sevengroup.campus.mapper.StudentAskForLeaveMapper">
+
+    <select id="getTeachClassLessonInfo" resultType="com.sevengroup.campus.bean.AskForLeave.TeachClassLessonInfoBean">
+        select tc.teachClassID, t.name as teachClassName, t.teacherID, #{studentID} as studentID,
+               l.lessonID, l.date as lessonDate, l.section as lessonSection
+        from tcsnamelist as tc
+            left join teachclass as t on tc.teachClassID = t.teachClassID
+            left join lesson as l on t.teachClassID = l.teachClassID
+        where tc.studentID = #{studentID} and  t.startDate >= #{startDate} and #{endDate} > t.endDate
+    </select>
+
+    <select id="insertStudentAskForLeaveInfo" parameterType="com.sevengroup.campus.bean.AskForLeave.StudentAskForLeaveInfoBean">
+        insert into leaverecord(lessonid, studentid, state, reason)
+        values(#{lessonID}, #{studentID}, #{state}, #{reason})
+    </select>
+
+    <select id="insertLeaveApplicationMessage" parameterType="com.sevengroup.campus.bean.AskForLeave.LeaveApplicationMsg">
+        insert into message(type, info, receiver, sender, state)
+        values(#{type}, #{info}, #{receiver}, #{sender}, 0)
+    </select>
+
+</mapper>
