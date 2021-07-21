@@ -124,17 +124,17 @@ public class StudentApplicationClassroomController {
                 String checkApplication = "待审核";
                 StudentApplicationClassroomBean studentApplicationClassroomBean = new StudentApplicationClassroomBean(classroomID, date, section, studentID, checkApplication);
                 studentApplicationClassroomService.insertApplicationClassroom(studentApplicationClassroomBean);
-
-                String type = "ClassroomApplication";
-                String info = "尊敬的老师，您的学生向您发出了教室申请。";
-                String receiver = "sys";
-                String sender = studentID;
-                LeaveApplicationMsg leaveApplicationMsg = new LeaveApplicationMsg(type, info, sender, receiver);
-                studentAskForLeaveService.insertLeaveApplicationMsg(leaveApplicationMsg);
             }
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+        String type = "ClassroomApplication";
+        String info = "尊敬的老师，您的学生向您发出了教室申请。";
+        String receiver = "sys";
+        String sender = studentID;
+        LeaveApplicationMsg leaveApplicationMsg = new LeaveApplicationMsg(type, info, sender, receiver);
+        studentAskForLeaveService.insertLeaveApplicationMsg(leaveApplicationMsg);
 
         // 向前端传回格式为json
         JSONObject jsonResult = new JSONObject();

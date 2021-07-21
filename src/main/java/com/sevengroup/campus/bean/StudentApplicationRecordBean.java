@@ -14,5 +14,5 @@ public class StudentApplicationRecordBean {
     private String section;
     private String username;
     private String role;
-    private String check;
+    private String checkApplication;
 }

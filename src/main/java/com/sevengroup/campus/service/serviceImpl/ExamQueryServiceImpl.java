@@ -36,8 +36,8 @@ public class ExamQueryServiceImpl implements ExamQueryService {
         }else if (endDate.getMonth() == 7){
             startDate = new Date(endDate.getYear(), 2-1, endDate.getDate());
         }
-        System.out.println(startDate);
-        System.out.println(endDate);
+//        System.out.println(startDate);
+//        System.out.println(endDate);
         QueryForStudentMap queryForStudentMap = new QueryForStudentMap(studentID, startDate, endDate);
         return examQueryMapper.getExamSchedule(queryForStudentMap);
     }

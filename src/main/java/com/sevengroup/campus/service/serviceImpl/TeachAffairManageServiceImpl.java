@@ -42,6 +42,11 @@ public class TeachAffairManageServiceImpl implements TeachAffairManageService {
     }
 
     @Override
+    public List<TeacherCourseScheduleBean> getStudentCourseSchedule(String teacherID) {
+        return teachAffairManageMapper.getStudentCourseSchedule(teacherID);
+    }
+
+    @Override
     public List<TeachClassLeaveRecordBean> getTeachClassLeaveRecord(String teachClassID) {
         return teachAffairManageMapper.getTeachClassLeaveRecord(teachClassID);
     }

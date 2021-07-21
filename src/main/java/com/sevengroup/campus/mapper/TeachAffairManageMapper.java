@@ -23,6 +23,9 @@ public interface TeachAffairManageMapper {
     // 查询教师课表
     List<TeacherCourseScheduleBean> getTeacherCourseSchedule(String teacherID);
 
+    // 查询学生课表
+    List<TeacherCourseScheduleBean> getStudentCourseSchedule(String teacherID);
+
     // 查询教学班级的请假记录
     List<TeachClassLeaveRecordBean> getTeachClassLeaveRecord(String teachClassID);
 
