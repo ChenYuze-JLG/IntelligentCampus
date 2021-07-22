@@ -135,10 +135,10 @@
                cr.date       AS `date`,
                cr.section    AS `section`,
                u.role        AS role,
-               cr.`check`    AS `check`
+               cr.checkApplication AS `check`
         FROM classroomrecord AS cr,
-             classroom AS c,
-             `user` AS u
+            classroom AS c,
+            `user` AS u
         WHERE cr.user = u.username
           AND c.classroomID = cr.classroomID
           AND u.username = #{teacherID}
@@ -178,7 +178,7 @@
                l.section    AS lessonsection,
                tc.startDate AS tcstartdate,
                tc.endDate   AS tcenddate
-        FROM tcsnamelist  AS tcl,
+        FROM tcsnamelist AS tcl,
              teachclass AS tc,
              lesson AS l,
              course AS c
