@@ -126,7 +126,8 @@ public class BookController {
     }
 
     @GetMapping("/gotLend")
-    public boolean gotLend(HttpServletRequest request, @RequestParam(value = "bookID") String bookID,
+    public boolean gotLend(HttpServletRequest request,
+                           @RequestParam(value = "bookID") String bookID,
                            @RequestParam(value = "fromUserID") String fromUserID) {
         String userID = tool.getUserID(request);
 
@@ -141,6 +142,19 @@ public class BookController {
         }
 
         return lendRes;
+    }
+
+    @GetMapping("refuseLend")
+    public boolean refuseLend(HttpServletRequest request,
+                              @RequestParam(value = "bookID") String bookID,
+                              @RequestParam(value = "fromUserID") String fromUserID) {
+        String userID = tool.getUserID(request);
+
+        msgService.saveMsg("lenRes", new Timestamp(System.currentTimeMillis()),
+                userID + " 拒绝转借；转借该图书失败： " + bookID, userID, fromUserID, "");
+
+
+        return true;
     }
 
 }

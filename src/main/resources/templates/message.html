@@ -18,7 +18,9 @@
         <div class="top" style="margin-bottom: 20px">
             <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">        <ul class="mylayui-nav" style="z-index:1000;">
             <li class="mylayui-nav-item"><a href="/index">首页</a></li>
-            <li class="mylayui-nav-item"><a href="/teachAffairManagement">教务管理</a></li>
+            <li class="mylayui-nav-item">
+                <a id="teachAffairJump" href="#" th:onclick="teachAffairJump([[${role}]])">教务管理</a>
+            </li>
             <li class="mylayui-nav-item"><a href="/mod3/index3">舍区管理</a></li>
             <li class="mylayui-nav-item"><a href="/mod3/index4">校园服务</a></li>
             <li class="mylayui-nav-item"><a href="">
@@ -83,7 +85,18 @@
     </div>
 </div>
 
-<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js">
+
+    function teachAffairJump(role) {
+        console.log("role: " + role);
+        if (role === '教师') {
+            $('#teachAffairJump').attr('href', '/teachAffairManagementForTeacher');
+        } else if(role === '学生') {
+            $('#teachAffairJump').attr('href', '/studentAffairManagement');
+        }
+    }
+
+</script>
 
 </body>
 </html>

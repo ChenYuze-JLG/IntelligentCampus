@@ -52,7 +52,7 @@
 
                 &nbsp;&nbsp;
                 <span style="font-size: 15px;font-weight: lighter"
-                    th:text="${msg.getTime()}">
+                      th:text="${msg.getTime()}">
                 </span>
                 <br><br>&nbsp;&nbsp;
                 <span class="msg" th:text="${msg.getInfo()}">
@@ -97,7 +97,7 @@
                         type: 1,
                         content: "是否同意转借",
                         btn: ['同意', '拒绝'],
-                        yes: function (index, layero) {
+                        btn1: function (index, layero) {
                             $.ajax({
                                 type: 'get',
                                 url: 'library/gotLend',
@@ -124,13 +124,30 @@
 
                         },
                         btn2: function (index, layero) {
+                            $.ajax({
+                                type: 'get',
+                                url: 'library/refuseLend',
+                                data: {
+                                    'bookID': info.split(' ')[2],
+                                    'fromUserID': sender
+                                },
+                                traditional: true,
+                                async: false,
+                                dataType: 'json',
+                                success: function (data) {//成功的事件
+                                    layer.msg("已拒绝转借");
 
-                            layer.msg("已拒绝转借");
+                                    // layer.closeAll();
+                                },
+                                error: function (data) {//失败的事件
+                                    layer.msg("拒绝失败，请稍后再尝试");
+                                }
+                            });
                         }
                     });
                 });
             }
-        } else if(type === 'activitySignUp') {
+        } else if (type === 'activitySignUp') {
             layui.use('layer', function () {
                 var layer = layui.layer;
                 layer.open({
@@ -164,7 +181,7 @@
                     }
                 });
             });
-        } else if(type === 'admission') {
+        } else if (type === 'admission') {
             layui.use('layer', function () {
                 var layer = layui.layer;
                 layer.open({

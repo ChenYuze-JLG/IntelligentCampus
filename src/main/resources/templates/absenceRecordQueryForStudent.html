@@ -42,19 +42,32 @@
 </div>
 
 <script th:inline="none">
-    window.onload= function (){
-        //获取当前年份
-        var year = new Date().getFullYear();
-        //获取下拉列表
-        var sel = document.getElementById("year");
-        //循环添加2006年至当前年份的每个年份到下拉列表
-        for (var i = year; i > 2006;i--){
-            var option = document.createElement('option');
-            option.value = i;
-            var txt = document.createTextNode(i);
-            option.appendChild(txt);
-            sel.appendChild(option);
-        }
+    // window.onload= function (){
+    //     //获取当前年份
+    //     var year = new Date().getFullYear();
+    //     //获取下拉列表
+    //     var sel = document.getElementById("year");
+    //     //循环添加2006年至当前年份的每个年份到下拉列表
+    //     for (var i = year; i > 2006;i--){
+    //         var option = document.createElement('option');
+    //         option.value = i;
+    //         var txt = document.createTextNode(i);
+    //         option.appendChild(txt);
+    //         sel.appendChild(option);
+    //     }
+    // }
+
+    //获取当前年份
+    var year = new Date().getFullYear();
+    //获取下拉列表
+    var sel = document.getElementById("year");
+    //循环添加2006年至当前年份的每个年份到下拉列表
+    for (var i = year; i > 2006;i--){
+        var option = document.createElement('option');
+        option.value = i;
+        var txt = document.createTextNode(i);
+        option.appendChild(txt);
+        sel.appendChild(option);
     }
 
     function requestData(){
