@@ -63,6 +63,10 @@ public class helloController {
         System.out.println("OK");
         return "login";
     }
+    @RequestMapping("/slider")
+    public String showSlider() {
+        return "slider";
+    }
     @RequestMapping("/car")
     public String showCar() {
         return "mod3/car";

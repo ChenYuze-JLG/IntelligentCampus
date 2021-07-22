@@ -175,7 +175,14 @@
                 if (result === false) {
                     $('.errorArea').show();
                 } else {
-                    window.location.replace("index");
+                    layer.open({
+                        type: 2,
+                        area: ['290px', '250px'],
+                        fixed: false, //不固定
+                        maxmin: true,
+                        content: 'slider',
+                    });
+                    // window.location.replace("index");
                 }
             },
             error: function () {

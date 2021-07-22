@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>滑动验证</title>
+    <link rel="stylesheet" href="../static/css/slider.css">
+    <script type="text/javascript" src="../static/js/slider.js"></script>
+    <link rel="stylesheet" href="//unpkg.com/layui@2.6.8/dist/css/layui.css">
+</head>
+<body>
+    <div id="slideBar"></div>
+    <script src="https://unpkg.com//layui@2.6.8//dist//layui.js"></script>
+    <script type="text/javascript">
+        var dataList = ["0","1"];
+        var options = {
+            dataList: dataList,
+            success:function(){
+                parent.layer.closeAll();
+                window.parent.location.replace("index");
+                console.log("show");  
+            },
+            fail: function(){
+                console.log("fail");  
+            }
+        };
+        SliderBar("slideBar", options);
+    </script>
+</body>
+</html>
