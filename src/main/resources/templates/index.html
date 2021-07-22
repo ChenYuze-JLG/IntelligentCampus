@@ -119,7 +119,7 @@
 
                 <button class="extend layui-input-inline searchBtn"
                         style="display: none;; width:auto;padding: 0 10px 0 10px;"
-                        lay-submit lay-filter="formDemo" onclick='jump()'>
+                        lay-submit lay-filter="formDemo">
                     立即跳转
                 </button>
 
@@ -245,6 +245,11 @@
                                         style="background-image: url('static/img/searchIcon/sleep.svg');background-position: center center; background-repeat: no-repeat; background-size: 80% 80%">
                                 </button>
                             </li>
+                            <li class="li3">
+                                <button id='img3_4'
+                                        style="background-image: url('static/img/searchIcon/door.svg');background-position: center center; background-repeat: no-repeat; background-size: 80% 80%">
+                                </button>
+                            </li>
                         </ul>
                     </div>
 
@@ -278,12 +283,22 @@
                                 </button>
                             </li>
                             <li class="li4">
-                                <button id='img4_3' style="background-image: url('static/img/searchIcon/books.svg');
+                                <button id='img4_3' style="background-image: url('static/img/searchIcon/send.svg');
                             background-position: center center; background-repeat: no-repeat; background-size: 80% 80%">
                                 </button>
                             </li>
                             <li class="li4">
-                                <button id='img4_4' style="background-image: url('static/img/searchIcon/map.svg');
+                                <button id='img4_4' style="background-image: url('static/img/searchIcon/books.svg');
+                            background-position: center center; background-repeat: no-repeat; background-size: 80% 80%; font-size: 12px;">
+                                </button>
+                            </li>
+                            <li class="li4">
+                                <button id='img4_5' style="background-image: url('static/img/searchIcon/return.svg');
+                            background-position: center center; background-repeat: no-repeat; background-size: 80% 80%; font-size: 12px;">
+                                </button>
+                            </li>
+                            <li class="li4">
+                                <button id='img4_6' style="background-image: url('static/img/searchIcon/map.svg');
                             background-position: center center; background-repeat: no-repeat; background-size: 80% 80%; font-size: 12px;">
                                 </button>
                             </li>
@@ -421,7 +436,25 @@ margin-left: 150px;">
 </script>
 
 <script>
-    var gdatas;
+    var gdatas = [{"name":"新闻查看","type":"basic","url":"/news","id":1,"index":"1_1"},
+        {"name":"活动","type":"basic","url":"/activity","id":2,"index":"1_2"},
+        {"name":"成绩查询","type":"education","url":"","id":3,"index":"2_1"},
+        {"name":"考试安排","type":"education","url":null,"id":4,"index":"2_2"},
+        {"name":"请假考勤","type":"education","url":null,"id":5,"index":"2_3"},
+        {"name":"报道注册","type":"education","url":null,"id":6,"index":"2_4"},
+        {"name":"课表查询","type":"education","url":null,"id":7,"index":"2_5"},
+        {"name":"教室申请","type":"education","url":null,"id":8,"index":"2_6"},
+        {"name":"水电缴费","type":"dmtService","url":"/mod3/index3?page=payFee","id":9,"index":"3_1"},
+        {"name":"校园卡充值","type":"dmtService","url":"/mod3/index3?page=chargeFee","id":10,"index":"3_2"},
+        {"name":"消费记录","type":"dmtService","url":"/mod3/index3?page=payRecord2","id":10,"index":"3_3"},
+        {"name":"归寝记录","type":"dmtService","url":"/mod3/index3?page=inOutRecord2","id":11,"index":"3_4"},
+        {"name":"校车时刻表","type":"campusService","url":"/mod3/index4?page=car","id":12,"index":"4_1"},
+        {"name":"失物招领列表","type":"campusService","url":"/mod3/index4?page=allGoods&root=1","id":13,"index":"4_2"},
+        {"name":"失物招领发布","type":"campusService","url":"/mod3/index4?page=release&root=1","id":13,"index":"4_3"},
+        {"name":"图书借阅","type":"campusService","url":"/mod3/index4?page=bookList2","id":14,"index":"4_4"},
+        {"name":"已借图书管理","type":"campusService","url":"/mod3/index4?page=selfBookList2","id":14,"index":"4_5"},
+        {"name":"地图","type":"campusService","url":"/mod3/index4?page=map","id":15,"index":"4_6"}
+        ];
     var gcount;
     var keyword = "";
     var curtype = 'all';
@@ -432,9 +465,14 @@ margin-left: 150px;">
     $().ready(function () {
         layui.use('layer', function () {
             layer = layui.layer;
-            tips_list = ['新闻查看', '活动', '成绩管理', '考试安排', '考勤管理', '报道注册', '课表查询', '教室申请', '缴纳水电费', '校园卡充值', '舍区管理', '校车时刻表', '失物招领', '图书借阅', '地图'];
-            index_list = ['1_1', '1_2', '2_1', '2_2', '2_3', '2_4', '2_5', '2_6', '3_1', '3_2', '3_3', '4_1', '4_2', '4_3', '4_4'];
-
+            // tips_list = ['新闻查看', '活动', '成绩管理', '考试安排', '考勤管理', '报道注册', '课表查询', '教室申请', '水电缴费', '校园卡充值', '归寝记录', '消费记录', '校车时刻表', '失物招领', '图书借阅', '地图'];
+            tips_list=[]
+            // index_list = ['1_1', '1_2', '2_1', '2_2', '2_3', '2_4', '2_5', '2_6', '3_1', '3_2', '3_3', '3_4' , '4_1', '4_2', '4_3', '4_4'];
+            index_list=[]
+            gdatas.forEach(item =>{
+                tips_list.push(item.name);
+                index_list.push(item.index);
+            })
             for (let i = 0; i < tips_list.length; i++) {
                 let id = '#img' + index_list[i];
                 let tip = tips_list[i];
@@ -463,32 +501,32 @@ margin-left: 150px;">
             let name = tips_list[index];
             gdatas.forEach(function (item) {
                 if (item.name === name) {
-                    window.location.replace(item.url);
+                    window.open(item.url);
                 }
             })
 
         })
     })
 
-    function getApps() {
-        $.ajax({
-            //几个参数需要注意一下
-            type: "GET",//方法类型
-            dataType: "json",//预期服务器返回的数据类型
-            url: "http://localhost:8080/getApps",//url
-            success: function (datas) {
-                console.log(datas);//打印服务端返回的数据(调试用)
-                gcount = datas.length;
-                gdatas = datas;
-                console.log('datas.length');//打印服务端返回的数据(调试用)
-                // mprint();
-            },
-            error: function () {
-                layer.msg("异常！");
-            }
-
-        });
-    }
+    // function getApps() {
+    //     $.ajax({
+    //         //几个参数需要注意一下
+    //         type: "GET",//方法类型
+    //         dataType: "json",//预期服务器返回的数据类型
+    //         url: "http://localhost:8080/getApps",//url
+    //         success: function (datas) {
+    //             console.log(datas);//打印服务端返回的数据(调试用)
+    //             gcount = datas.length;
+    //             gdatas = datas;
+    //             console.log('datas.length');//打印服务端返回的数据(调试用)
+    //             // mprint();
+    //         },
+    //         error: function () {
+    //             layer.msg("异常！");
+    //         }
+    //
+    //     });
+    // }
 
 
     layui.use('form', function () {
@@ -504,7 +542,6 @@ margin-left: 150px;">
             })
             return false;
         });
-
     });
 
     function selByStr(list, keyWord) {
@@ -551,14 +588,8 @@ margin-left: 150px;">
     }
 
 
-    console.log('load1');
-
     var li = document.getElementsByTagName("li");
-
-    console.log('load2');
-
     var butt = $("#addItem")[0];
-
     var input = $("#myinput")[0];
     console.log(butt);
 
@@ -611,15 +642,6 @@ margin-left: 150px;">
         matchlist.innerHTML = "";
         arr = [];
     }
-    function jump(){
-        let name = $('#myinput').value;
-        gdatas.forEach(function (item) {
-            if (item.name === name) {
-                window.location.replace(item.url);
-            }
-        })
-    }
-    getApps();
 
 </script>
 <script>

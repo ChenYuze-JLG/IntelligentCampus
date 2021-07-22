@@ -149,19 +149,27 @@
 }
 .navbar:hover .menu .li3:nth-child(2){
     transition-delay: 0.04s;
-    transform: rotate(165deg);
+    transform: rotate(135deg);
 }
 .navbar:hover .menu .li3:nth-child(2) button{
     transition-delay: 0.06s;
-    transform: rotate(555deg);
+    transform: rotate(585deg);
 }
 .navbar:hover .menu .li3:nth-child(3){
     transition-delay: 0.06s;
-    transform: rotate(285deg);
+    transform: rotate(225deg);
 }
 .navbar:hover .menu .li3:nth-child(3) button{
     transition-delay: 0.08s;
-    transform: rotate(435deg);
+    transform: rotate(495deg);
+}
+.navbar:hover .menu .li3:nth-child(4){
+    transition-delay: 0.08s;
+    transform: rotate(315deg);
+}
+.navbar:hover .menu .li3:nth-child(4) button{
+    transition-delay: 0.10s;
+    transform: rotate(405deg);
 }
 
 .navbar:hover .menu .li4:nth-child(1){
@@ -174,25 +182,41 @@
 }
 .navbar:hover .menu .li4:nth-child(2){
     transition-delay: 0.04s;
-    transform: rotate(135deg);
+    transform: rotate(105deg);
 }
 .navbar:hover .menu .li4:nth-child(2) button{
     transition-delay: 0.06s;
-    transform: rotate(585deg);
+    transform: rotate(615deg);
 }
 .navbar:hover .menu .li4:nth-child(3){
     transition-delay: 0.06s;
-    transform: rotate(225deg);
+    transform: rotate(165deg);
 }
 .navbar:hover .menu .li4:nth-child(3) button{
     transition-delay: 0.08s;
-    transform: rotate(495deg);
+    transform: rotate(555deg);
 }
 .navbar:hover .menu .li4:nth-child(4){
     transition-delay: 0.08s;
-    transform: rotate(315deg);
+    transform: rotate(225deg);
 }
 .navbar:hover .menu .li4:nth-child(4) button{
     transition-delay: 0.10s;
-    transform: rotate(405deg);
+    transform: rotate(495deg);
+}
+.navbar:hover .menu .li4:nth-child(5){
+    transition-delay: 0.10s;
+    transform: rotate(285deg);
+}
+.navbar:hover .menu .li4:nth-child(5) button{
+    transition-delay: 0.12s;
+    transform: rotate(435deg);
+}
+.navbar:hover .menu .li4:nth-child(6){
+    transition-delay: 0.12s;
+    transform: rotate(345deg);
+}
+.navbar:hover .menu .li4:nth-child(6) button{
+    transition-delay: 0.14s;
+    transform: rotate(375deg);
 }
