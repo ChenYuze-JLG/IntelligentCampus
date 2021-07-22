@@ -130,7 +130,7 @@ public class StudentApplicationClassroomController {
         }
 
         String type = "ClassroomApplication";
-        String info = "尊敬的老师，您收到了一份教室申请。";
+        String info = "尊敬的教室管理员，您收到了一份教室申请。";
         String receiver = "sys";
         String sender = studentID;
         LeaveApplicationMsg leaveApplicationMsg = new LeaveApplicationMsg(type, info, sender, receiver);
