@@ -89,7 +89,7 @@
               <div title="菜单缩放" class="kit-side-fold"><i class="fa fa-navicon" aria-hidden="false"></i>
               </div>
               <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
-              <ul class="layui-nav layui-nav-tree" lay-filter="test" style="">
+              <ul id = "left" class="layui-nav layui-nav-tree" lay-filter="test" style="">
                 <li class="layui-nav-item">
                   <a class="" href="javascript:;" style="padding: 0 0px"><i
                           class="fa fa-user-circle-o fa-lg"></i> <span>成绩管理</span></a>
@@ -168,7 +168,7 @@
                 $('.layui-body').css('left', 30 + 'px');
                 $('.layui-footer').css('left', 30 + 'px');
                 //将二级导航栏隐藏
-                $('dd span').each(function () {
+                $('ul#left li dd span').each(function () {
                   $(this).hide();
                 });
                 //修改标志位
@@ -178,7 +178,7 @@
                 $('.kit-side-fold i').css('margin-right', '10%');
                 $('.layui-body').css('left', 200 + 'px');
                 $('.layui-footer').css('left', 200 + 'px');
-                $('dd span').each(function () {
+                $('ul#left li dd span').each(function () {
                   $(this).show();
                 });
                 isShow = true;
