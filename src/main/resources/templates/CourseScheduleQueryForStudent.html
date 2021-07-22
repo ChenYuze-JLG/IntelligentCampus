@@ -114,7 +114,7 @@
     }
   </style>
 </head>
-<body onload="renderCourseSchedule()">
+<body>
 <div></div>
 <div id="coursesTable"></div>
 <div class="layui-form-item">
@@ -144,6 +144,7 @@
   var teacherID = "20178127";
   var defaultPage = 5;
   page = 0;
+  renderCourseSchedule();
   function getCourseScheduleInfo() {
     $.ajax({
       type: "post",

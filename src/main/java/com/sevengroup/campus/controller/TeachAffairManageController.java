@@ -166,7 +166,9 @@ public class TeachAffairManageController {
     public String getCourseScheduleForTeacher(
 //            @RequestParam(value = "teacherID") String teacherID // 当前数据表格的页数
     ) throws ParseException {
+        System.out.println(teacherID);
         List<TeacherCourseScheduleBean> teacherCourseSchedule = teachAffairManageService.getTeacherCourseSchedule(teacherID);
+        System.out.println("size: " + teacherCourseSchedule.size());
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date firstDate = getFirstDay(), currDate = getFirstDay();
         List<List<String>> courseSchedule = new ArrayList<>();
@@ -472,11 +474,11 @@ public class TeachAffairManageController {
     public String getClassroomRecordJSON(@RequestParam(value = "page") Integer currPage, // 当前数据表格的页数
                                          @RequestParam(value = "limit") Integer currPageSize, // 当前数据表格每页的容量大小
                                          @RequestParam(value = "field", defaultValue = "classroomID") String sortField, // 当前选择排序的字段名称
-                                         @RequestParam(value = "order", defaultValue = "asc") String sortOrder, // 当前对已选字段的排序方式
-                                         @RequestParam(value = "username") String username
+                                         @RequestParam(value = "order", defaultValue = "asc") String sortOrder // 当前对已选字段的排序方式
+//                                         @RequestParam(value = "username") String username
     ) throws JSONException {
         // 从用户登录信息中获取ID
-        List<CRApplicationRecordBean> CRApplicationRecord = teachAffairManageService.getCRApplicationRecord(username);
+        List<CRApplicationRecordBean> CRApplicationRecord = teachAffairManageService.getCRApplicationRecord(teacherID);
         // 向前端传回格式为json
         JSONObject jsonResult = new JSONObject();
         jsonResult.put("code", 0);

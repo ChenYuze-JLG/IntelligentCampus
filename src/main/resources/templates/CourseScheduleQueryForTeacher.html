@@ -3,11 +3,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
-    <script src="../static/js/Timetables.min.js"></script>
     <script src="../static/js/layer/layer.js"></script>
     <script src="../static/editor.md/examples/js/jquery.min.js"></script>
     <script src="https://unpkg.com//layui@2.6.8//dist//layui.js"></script>
     <link rel="stylesheet" href="//unpkg.com/layui@2.6.8/dist/css/layui.css">
+    <script src="../static/js/Timetables.min.js"></script>
     <title>大学课表</title>
     <style>
         #coursesTable {
@@ -22,7 +22,7 @@
             text-align: center;
             font-size: 14px;
             line-height: 28px;
-            /*font-family: 字体视界-小南同学;*/
+            font-family: myFont;
         }
 
         .left-hand-TextDom, .Courses-head {
@@ -38,13 +38,13 @@
             color: #9c9c9c;
             /*margin-bottom: 4px !important;*/
             font-size: 15px;
-            /*font-family: 字体视界-小南同学;*/
+            font-family: myFont;
         }
 
         .Courses-leftHand .left-hand-name {
             color: #666;
             font-size: 3px;
-            /*font-family: 字体视界-小南同学;*/
+            font-family: myFont;
         }
 
         .Courses-leftHand p {
@@ -72,6 +72,7 @@
         .Courses-content > ul {
             border-bottom: 1px dashed rgb(219, 219, 219);
             box-sizing: border-box;
+            font-family: myFont;
         }
 
         .Courses-content > ul:last-child {
@@ -87,6 +88,7 @@
             color: #666666;
             font-size: 14px;
             line-height: 50px;
+            font-family: myFont;
         }
 
         .Courses-content li span {
@@ -97,6 +99,7 @@
             white-space: normal;
             word-break: break-all;
             cursor: pointer;
+            font-family: myFont;
         }
 
         .grid-active {
@@ -108,34 +111,47 @@
         }
     </style>
     <style>
+        @font-face {
+            font-family: myFont;
+            src: url("../static/fonts/字体视界-小南同学.ttf")
+        }
+
         .layui-layer-content {
+            font-family: myFont;
             /*font-family: 字体视界-小南同学;*/
         }
     </style>
 </head>
-<body onload="renderCourseSchedule()">
+<body>
 <div></div>
 <div id="coursesTable"></div>
 <div class="layui-form-item">
     <div class="layui-inline">
         <label class="layui-form-label"></label>
-        <button onclick="showSample()" type="button" class="layui-btn layui-btn-primary" id="SAMPLE">样例</button>
+        <button style="font-family: myFont" onclick="showSample()" type="button" class="layui-btn layui-btn-primary"
+                id="SAMPLE">样例
+        </button>
     </div>
     <div class="layui-inline">
         <label class="layui-form-label"></label>
-        <button onclick="lastWeek()" type="button" class="layui-btn" id="LAST-WEEK">上一周</button>
+        <button style="font-family: myFont" onclick="lastWeek()" type="button" class="layui-btn" id="LAST-WEEK">上一周
+        </button>
     </div>
     <div class="layui-inline">
-        <label id="currWeek" class="layui-form-label">第1周</label>
+        <label style="font-family: myFont" id="currWeek" class="layui-form-label">第1周</label>
     </div>
     <div class="layui-inline">
-        <button onclick="nextWeek()" type="button" class="layui-btn" id="NEXT-WEEK">下一周</button>
+        <button style="font-family: myFont" onclick="nextWeek()" type="button" class="layui-btn" id="NEXT-WEEK">下一周
+        </button>
     </div>
     <div class="layui-inline">
         <label class="layui-form-label"></label>
-        <button onclick="returnCurrWeek()" type="button" class="layui-btn layui-btn-primary" id="RESET">回到当前周</button>
+        <button style="font-family: myFont" onclick="returnCurrWeek()" type="button" class="layui-btn layui-btn-primary"
+                id="RESET">回到当前周
+        </button>
     </div>
 </div>
+</body>
 <script>
     var courseScheduleAll, TCNameInfo, lessonDateInfo, TCStartDateInfo, TCEndDateInfo;
     // var courseList, TCNameInfoList, lessonDateInfoList, TCStartDateList, TCEndDateList;
@@ -143,6 +159,7 @@
     var teacherID = "20178127";
     var defaultPage = 5;
     page = 0;
+    renderCourseSchedule();
     function getCourseScheduleInfo() {
         $.ajax({
             type: "post",
@@ -202,8 +219,8 @@
     }
 
     function renderCourseSchedule() {
-        layer.load(1);
         getCourseScheduleInfo();
+        layer.load(1);
         page = defaultPage;
         var start = page * 7, end = Math.min(7 + page * 7, Math.min(7 + page * 7, courseScheduleAll.length));
         courseList = courseScheduleAll.slice(start, end);
@@ -215,15 +232,15 @@
         week = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
         day = new Date().getDay();
         courseType = [
-            [{index: '第1节',  name: '08:30~09:15'}, 1],
-            [{index: '第2节',  name: '09:25~10:10'}, 1],
-            [{index: '第3节',  name: '10:30~11:15'}, 1],
-            [{index: '第4节',  name: '11:25~12:10'}, 1],
-            [{index: '第5节',  name: '13:30~14:15'}, 1],
-            [{index: '第6节',  name: '14:25~15:10'}, 1],
-            [{index: '第7节',  name: '15:20~16:05'}, 1],
-            [{index: '第8节',  name: '16:25~17:10'}, 1],
-            [{index: '第9节',  name: '17:20~18:05'}, 1],
+            [{index: '第1节', name: '08:30~09:15'}, 1],
+            [{index: '第2节', name: '09:25~10:10'}, 1],
+            [{index: '第3节', name: '10:30~11:15'}, 1],
+            [{index: '第4节', name: '11:25~12:10'}, 1],
+            [{index: '第5节', name: '13:30~14:15'}, 1],
+            [{index: '第6节', name: '14:25~15:10'}, 1],
+            [{index: '第7节', name: '15:20~16:05'}, 1],
+            [{index: '第8节', name: '16:25~17:10'}, 1],
+            [{index: '第9节', name: '17:20~18:05'}, 1],
             [{index: '第10节', name: '19:00~19:45'}, 1],
             [{index: '第11节', name: '19:55~20:40'}, 1],
             [{index: '第12节', name: '20:50~21:35'}, 1]
@@ -243,15 +260,15 @@
                 const lessonDate = lessonDateInfoList[col][row];
                 const teachClassStartDate = TCStartDateList[col][row];
                 const teachClassEndDate = TCEndDateList[col][row];
-                if(courseName === '') {
+                if (courseName === '') {
                     layer.alert("无课程信息"
                         , {
-                        icon: 2
-                        , skin: 'layui-layer-lan'
-                        // , skin: 'layui-layer-molv'
-                        , area: ['400px', '200px']
-                        , anim: 1
-                    });
+                            icon: 2
+                            , skin: 'layui-layer-lan'
+                            // , skin: 'layui-layer-molv'
+                            , area: ['400px', '200px']
+                            , anim: 1
+                        });
                     return;
                 }
                 // alert(e.name + '  ' + e.week + ', 第' + e.index + '节课, 课长' + e.length + '节');
@@ -267,12 +284,12 @@
                     + "教学班结束时间：" + teachClassEndDate
                     // + "</span>"
                     + "</p>", {
-                    icon: 1
-                    , skin: 'layui-layer-lan'
-                    // , skin: 'layui-layer-molv'
-                    , area: ['400px', '320px']
-                    , anim: 1
-                });
+                        icon: 1
+                        , skin: 'layui-layer-lan'
+                        // , skin: 'layui-layer-molv'
+                        , area: ['400px', '320px']
+                        , anim: 1
+                    });
                 console.log(e);
                 console.log(week.indexOf(e.week));
             },
@@ -308,7 +325,7 @@
                 const lessonDate = lessonDateInfoList[col][row];
                 const teachClassStartDate = TCStartDateList[col][row];
                 const teachClassEndDate = TCEndDateList[col][row];
-                if(courseName === '') {
+                if (courseName === '') {
                     layer.alert("无课程信息"
                         , {
                             icon: 2
@@ -368,7 +385,7 @@
                 const lessonDate = lessonDateInfoList[col][row];
                 const teachClassStartDate = TCStartDateList[col][row];
                 const teachClassEndDate = TCEndDateList[col][row];
-                if(courseName === '') {
+                if (courseName === '') {
                     layer.alert("无课程信息"
                         , {
                             icon: 2
@@ -428,7 +445,7 @@
                 const lessonDate = lessonDateInfoList[col][row];
                 const teachClassStartDate = TCStartDateList[col][row];
                 const teachClassEndDate = TCEndDateList[col][row];
-                if(courseName === '') {
+                if (courseName === '') {
                     layer.alert("无课程信息"
                         , {
                             icon: 2
@@ -488,8 +505,7 @@
     }
 
     function setPageNumber(pageNumber) {
-        document.getElementById("currWeek").innerText="第" + pageNumber + "周";
+        document.getElementById("currWeek").innerText = "第" + pageNumber + "周";
     }
 </script>
-</body>
 </html>
