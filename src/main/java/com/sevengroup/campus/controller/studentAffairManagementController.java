@@ -48,9 +48,9 @@ public class studentAffairManagementController {
     }
 
     // 使用iframe插入的显示课程安排页面
-    @RequestMapping("/teachAffairManagementForStudent/CourseScheduleQuery")
+    @RequestMapping("/CourseScheduleQuery")
     public String showViewCourseSchedule() {
-        return "CourseScheduleQueryForTeacher";
+        return "CourseScheduleQueryForStudent";
     }
 
     // 教师查询课表
@@ -93,7 +93,6 @@ public class studentAffairManagementController {
             switchLessonSection(courseSchedule, TCNameInfo, lessonDateInfo,
                     TCStartDateInfo, TCEndDateInfo, teacherCourseScheduleBean);
         }
-        System.out.println(teacherCourseSchedule.get(0).toString());
         JSONObject jsonResult = new JSONObject();
         jsonResult.put("code", 1);
         jsonResult.put("courseSchedule", courseSchedule);

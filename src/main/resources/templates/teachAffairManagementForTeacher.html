@@ -126,9 +126,9 @@
                                         <span>教室申请管理</span></a>
                                     <dl class="layui-nav-child">
                                         <!--                                    <dd><a href="javascript: $('#feed').load(localhost+'/bookList.html')" style="padding: 0 0px"><i class="fa fa-th-list fa-lg"></i> <span >图书列表</span></a></dd>-->
-                                        <dd><a href="javascript: $('#feed').load('/teachAffairManagement/ApplicationFormFill')" style="padding: 0 0px"><i
+                                        <dd><a href="javascript: $('#feed').load('/teachAffairManagementForTeacher/ApplicationFormFill')" style="padding: 0 0px"><i
                                                 class="fa fa-share fa-lg"></i> <span>申请表填写</span></a></dd>
-                                        <dd><a href="javascript: $('#feed').load('/teachAffairManagement/ApplicationRecordQuery')" style="padding: 0 0px"><i
+                                        <dd><a href="javascript: $('#feed').load('/teachAffairManagementForTeacher/ApplicationRecordQuery')" style="padding: 0 0px"><i
                                                 class="fa fa-send-o fa-lg"></i> <span>申请记录查询</span></a></dd>
                                         <!--                                    <dd><a href="javascript: $('#feed').load(localhost+'/test.html');" style="padding: 0 0px"><i class="fa fa-send-o fa-lg"></i> <span >测试</span></a></dd>-->
                                     </dl>
@@ -300,8 +300,10 @@
     console.log(parseURL(location.href))
     console.log(getQueryString("page"))
     var page = getQueryString("page");
-    if (page != null) {
-        $('#feed').load( '/' + page );
+    console.log("page: " + page);
+    if (page !== 'null' && page !== null) {
+        console.log(page);
+        $('#feed').load( '/teachAffairManagementForTeacher/' + page );
     } else {
         $('#feed').load('/teachAffairManagementForTeacher/ScoreQuery');
     }

@@ -456,14 +456,14 @@ public class TeachAffairManageController {
      */
 
     // 使用iframe插入的教室申请表页面
-    @RequestMapping("/teachAffairManagement/ApplicationFormFill")
+    @RequestMapping("/teachAffairManagementForTeacher/ApplicationFormFill")
     public String showApplicationForm() {
 //        return "CRApplicationFormFill";
         return "studentApplicationClassroom";
     }
 
     // 使用iframe插入的教室申请记录安排页面
-    @RequestMapping("/teachAffairManagement/ApplicationRecordQuery")
+    @RequestMapping("/teachAffairManagementForTeacher/ApplicationRecordQuery")
     public String showApplicationRecord() {
         return "CRApplicationRecordQuery";
     }

@@ -1,153 +1,159 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <title>layout 管理系统大布局 - Layui</title>
-  <!--    <link rel="stylesheet" href="../static/css/teachAffair.css">-->
-  <link rel="stylesheet" href="//unpkg.com/layui@2.6.8/dist/css/layui.css">
-  <!--    <script src="../static/layui/layui.js"></script>-->
-  <script src="https://unpkg.com//layui@2.6.8//dist//layui.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>layout 管理系统大布局 - Layui</title>
+    <!--    <link rel="stylesheet" href="../static/css/teachAffair.css">-->
+    <link rel="stylesheet" href="//unpkg.com/layui@2.6.8/dist/css/layui.css">
+    <!--    <script src="../static/layui/layui.js"></script>-->
+    <script src="https://unpkg.com//layui@2.6.8//dist//layui.js"></script>
 </head>
 <body>
 <!--标签栏-->
 <div class="layui-tab layui-tab-brief" lay-filter="tab-all">
-  <ul class="layui-tab-title">
-    <li data-status="" class="layui-this">教学班级</li>
-  </ul>
-  <div class="layui-tab-content">
-    <div class="layui-tab-item layui-show">
-      <!--数据表放在对应标签里面显示-->
-      <table class="layui-table" id="teachClassInfoTable" lay-filter="teachClassInfo"></table>
+    <ul class="layui-tab-title">
+        <li data-status="" class="layui-this">教学班级</li>
+    </ul>
+    <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show">
+            <!--数据表放在对应标签里面显示-->
+            <table class="layui-table" id="teachClassInfoTable" lay-filter="teachClassInfo"></table>
+        </div>
     </div>
-  </div>
-  <!--根据标签不同选择对应内容-->
-  <script>
-    layui.use('element', function () {
-      var $ = layui.jquery, element = layui.element;
-      element.on('tab(tab-all)', function (data) {
-        var status = $(this).attr('data-status')
-        console.log(status);
-      })
-    })
-  </script>
-  <script type="text/html" id="barView">
-    <a class="layui-btn layui-btn-xs" lay-event="detail">成绩</a>
-    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="chart">分布图</a>
-  </script>
-  <script th:inline="javascript">
-    layui.use('table', function () {
-      var table = layui.table;
+    <!--根据标签不同选择对应内容-->
+    <script>
+        layui.use('element', function () {
+            var $ = layui.jquery, element = layui.element;
+            element.on('tab(tab-all)', function (data) {
+                var status = $(this).attr('data-status')
+                console.log(status);
+            })
+        })
+    </script>
+    <script type="text/html" id="barView">
+        <a class="layui-btn layui-btn-xs" lay-event="detail">成绩</a>
+        <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="chart">分布图</a>
+    </script>
+    <script th:inline="javascript">
+        layui.use('table', function () {
+            var table = layui.table;
 
-      var teacherID = "20203035";
-      table.render({
-        elem: '#teachClassInfoTable'
-        , height: 'full'
-        , url: '/teachAffairManagementForTeacher/getTeachClassInfoJson' //数据接口
-        // , where: {  // 接口的其他参数（自己定义传递的参数）
-        //   teacherID: teacherID
-        // }
-        , title: '教学班级信息表'
-        , page: true //开启分页
-        , limit: 10  // 每页显示的条数
-        , limits: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]  //每页显示条数的可选择数目
-        // ,autoSort: false //禁用前端自动排序
-        , initSort: {  //初始化排序方式
-            field: 'teachClassName' //排序字段，对应 cols 设定的各字段名
-          , type: 'asc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
-        }
-        , cols: [
-          [
-              {field: 'teachClassID', title: '教学班ID', width: 120, sort: true, align: 'center', hide:true}  // 不显示，用于查询
-            , {field: 'collegeName', title: '开设学院', width: 120, sort: true, align: 'center'}
-            , {field: 'courseName', title: '开设课程', width: 120, sort: true, align: 'center'}
-            , {field: 'teachClassName', title: '教学班名称', width: 120, sort: true, align: 'center'}
-            , {field: 'teachStartDate', title: '教学开始日期', width: 150, sort: true, align: 'center'}
-            , {field: 'teachEndDate', title: '教学截至日期', width: 150, sort: true, align: 'center'}
-            , {field: 'courseCredit', title: '课程学分', width: 120, sort: true, align: 'center'}
-            , {field: 'teachClassCapacity', title: '班级人数', width: 120, sort: true, align: 'center'}
-            , {title: '操作', toolbar: '#barView', width: 150, align: 'center'}
-          ]
-        ]
-      });
-
-      //监听行工具事件
-      table.on('tool(teachClassInfo)', function (obj) {
-        var data = obj.data; //获得当前行数据
-        var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
-        var tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
-        if(layEvent === 'detail'){ //查看
-          parent.layer.open({
-            title: data.teachClassName + '成绩'
-            ,type: 2   // 嵌入教学班级学生成绩表的iframe页面
-            ,content: '/teachAffairManagementForTeacher/ScoreQueryForTeacher?teachClassID=' + data.teachClassID
-            ,area: ['950px', '530px'] // 设置layer的宽高
-          });
-        } else if(layEvent === 'chart') {
-          parent.layer.open({
-            title: data.teachClassName + '成绩'
-            ,type: 2   // 嵌入教学班级学生成绩表的iframe页面
-            ,content: '/teachAffairManagementForTeacher/ScoreChartForTeacher?teachClassID=' + data.teachClassID
-            ,area: ['950px', '530px'] // 设置layer的宽高
-          });
-        }
-      });
-
-      //触发排序事件
-      table.on('sort(teachClassInfo)', function (obj) { //注：sort 是工具条事件名，teachClassInfo 是 table 原始容器的属性 lay-filter="对应的值"
-        console.log(obj.field); //当前排序的字段名
-        console.log(obj.type); //当前排序类型：desc（降序）、asc（升序）、null（空对象，默认排序）
-        console.log(this); //当前排序的 th 对象
-
-        //尽管我们的 table 自带排序功能，但并没有请求服务端。
-        //有些时候，你可能需要根据当前排序的字段，重新向服务端发送请求，从而实现服务端排序，如：
-        table.reload('teachClassInfoTable', {
-          initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。
-          , where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
-              field: obj.field //排序字段
-            , order: obj.type  //排序方式
-            , teacherID: teacherID  //
-          }
-        });
-        layer.msg('服务端排序。order by ' + obj.field + ' ' + obj.type);
-      });
-    });
-  </script>
-  <script>
-    function getTeacherID() {
-      $.ajax({
-        type: "post",
-        url: '/teachAffairManagementForTeacher/setStudentLeaveState',
-        data: {
-          'studentID': studentID,
-          'lessonID': lessonID,
-          'state': state
-        },
-        async: false,
-        traditional: true, //是否使用传统的方式浅层序列化,若有数组参数或对象参数需要设置true!!!!!!
-        dataType: "json",
-        success: function (returnData) {
-          console.log("returnData: ", returnData);
-          let data = returnData['data'];
-          layer.closeAll('loading');  // 关闭加载层
-          if (returnData['code'] === 1) {
-            layer.msg('审核成功', {
-              icon: 6,
-              time: 1000, //1s后自动关闭
-              // btn: ['确定']
-            }, function () {
-              layer.close();
+            var teacherID = "20203035";
+            table.render({
+                elem: '#teachClassInfoTable'
+                , height: 'full'
+                , url: '/teachAffairManagementForTeacher/getTeachClassInfoJson' //数据接口
+                // , where: {  // 接口的其他参数（自己定义传递的参数）
+                //   teacherID: teacherID
+                // }
+                , title: '教学班级信息表'
+                , page: true //开启分页
+                , limit: 10  // 每页显示的条数
+                , limits: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]  //每页显示条数的可选择数目
+                // ,autoSort: false //禁用前端自动排序
+                , initSort: {  //初始化排序方式
+                    field: 'teachClassName' //排序字段，对应 cols 设定的各字段名
+                    , type: 'asc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
+                }
+                , cols: [
+                    [
+                        {field: 'teachClassID', title: '教学班ID', width: 120, sort: true, align: 'center', hide: true}  // 不显示，用于查询
+                        , {field: 'collegeName', title: '开设学院', width: 120, sort: true, align: 'center'}
+                        , {field: 'courseName', title: '开设课程', width: 120, sort: true, align: 'center'}
+                        , {field: 'teachClassName', title: '教学班名称', width: 120, sort: true, align: 'center'}
+                        , {field: 'teachStartDate', title: '教学开始日期', width: 150, sort: true, align: 'center'}
+                        , {field: 'teachEndDate', title: '教学截至日期', width: 150, sort: true, align: 'center'}
+                        , {field: 'courseCredit', title: '课程学分', width: 120, sort: true, align: 'center'}
+                        , {field: 'teachClassCapacity', title: '班级人数', width: 120, sort: true, align: 'center'}
+                        , {fixed: 'right', title: '操作', toolbar: '#barView', width: 150, align: 'center'}
+                    ]
+                ]
             });
-          } else {
-            layer.msg('审核失败', {icon: 5});
-          }
-        },
-        error: function () {
-          layer.closeAll('loading');  // 关闭加载层
-          layer.msg('error', {icon: 5});
+
+            //监听行工具事件
+            table.on('tool(teachClassInfo)', function (obj) {
+                var data = obj.data; //获得当前行数据
+                var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+                var tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
+                if (layEvent === 'detail') { //查看
+                    parent.layer.open({
+                        title: data.teachClassName + '成绩'
+                        ,
+                        type: 2   // 嵌入教学班级学生成绩表的iframe页面
+                        ,
+                        content: '/teachAffairManagementForTeacher/ScoreQueryForTeacher?teachClassID=' + data.teachClassID
+                        ,
+                        area: ['950px', '530px'] // 设置layer的宽高
+                    });
+                } else if (layEvent === 'chart') {
+                    parent.layer.open({
+                        title: data.teachClassName + '成绩'
+                        ,
+                        type: 2   // 嵌入教学班级学生成绩表的iframe页面
+                        ,
+                        content: '/teachAffairManagementForTeacher/ScoreChartForTeacher?teachClassID=' + data.teachClassID
+                        ,
+                        area: ['950px', '530px'] // 设置layer的宽高
+                    });
+                }
+            });
+
+            //触发排序事件
+            table.on('sort(teachClassInfo)', function (obj) { //注：sort 是工具条事件名，teachClassInfo 是 table 原始容器的属性 lay-filter="对应的值"
+                console.log(obj.field); //当前排序的字段名
+                console.log(obj.type); //当前排序类型：desc（降序）、asc（升序）、null（空对象，默认排序）
+                console.log(this); //当前排序的 th 对象
+
+                //尽管我们的 table 自带排序功能，但并没有请求服务端。
+                //有些时候，你可能需要根据当前排序的字段，重新向服务端发送请求，从而实现服务端排序，如：
+                table.reload('teachClassInfoTable', {
+                    initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+                    , where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                        field: obj.field //排序字段
+                        , order: obj.type  //排序方式
+                        , teacherID: teacherID  //
+                    }
+                });
+                layer.msg('服务端排序。order by ' + obj.field + ' ' + obj.type);
+            });
+        });
+    </script>
+    <script>
+        function getTeacherID() {
+            $.ajax({
+                type: "post",
+                url: '/teachAffairManagementForTeacher/setStudentLeaveState',
+                data: {
+                    'studentID': studentID,
+                    'lessonID': lessonID,
+                    'state': state
+                },
+                async: false,
+                traditional: true, //是否使用传统的方式浅层序列化,若有数组参数或对象参数需要设置true!!!!!!
+                dataType: "json",
+                success: function (returnData) {
+                    console.log("returnData: ", returnData);
+                    let data = returnData['data'];
+                    layer.closeAll('loading');  // 关闭加载层
+                    if (returnData['code'] === 1) {
+                        layer.msg('审核成功', {
+                            icon: 6,
+                            time: 1000, //1s后自动关闭
+                            // btn: ['确定']
+                        }, function () {
+                            layer.close();
+                        });
+                    } else {
+                        layer.msg('审核失败', {icon: 5});
+                    }
+                },
+                error: function () {
+                    layer.closeAll('loading');  // 关闭加载层
+                    layer.msg('error', {icon: 5});
+                }
+            });
         }
-      });
-    }
-  </script>
+    </script>
 </div>
 </body>

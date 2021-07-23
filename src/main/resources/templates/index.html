@@ -434,11 +434,33 @@ margin-left: 150px;">
 <script type="text/html" id="barView">
     <a class="layui-btn layui-btn-xs" lay-event="jump">跳转</a>
 </script>
-
+<script>
+    function teachAffairJump() {
+        let role = "[[${role}]]";
+        console.log("role: " + role);
+        if (role === '教师') {
+            $('#teachAffairJump').attr('href', '/teachAffairManagementForTeacher');
+            gdatas[2]['url'] = "/teachAffairManagementForTeacher?page=ScoreQuery";
+            gdatas[3]['url'] = "/teachAffairManagementForTeacher?page=null";
+            gdatas[4]['url'] = "/teachAffairManagementForTeacher?page=LeaveRecordQuery";
+            gdatas[5]['url'] = "/teachAffairManagementForTeacher?page=null";
+            gdatas[6]['url'] = "/teachAffairManagementForTeacher?page=CourseScheduleQuery";
+            gdatas[7]['url'] = "/teachAffairManagementForTeacher?page=ApplicationFormFill";
+        } else if(role === '学生') {
+            $('#teachAffairJump').attr('href', '/studentAffairManagement');
+            gdatas[2]['url'] = "/studentAffairManagement?page=scoreQueryForStudent";
+            gdatas[3]['url'] = "/studentAffairManagement?page=examScheduleQueryForStudent";
+            gdatas[4]['url'] = "/studentAffairManagement?page=StudentAskForLeave";
+            gdatas[5]['url'] = "/studentAffairManagement?page=null";
+            gdatas[6]['url'] = "/studentAffairManagement?page=CourseScheduleQuery";
+            gdatas[7]['url'] = "/studentAffairManagement?page=studentApplicationClassroom";
+        }
+    }
+</script>
 <script>
     var gdatas = [{"name":"新闻查看","type":"basic","url":"/news","id":1,"index":"1_1"},
         {"name":"活动","type":"basic","url":"/activity","id":2,"index":"1_2"},
-        {"name":"成绩查询","type":"education","url":"","id":3,"index":"2_1"},
+        {"name":"成绩查询","type":"education","url":null,"id":3,"index":"2_1"},
         {"name":"考试安排","type":"education","url":null,"id":4,"index":"2_2"},
         {"name":"请假考勤","type":"education","url":null,"id":5,"index":"2_3"},
         {"name":"报道注册","type":"education","url":null,"id":6,"index":"2_4"},
@@ -455,6 +477,7 @@ margin-left: 150px;">
         {"name":"已借图书管理","type":"campusService","url":"/mod3/index4?page=selfBookList2","id":14,"index":"4_5"},
         {"name":"地图","type":"campusService","url":"/mod3/index4?page=map","id":15,"index":"4_6"}
         ];
+    teachAffairJump();
     var gcount;
     var keyword = "";
     var curtype = 'all';
@@ -501,6 +524,7 @@ margin-left: 150px;">
             let name = tips_list[index];
             gdatas.forEach(function (item) {
                 if (item.name === name) {
+                    console.log(item.url);
                     window.open(item.url);
                 }
             })
@@ -643,15 +667,5 @@ margin-left: 150px;">
         arr = [];
     }
 
-</script>
-<script>
-    function teachAffairJump(role) {
-        console.log("role: " + role);
-        if (role === '教师') {
-            $('#teachAffairJump').attr('href', '/teachAffairManagementForTeacher');
-        } else if(role === '学生') {
-            $('#teachAffairJump').attr('href', '/studentAffairManagement');
-        }
-    }
 </script>
 </html>
