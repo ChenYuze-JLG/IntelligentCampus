@@ -46,7 +46,7 @@
             this.imgHeight = 0;
             this.imgList = [];
             this.isSuccess = true;
-            for (var i = 1; i < 10; i++) {
+            for (var i = 1; i <= 10; i++) {
                 this.imgList.push(i + ".jpg");
             }
         }
@@ -80,7 +80,7 @@
         },
         reToNewImg: function () {
             var _this = this;
-            var index = Math.round(Math.random() * 8);         // 该方法有等于0 的情况
+            var index = Math.round(Math.random() * 9);         // 该方法有等于0 的情况
             var imgSrc = "http://localhost:8080/static/img/" + _this.imgList[index] + "";
             _this.slideImg.setAttribute("src", imgSrc);
             _this.slideBlock.style.backgroundImage = "url("+ imgSrc +")";
