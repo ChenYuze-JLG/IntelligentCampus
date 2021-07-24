@@ -446,7 +446,7 @@ margin-left: 150px;">
             gdatas[5]['url'] = "/teachAffairManagementForTeacher?page=null";
             gdatas[6]['url'] = "/teachAffairManagementForTeacher?page=CourseScheduleQuery";
             gdatas[7]['url'] = "/teachAffairManagementForTeacher?page=ApplicationFormFill";
-        } else if(role === '学生') {
+        } else if (role === '学生') {
             $('#teachAffairJump').attr('href', '/studentAffairManagement');
             gdatas[2]['url'] = "/studentAffairManagement?page=scoreQueryForStudent";
             gdatas[3]['url'] = "/studentAffairManagement?page=examScheduleQueryForStudent";
@@ -454,6 +454,8 @@ margin-left: 150px;">
             gdatas[5]['url'] = "/studentAffairManagement?page=null";
             gdatas[6]['url'] = "/studentAffairManagement?page=CourseScheduleQuery";
             gdatas[7]['url'] = "/studentAffairManagement?page=studentApplicationClassroom";
+        } else {
+            $('#teachAffairJump').attr('href', '/login');
         }
     }
 </script>
