@@ -18,7 +18,7 @@ import java.security.NoSuchAlgorithmException;
 @Component
 public class Tool {
 
-    public String getUserID(HttpServletRequest request) {
+    public static String getUserID(HttpServletRequest request) {
         return (String) request.getSession().getAttribute("username");
     }
 

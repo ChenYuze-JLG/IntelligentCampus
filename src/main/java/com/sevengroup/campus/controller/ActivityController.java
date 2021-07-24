@@ -1,6 +1,7 @@
 package com.sevengroup.campus.controller;
 
 import com.sevengroup.campus.bean.ActivityBean;
+import com.sevengroup.campus.controller.tool.Tool;
 import com.sevengroup.campus.service.ActivityService;
 import com.sevengroup.campus.service.HeadService;
 import com.sevengroup.campus.service.MsgService;
@@ -151,7 +152,9 @@ public class ActivityController {
     }
 
     @RequestMapping(value = "/launchEvent", method = RequestMethod.GET)
-    String launchEvent() {
+    String launchEvent(Map<String, Object> map) {
+        headService.showHeadInfo(map);
+        if(Tool.getUserID(request).equals("")) return "redirect:index";
         return "launchEvent";
     }
 

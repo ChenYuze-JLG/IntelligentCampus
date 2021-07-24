@@ -2,6 +2,7 @@ package com.sevengroup.campus.controller;
 
 import com.sevengroup.campus.bean.ArticleBean;
 import com.sevengroup.campus.bean.NewsBean;
+import com.sevengroup.campus.controller.tool.Tool;
 import com.sevengroup.campus.service.HeadService;
 import com.sevengroup.campus.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,8 @@ public class newsController {
     NewsService newsService;
     @Autowired
     HeadService headService;
+    @Autowired
+    HttpServletRequest request;
 
     NewsBean now;
     List<NewsBean> news;
@@ -44,7 +47,9 @@ public class newsController {
     }
 
     @RequestMapping("/launchNews")
-    String launchNews() {
+    String launchNews(Map<String, Object> map) {
+        headService.showHeadInfo(map);
+        if(Tool.getUserID(request).equals("")) return "redirect:index";
         return "launchNews";
     }
 
