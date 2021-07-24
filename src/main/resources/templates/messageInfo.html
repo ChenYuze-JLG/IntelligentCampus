@@ -215,6 +215,40 @@
                     }
                 });
             });
+        }  else if (type === 'LeaveApplication' || type === 'ClassroomApplication') {
+            layui.use('layer', function () {
+                var layer = layui.layer;
+                layer.open({
+                    type: 0,
+                    content: "是否置为已读",
+                    btn: ['yes', 'no'],
+                    yes: function (index, layero) {
+                        $.ajax({
+                            type: 'post',
+                            url: 'setRead',
+                            data: {
+                                'id': id,
+                                // 'info': info,
+                                // 'receiver': sender
+                            },
+                            traditional: true,
+                            async: false,
+                            dataType: 'json',
+                            success: function (data) {//成功的事件
+                                layer.closeAll();
+                                layer.msg("已置为已读");
+                            },
+                            error: function (data) {//失败的事件
+                                layer.close();
+                            }
+                        });
+
+                    },
+                    btn2: function (index, layero) {
+                        // layer.msg("已拒绝该用户的请求");
+                    }
+                });
+            });
         }
 
     }
