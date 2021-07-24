@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin("http://localhost:8080")
@@ -205,7 +206,16 @@ public class mod3RestController {
         return res;
     }
 
-
+    @RequestMapping("/isLogin")
+    public boolean isLogin(Map<String, Object> map,
+                           HttpServletRequest request
+    ) {
+        String name = tool.getUserID(request);
+        if(name == ""){
+            return false;
+        }
+        return true;
+    }
 
 
 }
