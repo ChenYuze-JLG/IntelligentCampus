@@ -1,7 +1,6 @@
 package com.sevengroup.campus.controller;
 
 import com.sevengroup.campus.bean.ActivityBean;
-import com.sevengroup.campus.bean.MsgBean;
 import com.sevengroup.campus.bean.NewsBean;
 import com.sevengroup.campus.service.ActivityService;
 import com.sevengroup.campus.service.HeadService;
@@ -33,6 +32,26 @@ public class IndexController {
 
     private List<ActivityBean> activities;
     private List<NewsBean> news;
+
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String initial(Map<String, Object> map) {
+        if(request.getSession().getAttribute("username") == null) {
+            request.getSession().setAttribute("username", "");
+        }
+        activities = activityService.listActivities();
+        map.put("activities", activities);
+        news = newsService.listNews();
+        map.put("news", news);
+        headService.showHeadInfo(map);
+        for(ActivityBean activity : activities) {
+            System.out.println(activity.getImgUrl());
+        }
+        for(NewsBean _new : news) {
+            System.out.println(_new.getTitle());
+        }
+        return "index";
+    }
+
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String index(Map<String, Object> map) {

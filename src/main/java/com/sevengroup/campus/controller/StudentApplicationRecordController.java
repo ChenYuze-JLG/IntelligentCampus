@@ -56,7 +56,5 @@ public class StudentApplicationRecordController {
         List<StudentApplicationRecordBean> applicationRecordPerPage = studentApplicationRecordBeans.subList(fromIndex, toIndex);
         jsonResult.put("data", applicationRecordPerPage);
         return jsonResult.toJSONString();
-
     }
-
 }

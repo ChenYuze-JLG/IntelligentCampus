@@ -61,7 +61,8 @@
     var gData;
     var date;
 
-    window.onload = function (){
+    initialDate();
+    function initialDate(){
         var date_now = new Date();
         //获取当前时间的年份
         var year = date_now.getFullYear();
@@ -127,19 +128,31 @@
             }
         });
 
+        var isSubmit = false;
         //监听提交
         form.on('submit(confirm)', function(data){
+            if(isSubmit) {
+                return false;
+            }
+            isSubmit = true;
             insertApplicationForLeave(data.field);
             console.log(data.field);
             layer.alert("请假申请发送成功。", {
                 title: ''
             })
+            isSubmit = false;
             return false;
         });
 
     });
 
+    var isSend = false;
     function insertApplicationForLeave(data) {
+        if(isSend) {
+            return;
+        }
+        isSend = true;
+        console.log("date: " + date);
         $.ajax({
             type: "post",
             url: '/insertStudentAskForLeave',
@@ -149,14 +162,16 @@
                 'reason': data.description,
                 'date': date
             },
-            async: false,
+            async: true,
             traditional: true, //是否使用传统的方式浅层序列化,若有数组参数或对象参数需要设置true!!!!!!
             dataType: "json",
             success: function (returnDate){
+                isSend = false;
                 // console.log(returnDate);
                 // alert("ajax链接成功");
             },
             error: function (){
+                isSend = false;
                 alert("ajax链接异常")
             }
         });
