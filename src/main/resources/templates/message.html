@@ -70,6 +70,9 @@
             layui.use('element', function () {
                 var $ = layui.jquery, element = layui.element;
                 $('dd>a').click(function (e) {
+                    if($(this).attr('href') === '/message' || $(this).attr('href') === '/logout') {
+                        return;
+                    }
                     e.preventDefault();
                     $('#iframeMain').attr('src',$(this).attr('href'));
                 });
