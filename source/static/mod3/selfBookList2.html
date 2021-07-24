@@ -40,13 +40,13 @@
                 // var datas = JSON.parse(datas); //jsonData是该下路下的所有区间（json格式）
                 console.log(datas);//打印服务端返回的数据(调试用)
                 if (datas == true) {
-                    layer.msg("SUCCESS");
+                    layer.msg("续借成功");
                 } else {
-                    layer.msg("FAILED");
+                    layer.msg("续借次数已达上限，请尽快归还");
                 }
             },
             error: function () {
-                layer.msg("异常！");
+                layer.msg("网络异常！请稍后再试");
             }
 
         });
@@ -121,7 +121,7 @@
                     , name: bookName  //
                 }
             });
-            layer.msg('服务端排序。order by ' + obj.field + ' ' + obj.type);
+            // // layer.msg('服务端排序。order by ' + obj.field + ' ' + obj.type);
             filterInit();
         });
     });
@@ -151,7 +151,7 @@
             console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
             console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
             console.log(data.field.bookName);
-            layer.msg("select...");
+            layer.msg("正在检索...");
             console.log("select");
             selectBookByName(data.field.bookName);
             return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
@@ -176,14 +176,14 @@
                     // var datas = JSON.parse(datas); //jsonData是该下路下的所有区间（json格式）
                     console.log(datas);//打印服务端返回的数据(调试用)
                     if(datas == true) {
-                        layer.msg("SUCCESS");
+                        layer.msg("转借成功，转借结果请查看消息");
                     }
                     else {
-                        layer.msg("FAILED");
+                        layer.msg("没有该用户，请重新输入");
                     }
                 },
                 error: function () {
-                    layer.msg("异常！");
+                    layer.msg("网络异常！请稍后再试");
                 }
 
             });

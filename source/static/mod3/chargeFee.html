@@ -71,7 +71,7 @@
         // $('#username').html(datas.username);
       },
       error: function () {
-        layer.msg("异常！");
+        layer.msg("网络异常！请稍后再试");
       }
 
     });
@@ -94,24 +94,24 @@
         var temp = $('#balanceBody').html();
         if (temp == datas.cardBalance)
         {
-          layer.msg("FAILED");
+          layer.msg("缴费失败，请稍后再试");
         }
         else {
           $('#balanceBody').html(datas.cardBalance);
-          layer.msg("SUCCESS");
+          layer.msg("缴费成功");
           }
 
       },
       error: function () {
         submitFlag = true;
-        layer.msg("异常！");
+        layer.msg("网络异常！请稍后再试");
       }
 
     });
   };
   layui.use('form', function(){
     var form = layui.form;
-    layer.msg("chargeForm");
+    // layer.msg("chargeForm");
     form.render();
     //各种基于事件的操作，下面会有进一步介绍
     form.on('submit(charge)', function(data){

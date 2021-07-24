@@ -70,14 +70,14 @@
         $('#gasBalanceBody').html(datas.gasBalance);
       },
       error: function () {
-        layer.msg("异常！");
+        layer.msg("网络异常！请稍后再试");
       }
 
     });
   };
   selectCard();
   var submitFlag =true;
-  layer.msg("pay");
+  // layer.msg("pay");
   function pay(data) {
     if(submitFlag == false){
       return false;
@@ -94,6 +94,7 @@
       success: function (datas) {
         submitFlag =true;
 
+        layer.msg("缴费成功");
         console.log(datas);//打印服务端返回的数据(调试用)
         if(datas === true) {
           var waterBalance = $('#waterBalanceBody')[0].innerText;
@@ -105,7 +106,7 @@
           console.log(money);
           if( type === "水费"){
           $('#waterBalanceBody').html(eval(waterBalance)+eval(money));
-          alert(eval(org));
+          // alert(eval(org));
           }
           else if(type === "电费"){
             $('#electricBalanceBody').html(eval(elecBalance)+eval(money));
@@ -113,17 +114,16 @@
           else if(type === "燃气费"){
             $('#gasBalanceBody').html(eval(gasBalance)+eval(money));
           }
-          layer.msg("SUCCESS");
 
         }
         else {
-          layer.msg("FAILED");
+          layer.msg("缴费失败");
         }
       },
       error: function () {
         submitFlag =true;
 
-        layer.msg("异常！");
+        layer.msg("网络异常！请稍后再试");
       }
 
     });
@@ -137,7 +137,7 @@
       console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
       console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
       console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
-      layer.msg("pay...");
+      layer.msg("正在支付...");
 
       pay(data);
 
