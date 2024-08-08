@@ -1,5 +1,5 @@
 # Intelligence-campus
-重庆大学暑期实训项目
+重庆大学暑期实训项目（Import From [Intelligence-campus](https://gitee.com/flyfreedom/Intelligence-campus)）
 
 ## 数据库更改todo（下划线为已做更改）
 * ~~activity表需要图片的url这个属性(imgUrl)~~
